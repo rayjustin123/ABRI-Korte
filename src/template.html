@@ -1,0 +1,600 @@
+<title>Abri Korte Booking</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: phone-first schedule column with a bottom tab bar; tapping an open time slides a booking sheet up.
+   From 960px the booking sheet docks as a sticky right column and the tabs move into the top bar. */
+:root{
+  --bg:#EDF2F5;--surface:#FFFFFF;--sunk:#F2F6F8;--ink:#131A1F;--ink-2:#465765;--ink-3:#748795;--line:#DAE3E9;
+  --azure:#0080C4;--azure-soft:#DCEEF8;--azure-ink:#005B8E;
+  --dusk-soft:#E4E6F6;--dusk-ink:#353F80;
+  --gold:#F2B233;--gold-soft:#FCEFD1;--gold-ink:#7A5200;
+  --clay:#A8442F;--clay-soft:#F4E3DD;--clay-ink:#8C3523;
+  --pill:#131A1F;--pill-ink:#FFFFFF;--tag:#FFFFFF;
+  --cta:#0072AF;--cta-ink:#FFFFFF;
+  --shade:rgba(19,26,31,.45);
+  --shadow:0 1px 2px rgba(19,26,31,.05),0 12px 32px rgba(19,26,31,.10);
+  --font:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1418;--surface:#152029;--sunk:#1A2731;--ink:#F1EEE7;--ink-2:#B2C1CC;--ink-3:#8398A7;--line:#24343F;
+  --azure:#36A9E6;--azure-soft:#0F3048;--azure-ink:#93D2F6;
+  --dusk-soft:#1E2448;--dusk-ink:#B8C0F6;
+  --gold:#F2B233;--gold-soft:#3A2E12;--gold-ink:#F7CB6E;
+  --clay:#D56A51;--clay-soft:#3B1F18;--clay-ink:#F3AA95;
+  --pill:#F2B233;--pill-ink:#131A1F;--tag:#0D1418;
+  --cta:#F2B233;--cta-ink:#131A1F;
+  --shade:rgba(0,0,0,.6);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 32px rgba(0,0,0,.4);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1418;--surface:#152029;--sunk:#1A2731;--ink:#F1EEE7;--ink-2:#B2C1CC;--ink-3:#8398A7;--line:#24343F;
+  --azure:#36A9E6;--azure-soft:#0F3048;--azure-ink:#93D2F6;
+  --dusk-soft:#1E2448;--dusk-ink:#B8C0F6;
+  --gold:#F2B233;--gold-soft:#3A2E12;--gold-ink:#F7CB6E;
+  --clay:#D56A51;--clay-soft:#3B1F18;--clay-ink:#F3AA95;
+  --pill:#F2B233;--pill-ink:#131A1F;--tag:#0D1418;
+  --cta:#F2B233;--cta-ink:#131A1F;
+  --shade:rgba(0,0,0,.6);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 32px rgba(0,0,0,.4);
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink)}
+body{font:400 15px/1.5 var(--font);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+html.lock,html.lock body{overflow:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-appearance:none;appearance:none}
+:focus-visible{outline:2px solid var(--azure);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+svg{display:block}
+
+.app{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px calc(100px + env(safe-area-inset-bottom,0px))}
+.layout{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);margin-top:14px}
+.main{min-width:0;display:flex;flex-direction:column;gap:18px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:6px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{width:34px;height:34px;flex:none}
+.brand b{display:block;font-weight:600;font-size:13px;letter-spacing:.28em}
+.brand span{display:block;font-size:11px;color:var(--ink-3);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toptabs{display:none;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.toptabs button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.toptabs button.on{background:var(--pill);color:var(--pill-ink)}
+.todaybtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--ink)}
+
+/* schedule header */
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero h1{font-size:clamp(30px,8.4vw,42px);line-height:1.04;font-weight:700;letter-spacing:-.015em;text-wrap:balance}
+.promo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+.chip{display:inline-flex;align-items:center;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
+.chip.gold{background:var(--gold-soft);color:var(--gold-ink)}
+
+.weekbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding-block:8px 10px;margin-inline:-4px;padding-inline:4px}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.weeknav b{font-size:14px;font-weight:600}
+.arrow{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.arrow:disabled{opacity:.35;cursor:default}
+.strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;touch-action:pan-y}
+.d{border:0;background:transparent;border-radius:16px;padding:8px 0 9px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink)}
+.d .dw{font-size:12px;color:var(--ink-3);font-weight:500}
+.d .dd{font-size:18px;font-weight:600;line-height:1.2}
+.d .load{width:22px;height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:3px}
+.d .load i{display:block;height:100%;background:var(--azure);border-radius:4px}
+.d.today .dd{color:var(--azure)}
+.d.sel{background:var(--pill);color:var(--pill-ink)}
+.d.sel .dw,.d.sel .dd{color:var(--pill-ink)}
+.d.sel .load{background:rgba(127,127,127,.35)}
+.d.sel .load i{background:var(--pill-ink)}
+.d:disabled{opacity:.35;cursor:default}
+
+.dayhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.dayhead h2{font-size:17px;font-weight:600}
+.dayhead span{font-size:13px;color:var(--ink-3)}
+
+/* day list */
+.list{display:flex;flex-direction:column;gap:10px}
+.slot{display:grid;grid-template-columns:70px minmax(0,1fr);gap:10px;align-items:start}
+.when{padding-top:13px;display:flex;flex-direction:column}
+.when b{font-size:14px;font-weight:600;white-space:nowrap}
+.when span{font-size:12px;color:var(--ink-3)}
+.card{width:100%;text-align:left;border:1px solid transparent;border-radius:20px;padding:13px 15px 14px;display:flex;flex-direction:column;gap:3px;min-width:0;position:relative}
+button.card{transition:transform .15s ease,border-color .15s ease}
+button.card:active{transform:scale(.985)}
+.card.day{background:var(--azure-soft);color:var(--azure-ink)}
+.card.night{background:var(--dusk-soft);color:var(--dusk-ink)}
+.card.booked{background:var(--sunk);color:var(--ink-3);border-color:var(--line);background-image:repeating-linear-gradient(135deg,transparent 0 9px,rgba(127,127,127,.09) 9px 18px)}
+.card.event{background:var(--gold-soft);color:var(--gold-ink)}
+.card.past{background:transparent;border:1px dashed var(--line);color:var(--ink-3)}
+.card.short{opacity:.7}
+.card.picked{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--tag);color:inherit;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.card .ic{width:22px;height:22px;flex:none;opacity:.9}
+.card-title{font-size:16px;font-weight:600;color:var(--ink)}
+.card.past .card-title,.card.booked .card-title{color:var(--ink-2)}
+.card-sub{font-size:13px;color:inherit}
+.card .quiet{font-size:12px;opacity:.85}
+.card .yours{margin-top:6px;font-size:12px;font-weight:600;color:var(--ink)}
+.foot{font-size:12px;color:var(--ink-3);padding-top:4px}
+
+/* booking panel: bottom sheet on phones, docked column on desktop */
+.shade{position:fixed;inset:0;background:var(--shade);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.shade.on{opacity:1;pointer-events:auto}
+.panel{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--surface);border-radius:26px 26px 0 0;box-shadow:var(--shadow);max-height:90vh;max-height:90dvh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.pscroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.panel.has-foot .pscroll{padding-bottom:18px}
+.pfoot{flex:none;border-top:1px solid var(--line);background:var(--surface);padding:12px max(18px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.pfoot-in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.pfoot .sum{display:flex;flex-direction:column;min-width:0;flex:1 1 auto;line-height:1.25}
+.pfoot .sum span{font-size:12px;color:var(--ink-3)}
+.pfoot .sum b{font-size:21px;font-weight:700}
+.pfoot .cta{width:auto;flex:none;padding:14px 18px}
+.panel.open{transform:none}
+.panel-in{display:flex;flex-direction:column;gap:16px;max-width:520px;margin:0 auto}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:4px auto 2px}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ph h2{font-size:20px;font-weight:700;line-height:1.2}
+.ph p{font-size:13px;color:var(--ink-3);margin-top:2px}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);display:grid;place-items:center;flex:none;color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field>label,.flabel{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.starts{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.st{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:0;scroll-snap-align:start;min-width:84px}
+.st b{font-size:14px;font-weight:600;white-space:nowrap}
+.st span{font-size:11px;color:var(--ink-3)}
+.st.on{background:var(--pill);border-color:var(--pill);color:var(--pill-ink)}
+.st.on span{color:var(--pill-ink);opacity:.8}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;gap:4px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;padding:3px}
+.stepper button{width:36px;height:36px;border-radius:50%;border:0;background:var(--surface);font-size:20px;line-height:1;display:grid;place-items:center;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper output{min-width:70px;text-align:center;font-weight:600;font-size:15px;white-space:nowrap}
+.ends{font-size:13px;color:var(--ink-2)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border:1px solid var(--line);border-radius:14px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:11px;padding:9px 8px;font-weight:500;font-size:14px;color:var(--ink-2)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.rent{display:flex;flex-direction:column;gap:10px}
+.rent .row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px}
+.rent .stepper output{min-width:88px}
+.rent .row span{font-size:14px;min-width:0}
+.rent .row small{display:block;font-size:12px;color:var(--ink-3)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+.switch input{width:20px;height:20px;accent-color:var(--azure)}
+.txt{width:100%;min-width:0;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px}
+.bill{background:var(--sunk);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.bill .l{display:flex;justify-content:space-between;gap:12px}
+.bill .l span:first-child{color:var(--ink-2);min-width:0}
+.bill .l.free span{color:var(--azure-ink)}
+.bill .l.total{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-weight:700;font-size:17px}
+.bill .l.total span:first-child{color:var(--ink)}
+.nudge{font-size:13px;background:var(--gold-soft);color:var(--gold-ink);border-radius:12px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nudge button{border:0;background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;flex:none}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);text-decoration:none;border:0;border-radius:16px;padding:15px 18px;font-weight:600;font-size:16px;width:100%}
+.cta:hover{filter:brightness(1.06)}
+.ghost{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface);color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:500;font-size:15px;width:100%}
+.fine{font-size:12px;color:var(--ink-3);text-align:center}
+.msg{white-space:pre-wrap;background:var(--sunk);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.55;max-height:220px;overflow:auto;user-select:text;-webkit-user-select:text}
+.done{display:flex;align-items:center;gap:12px}
+.done .ok{width:40px;height:40px;border-radius:50%;background:var(--azure-soft);color:var(--azure-ink);display:grid;place-items:center;flex:none}
+.empty{display:none}
+
+/* rates + info */
+.page{display:flex;flex-direction:column;gap:16px}
+.page h1{font-size:clamp(28px,7.6vw,38px);line-height:1.08;font-weight:700;letter-spacing:-.015em}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.box h2{font-size:16px;font-weight:600}
+.box p{font-size:14px;color:var(--ink-2)}
+.ratecard{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
+.ratecard th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:0 4px}
+.ratecard th:first-child,.ratecard td:first-child{text-align:left}
+.ratecard td{padding:10px 4px;text-align:right;font-weight:600;font-size:16px}
+.ratecard td:first-child{font-weight:500;font-size:14px}
+.ratecard td small{display:block;font-size:11px;font-weight:400;color:var(--ink-3)}
+.pr{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding-block:8px;border-bottom:1px solid var(--line)}
+.pr:last-child{border-bottom:0;padding-bottom:0}
+.pr span:first-child{color:var(--ink-2)}
+.pr b{font-weight:600}
+.rules{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.rules li::marker{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.quietbox{background:var(--clay-soft);color:var(--clay-ink);border-radius:20px;padding:14px 18px}
+.quietbox b{display:block;font-size:15px;font-weight:600}
+.quietbox span{font-size:13px}
+.links{display:flex;flex-direction:column;gap:8px}
+
+/* bottom tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px max(12px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;font-size:11px;font-weight:500;color:var(--ink-3)}
+.tabbar button svg{width:24px;height:24px}
+.tabbar button.on{color:var(--ink)}
+.tabbar button.on svg{color:var(--azure)}
+
+@media (min-width:960px){
+  .app{padding-bottom:40px}
+  .layout{grid-template-columns:minmax(0,1fr) 380px;align-items:start;gap:32px}
+  .toptabs{display:flex}
+  .tabbar{display:none}
+  .shade{display:none}
+  .panel{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));left:auto;right:auto;bottom:auto;transform:none;transition:none;border-radius:24px;border:1px solid var(--line);max-height:calc(100vh - 32px);z-index:1}
+  .pscroll,.panel.has-foot .pscroll{padding:18px 20px 18px}
+  .pfoot{padding:14px 20px 16px;border-radius:0 0 24px 24px}
+  .grab,.x{display:none}
+  .empty{display:flex;flex-direction:column;gap:12px}
+  .weekbar{top:0}
+  .slot{grid-template-columns:84px minmax(0,1fr)}
+}
+@media (max-width:359px){
+  .slot{grid-template-columns:60px minmax(0,1fr);gap:8px}
+  .when b{font-size:13px}
+  .d .dd{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app" id="app"></div>
+<div class="shade" id="shade" data-act="close"></div>
+<script type="application/json" id="data">/*__DATA__*/</script>
+<script>
+(() => {
+'use strict';
+const D = JSON.parse(document.getElementById('data').textContent);
+const DAY = 1440;
+const WD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const WD3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MO = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MO3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/* All times are Manila wall-clock minutes since 1970-01-01, so the page shows the court's time on any phone. */
+const dateOf = dn => new Date(dn * 864e5);
+const dnOf = iso => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5;
+const isoOf = dn => dateOf(dn).toISOString().slice(0, 10);
+const dow = dn => dateOf(dn).getUTCDay();
+const nowAbs = () => Math.floor((Date.now() + 8 * 36e5) / 6e4);
+const mondayOf = dn => dn - ((dow(dn) + 6) % 7);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const peso = n => '₱' + Math.round(n).toLocaleString('en-US');
+const tfmt = m => { m = ((m % DAY) + DAY) % DAY; let h = Math.floor(m / 60); const mi = m % 60; const ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + String(mi).padStart(2, '0') + ' ' + ap; };
+const hrsTxt = mins => { const h = mins / 60; return (Number.isInteger(h) ? h : h.toFixed(1)) + (h === 1 ? ' hr' : ' hrs'); };
+const longDate = dn => { const d = dateOf(dn); return WD[d.getUTCDay()] + ', ' + MO[d.getUTCMonth()] + ' ' + d.getUTCDate(); };
+const shortDate = dn => { const d = dateOf(dn); return WD3[d.getUTCDay()] + ', ' + MO3[d.getUTCMonth()] + ' ' + d.getUTCDate(); };
+
+const BOOKED = D.booked.map(b => ({ s: b[0], e: b[1], label: b[2] || '' })).sort((a, b) => a.s - b.s);
+const TODAY = Math.floor(nowAbs() / DAY);
+const W0 = mondayOf(TODAY);
+const WEEKS = D.weeks || 8;
+const HORIZON = (W0 + 7 * WEEKS) * DAY;
+const LEAD = 15;
+
+const isWeekend = dn => dow(dn) === 0 || dow(dn) === 6;
+const rateSet = dn => isWeekend(dn) ? D.rates.weekend : D.rates.weekday;
+const isDayHour = m => { m = ((m % DAY) + DAY) % DAY; return m >= D.rates.dayStart && m < D.rates.dayEnd; };
+const promoOn = dn => { const iso = isoOf(dn); return !!D.promo && iso >= D.promo.start && (!D.promo.end || iso <= D.promo.end); };
+const inQuiet = (s, e) => { for (let t = s; t < e; t += 30) { const m = ((t % DAY) + DAY) % DAY; if (m >= D.quiet.from || m < D.quiet.to) return true; } return false; };
+const nextStart = t => { let n = Infinity; for (const b of BOOKED) { if (b.s <= t && b.e > t) return t; if (b.s >= t && b.s < n) n = b.s; } return n; };
+
+/* every bookable start on the hour for one day */
+function startsFor(dn) {
+  const a = dn * DAY, now = nowAbs(), out = [];
+  for (let h = 0; h < 24; h++) {
+    const s = a + h * 60;
+    if (s < now + LEAD || s + 60 > HORIZON) continue;
+    if (nextStart(s) - s >= 60) out.push(s);
+  }
+  return out;
+}
+const maxHours = s => Math.max(0, Math.min(D.maxHours || 8, Math.floor((Math.min(nextStart(s), HORIZON) - s) / 60)));
+
+function quote(s, h, sport, paddles, balls) {
+  const dn = Math.floor(s / DAY), r = rateSet(dn), kinds = [];
+  for (let i = 0; i < h; i++) kinds.push(isDayHour(s + i * 60) ? 'day' : 'night');
+  const dayH = kinds.filter(k => k === 'day').length, nightH = h - dayH;
+  const free = promoOn(dn) ? Math.floor(h / D.promo.every) : 0;
+  const freeVal = kinds.slice(h - free).reduce((t, k) => t + r[k], 0);
+  const court = dayH * r.day + nightH * r.night;
+  const rp = sport === 'Pickleball' ? paddles * h * D.rentals.paddle : 0;
+  const rb = sport === 'Pickleball' ? balls * h * D.rentals.ball : 0;
+  return { r, dayH, nightH, free, freeVal, court, rp, rb, total: court - freeVal + rp + rb, weekend: isWeekend(dn) };
+}
+
+/* the day as cards: open time split at the day/night rate change, taken time, and what's already past */
+function segments(dn) {
+  /* anything before the first hour you can still book counts as earlier */
+  const a = dn * DAY, b = a + DAY, now = Math.ceil((nowAbs() + LEAD) / 60) * 60, out = [];
+  const taken = BOOKED.filter(x => x.e > a && x.s < b).map(x => ({ s: Math.max(x.s, a), e: Math.min(x.e, b), label: x.label }));
+  const cuts = [a + D.rates.dayStart, a + D.rates.dayEnd, now];
+  const pushOpen = (s, e) => { let p = s; for (const c of cuts.filter(c => c > s && c < e).sort((x, y) => x - y).concat([e])) { if (c > p) out.push({ kind: 'open', s: p, e: c }); p = c; } };
+  let t = a;
+  taken.forEach(x => { if (x.s > t) pushOpen(t, x.s); if (x.e > t) out.push({ kind: x.label ? 'event' : 'booked', s: Math.max(x.s, t), e: x.e, label: x.label }); t = Math.max(t, x.e); });
+  if (t < b) pushOpen(t, b);
+  const merged = [];
+  out.forEach(g => {
+    if (g.e <= now) g = { kind: 'past', s: g.s, e: g.e };
+    else if (g.kind === 'open') g.rate = isDayHour(g.s) ? 'day' : 'night';
+    const last = merged[merged.length - 1];
+    if (last && last.kind === 'past' && g.kind === 'past') last.e = g.e; else merged.push(g);
+  });
+  merged.forEach(g => { if (g.kind === 'open') g.starts = startsFor(dn).filter(s => s >= g.s && s < g.e); });
+  return merged;
+}
+const openHoursLeft = dn => startsFor(dn).length;
+const loadOf = dn => { const a = dn * DAY + 6 * 60, b = dn * DAY + DAY; let m = 0; BOOKED.forEach(x => { m += Math.max(0, Math.min(b, x.e) - Math.max(a, x.s)); }); return Math.min(1, m / (b - a)); };
+
+/* ---------- state ---------- */
+const S = { tab: 'book', week: 0, day: TODAY, pick: null, hours: 2, sport: 'Pickleball', paddles: 0, balls: 0, racquets: false, name: '', sent: false, copied: null };
+try { const n = localStorage.getItem('ak-name'); if (n) S.name = n; } catch (e) { /* storage unavailable */ }
+const TABS = ['book', 'rates', 'info'];
+if (TABS.includes(location.hash.slice(1))) S.tab = location.hash.slice(1);
+if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
+S.week = Math.floor((mondayOf(S.day) - W0) / 7);
+
+/* ---------- icons ---------- */
+const MARK = '<svg class="mark" viewBox="-76 -84 152 150" aria-hidden="true"><polygon points="-44.3,33 44.3,33 48.9,41 -48.9,41" fill="#A8442F"/><g stroke="currentColor" stroke-linecap="round" fill="none"><line x1="0" y1="-75" x2="-65" y2="55" stroke-width="11"/><line x1="0" y1="-75" x2="65" y2="55" stroke-width="11"/><line x1="-45" y1="15" x2="45" y2="15" stroke-width="9"/><line x1="0" y1="15" x2="0" y2="-75" stroke-width="7"/><line x1="-45" y1="15" x2="0" y2="-30" stroke-width="7"/><line x1="45" y1="15" x2="0" y2="-30" stroke-width="7"/></g></svg>';
+const I = {
+  sun: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>',
+  moon: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1z"/></svg>',
+  lock: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>',
+  trophy: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>',
+  clock: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  left: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  right: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor"/><circle cx="12" cy="14.5" r="1" fill="currentColor"/></svg>',
+  tagic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.4 1.4 0 0 1 0 2l-6.7 6.7a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.6"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  chat: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c-4.9 0-8.5 3.4-8.5 7.8 0 2.4 1.1 4.5 2.9 5.9v3.3l3.1-1.7c.8.2 1.6.3 2.5.3 4.9 0 8.5-3.4 8.5-7.8S16.9 3.5 12 3.5z"/><path d="M7.8 13l2.8-3 2.2 2 3.4-3.2"/></svg>',
+  check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
+
+/* ---------- views ---------- */
+function topbar() {
+  const tabs = [['book', 'Schedule'], ['rates', 'Rates'], ['info', 'Court info']];
+  return '<header class="top"><div class="brand">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></div>'
+    + '<nav class="toptabs" aria-label="Sections">' + tabs.map(([k, l]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') + '</nav>'
+    + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '') + '</header>';
+}
+
+function weekLabel(w) {
+  const a = W0 + 7 * w, b = a + 6, da = dateOf(a), db = dateOf(b);
+  return da.getUTCMonth() === db.getUTCMonth() ? MO3[da.getUTCMonth()] + ' ' + da.getUTCDate() + ' to ' + db.getUTCDate() : MO3[da.getUTCMonth()] + ' ' + da.getUTCDate() + ' to ' + MO3[db.getUTCMonth()] + ' ' + db.getUTCDate();
+}
+
+function vBook() {
+  const ws = W0 + 7 * S.week;
+  const days = [...Array(7).keys()].map(i => ws + i);
+  const strip = days.map(dn => {
+    const past = dn < TODAY, sel = dn === S.day, today = dn === TODAY, d = dateOf(dn);
+    const pct = Math.round(loadOf(dn) * 100);
+    return '<button type="button" class="d' + (sel ? ' sel' : '') + (today ? ' today' : '') + '" data-act="day" data-dn="' + dn + '"' + (past ? ' disabled' : '') + ' aria-pressed="' + sel + '" aria-label="' + esc(longDate(dn)) + (today ? ', today' : '') + '">'
+      + '<span class="dw">' + WD3[d.getUTCDay()] + '</span><span class="dd num">' + d.getUTCDate() + '</span><span class="load" aria-hidden="true"><i style="width:' + pct + '%"></i></span></button>';
+  }).join('');
+  const segs = segments(S.day);
+  const left = openHoursLeft(S.day);
+  const pr = S.pick;
+  const list = segs.map(g => card(g, pr)).join('');
+  const promo = D.promo && promoOn(TODAY) ? '<div class="promo"><span class="chip gold">3+1 promo</span><span>Book 4 hours and the 4th hour is free</span></div>' : '';
+  return '<section class="hero"><h1>Court schedule</h1>' + promo + '</section>'
+    + '<div class="weekbar"><div class="weeknav"><button type="button" class="arrow" data-act="week" data-v="-1" aria-label="Previous week"' + (S.week <= 0 ? ' disabled' : '') + '>' + I.left + '</button><b class="num">' + weekLabel(S.week) + '</b><button type="button" class="arrow" data-act="week" data-v="1" aria-label="Next week"' + (S.week >= WEEKS - 1 ? ' disabled' : '') + '>' + I.right + '</button></div>'
+    + '<div class="strip" id="strip">' + strip + '</div></div>'
+    + '<div class="dayhead"><h2>' + esc(longDate(S.day)) + '</h2><span class="num">' + (left ? left + (left === 1 ? ' open hour' : ' open hours') + ' to book' : 'Fully booked') + '</span></div>'
+    + '<div class="list" id="list">' + list + '</div>'
+    + '<p class="foot">Times are Philippine time. Schedule from our booking sheet, updated ' + esc(D.updatedLabel) + '. We confirm every booking by message.</p>';
+}
+
+function card(g, pr) {
+  const dur = g.e - g.s;
+  const when = '<div class="when"><b class="num">' + tfmt(g.s) + '</b><span>' + hrsTxt(dur) + '</span></div>';
+  const range = tfmt(g.s) + ' to ' + tfmt(g.e);
+  if (g.kind === 'past') return '<div class="slot">' + when + '<div class="card past"><span class="card-top"><span class="tag">Earlier</span>' + I.clock + '</span><span class="card-title">Already passed</span><span class="card-sub">' + range + '</span></div></div>';
+  if (g.kind === 'booked') return '<div class="slot">' + when + '<div class="card booked"><span class="card-top"><span class="tag">Taken</span>' + I.lock + '</span><span class="card-title">Booked</span><span class="card-sub">' + range + '</span></div></div>';
+  if (g.kind === 'event') return '<div class="slot">' + when + '<div class="card event"><span class="card-top"><span class="tag">Event</span>' + I.trophy + '</span><span class="card-title">' + esc(g.label) + '</span><span class="card-sub">' + range + ' · Court closed to bookings</span></div></div>';
+  const r = rateSet(S.day), price = g.rate === 'day' ? r.day : r.night;
+  const can = g.starts && g.starts.length > 0;
+  const mine = pr && pr.s >= g.s && pr.s < g.e;
+  const quiet = inQuiet(g.s, g.e) ? '<span class="quiet">Quiet hours 10 PM to 5 AM, keep it low</span>' : '';
+  const yours = mine ? '<span class="yours">Your pick: ' + tfmt(pr.s) + ' to ' + tfmt(pr.s + S.hours * 60) + '</span>' : '';
+  const inner = '<span class="card-top"><span class="tag">' + (g.rate === 'day' ? 'Day rate' : 'Night rate') + ' · ' + peso(price) + '/hr</span>' + (g.rate === 'day' ? I.sun : I.moon) + '</span>'
+    + '<span class="card-title">' + (can ? 'Open' : 'Open, too short to book') + '</span><span class="card-sub">' + range + (can ? ' · Tap to book' : '') + '</span>' + quiet + yours;
+  return '<div class="slot">' + when + (can
+    ? '<button type="button" class="card ' + g.rate + (mine ? ' picked' : '') + '" data-act="pick" data-s="' + g.starts[0] + '" aria-label="Book from ' + tfmt(g.starts[0]) + ', ' + (g.rate === 'day' ? 'day' : 'night') + ' rate ' + peso(price) + ' per hour">' + inner + '</button>'
+    : '<div class="card ' + g.rate + ' short">' + inner + '</div>') + '</div>';
+}
+
+function messageText() {
+  const p = S.pick; if (!p) return '';
+  const h = S.hours, end = p.s + h * 60, q = quote(p.s, h, S.sport, S.paddles, S.balls);
+  const endDay = Math.floor((end - 1) / DAY) !== Math.floor(p.s / DAY) ? ' the next day' : '';
+  const lines = ['Hi Abri Korte! I would like to book the court.', '',
+    'Date: ' + longDate(Math.floor(p.s / DAY)) + ', ' + dateOf(Math.floor(p.s / DAY)).getUTCFullYear(),
+    'Time: ' + tfmt(p.s) + ' to ' + tfmt(end) + endDay + ' (' + h + (h === 1 ? ' hour' : ' hours') + ')',
+    'Sport: ' + S.sport];
+  if (S.sport === 'Pickleball' && (S.paddles || S.balls)) lines.push('Rentals: ' + [S.paddles ? S.paddles + (S.paddles === 1 ? ' paddle' : ' paddles') : '', S.balls ? S.balls + (S.balls === 1 ? ' ball' : ' balls') : ''].filter(Boolean).join(', '));
+  if (S.sport === 'Badminton' && S.racquets) lines.push('Rentals: badminton racquets, please');
+  if (S.name.trim()) lines.push('Name: ' + S.name.trim());
+  lines.push('Estimated total: ' + peso(q.total) + (q.free ? ' (3+1 promo, ' + q.free + (q.free === 1 ? ' free hour)' : ' free hours)') : ''));
+  lines.push('', 'Is this slot available?');
+  return lines.join('\n');
+}
+const messengerUrl = () => D.messenger + '?text=' + encodeURIComponent(messageText());
+
+function vPanel() {
+  const p = S.pick;
+  if (!p) {
+    const r = D.rates;
+    return '<div class="pscroll"><div class="panel-in"><div class="empty"><h2 style="font-size:18px;font-weight:700">Pick an open time</h2><p style="font-size:14px;color:var(--ink-2)">Tap any open slot in the schedule. You will see the price right away and can send the booking to us on Messenger.</p>'
+      + '<div class="bill"><div class="l"><span>Mon to Fri, day</span><span class="num">' + peso(r.weekday.day) + '/hr</span></div><div class="l"><span>Mon to Fri, night</span><span class="num">' + peso(r.weekday.night) + '/hr</span></div><div class="l"><span>Sat and Sun, day</span><span class="num">' + peso(r.weekend.day) + '/hr</span></div><div class="l"><span>Sat and Sun, night</span><span class="num">' + peso(r.weekend.night) + '/hr</span></div></div>'
+      + '<p class="fine" style="text-align:left">Day rate runs ' + tfmt(r.dayStart) + ' to ' + tfmt(r.dayEnd) + '. Every other hour is night rate.</p></div></div></div>';
+  }
+  const dn = Math.floor(p.s / DAY);
+  if (S.sent) {
+    return '<div class="pscroll"><div class="panel-in"><div class="grab" aria-hidden="true"></div><div class="ph"><div class="done"><span class="ok">' + I.check + '</span><div><h2>Almost done</h2><p>Send the message in Messenger to book it.</p></div></div><button type="button" class="x" data-act="close" aria-label="Close">' + I.x + '</button></div>'
+      + '<p style="font-size:14px;color:var(--ink-2)">' + (S.copied === true ? 'We copied your booking details. If Messenger opens with an empty message, paste them in and send.' : 'Copy your booking details below, then paste them in Messenger and send.') + ' Your slot is held once we reply to confirm.</p>'
+      + '<div class="msg" id="msgbox">' + esc(messageText()) + '</div>'
+      + '<button type="button" class="ghost" data-act="copy">Copy booking details</button>'
+      + '<a class="cta" href="' + esc(messengerUrl()) + '" target="_blank" rel="noopener" data-act="open-msgr">' + I.chat + 'Open Messenger again</a>'
+      + '<button type="button" class="ghost" data-act="reset">Book another time</button></div></div>';
+  }
+  const starts = startsFor(dn);
+  const max = maxHours(p.s);
+  if (S.hours > max) S.hours = Math.max(1, max);
+  const h = S.hours, end = p.s + h * 60;
+  const q = quote(p.s, h, S.sport, S.paddles, S.balls);
+  const endsNext = Math.floor((end - 1) / DAY) !== dn;
+  const chips = starts.map(s => '<button type="button" class="st' + (s === p.s ? ' on' : '') + '" data-act="start" data-s="' + s + '" aria-pressed="' + (s === p.s) + '"><b class="num">' + tfmt(s) + '</b><span>' + (isDayHour(s) ? 'Day ' + peso(rateSet(dn).day) : 'Night ' + peso(rateSet(dn).night)) + '</span></button>').join('');
+  const lines = [];
+  if (q.dayH) lines.push(['Court, ' + q.dayH + (q.dayH === 1 ? ' day hr' : ' day hrs') + ' × ' + peso(q.r.day), peso(q.dayH * q.r.day)]);
+  if (q.nightH) lines.push(['Court, ' + q.nightH + (q.nightH === 1 ? ' night hr' : ' night hrs') + ' × ' + peso(q.r.night), peso(q.nightH * q.r.night)]);
+  if (q.free) lines.push(['3+1 promo, ' + q.free + (q.free === 1 ? ' free hr' : ' free hrs'), '−' + peso(q.freeVal), 'free']);
+  if (q.rp) lines.push(['Paddles, ' + S.paddles + ' × ' + h + ' hrs × ' + peso(D.rentals.paddle), peso(q.rp)]);
+  if (q.rb) lines.push(['Balls, ' + S.balls + ' × ' + h + ' hrs × ' + peso(D.rentals.ball), peso(q.rb)]);
+  const nudge = promoOn(dn) && h % D.promo.every === D.promo.every - 1 && h + 1 <= max
+    ? '<div class="nudge"><span>Add 1 more hour and it is free.</span><button type="button" data-act="hours" data-v="1">Add hour</button></div>' : '';
+  const rentals = S.sport === 'Pickleball'
+    ? '<div class="rent"><div class="row"><span>Paddles<small>' + peso(D.rentals.paddle) + ' each, per hour</small></span>' + stepper('paddles', S.paddles, 0, 8, S.paddles === 1 ? '1 paddle' : S.paddles + ' paddles') + '</div>'
+      + '<div class="row"><span>Balls<small>' + peso(D.rentals.ball) + ' each, per hour</small></span>' + stepper('balls', S.balls, 0, 4, S.balls === 1 ? '1 ball' : S.balls + ' balls') + '</div></div>'
+    : '<label class="switch" for="racq"><span>I need badminton racquets<small style="display:block;font-size:12px;color:var(--ink-3)">We will tell you the rental price when we confirm.</small></span><input type="checkbox" id="racq" data-act="racquets"' + (S.racquets ? ' checked' : '') + '></label>';
+  return '<div class="pscroll"><div class="panel-in"><div class="grab" aria-hidden="true"></div>'
+    + '<div class="ph"><div><h2>' + esc(shortDate(dn)) + '</h2><p>' + (q.weekend ? 'Weekend rates' : 'Weekday rates') + ' · open 24 hours</p></div><button type="button" class="x" data-act="close" aria-label="Close">' + I.x + '</button></div>'
+    + '<div class="field"><span class="flabel">Start time</span><div class="starts" id="starts">' + chips + '</div></div>'
+    + '<div class="field"><span class="flabel">How long</span><div class="row">' + stepper('hours', h, 1, max, hrsTxt(h * 60)) + '<span class="ends num">Ends ' + tfmt(end) + (endsNext ? ' (' + WD3[dow(Math.floor(end / DAY))] + ')' : '') + '</span></div>' + (max < (D.maxHours || 8) && max === h ? '<span class="fine" style="text-align:left">The next booking starts at ' + tfmt(nextStart(p.s)) + '.</span>' : '') + '</div>'
+    + nudge
+    + '<div class="field"><span class="flabel">Sport</span><div class="seg" role="group" aria-label="Sport"><button type="button" data-act="sport" data-v="Pickleball" class="' + (S.sport === 'Pickleball' ? 'on' : '') + '" aria-pressed="' + (S.sport === 'Pickleball') + '">Pickleball</button><button type="button" data-act="sport" data-v="Badminton" class="' + (S.sport === 'Badminton' ? 'on' : '') + '" aria-pressed="' + (S.sport === 'Badminton') + '">Badminton</button></div></div>'
+    + '<div class="field"><span class="flabel">Rentals</span>' + rentals + '</div>'
+    + '<div class="field"><label for="name">Your name</label><input class="txt" id="name" data-bind="name" autocomplete="name" placeholder="So we can find your booking" value="' + esc(S.name) + '"></div>'
+    + '<div class="field"><span class="flabel">Price</span><div class="bill" id="bill">' + lines.map(l => '<div class="l' + (l[2] ? ' ' + l[2] : '') + '"><span>' + l[0] + '</span><span class="num">' + l[1] + '</span></div>').join('') + '</div></div>'
+    + '<p class="fine">We reply on Messenger to confirm. Pay in cash at the court or by GCash.</p></div></div>'
+    + '<div class="pfoot"><div class="pfoot-in"><div class="sum"><span>' + esc(hrsTxt(h * 60)) + (q.free ? ', ' + q.free + ' free' : '') + '</span><b class="num" id="total">' + peso(q.total) + '</b></div>'
+    + '<a class="cta" id="cta" href="' + esc(messengerUrl()) + '" target="_blank" rel="noopener" data-act="send">' + I.chat + 'Book on Messenger</a></div></div>';
+}
+function stepper(key, v, lo, hi, label) {
+  return '<div class="stepper" role="group" aria-label="' + key + '"><button type="button" data-act="step" data-k="' + key + '" data-v="-1" aria-label="Less"' + (v <= lo ? ' disabled' : '') + '>−</button><output class="num" aria-live="polite">' + esc(label) + '</output><button type="button" data-act="step" data-k="' + key + '" data-v="1" aria-label="More"' + (v >= hi ? ' disabled' : '') + '>+</button></div>';
+}
+
+function vRates() {
+  const r = D.rates;
+  const ex = 'For example, 4 night hours on a weekend cost ' + peso(4 * r.weekend.night) + ', and you pay ' + peso(3 * r.weekend.night) + '.';
+  return '<div class="page"><h1>Rates</h1>'
+    + '<div class="box"><h2>Court, per hour</h2><table class="ratecard"><thead><tr><th scope="col"></th><th scope="col">Day</th><th scope="col">Night</th></tr></thead><tbody>'
+    + '<tr><td>Mon to Fri</td><td class="num">' + peso(r.weekday.day) + '</td><td class="num">' + peso(r.weekday.night) + '</td></tr>'
+    + '<tr><td>Sat and Sun</td><td class="num">' + peso(r.weekend.day) + '</td><td class="num">' + peso(r.weekend.night) + '</td></tr></tbody></table>'
+    + '<p>Day rate runs ' + tfmt(r.dayStart) + ' to ' + tfmt(r.dayEnd) + '. Every other hour is night rate. A booking that runs past midnight keeps its start day\'s rates.</p></div>'
+    + (D.promo && promoOn(TODAY) ? '<div class="box" style="background:var(--gold-soft);border-color:transparent"><h2 style="color:var(--gold-ink)">3+1 promo</h2><p style="color:var(--gold-ink)">Every 4th court hour is free. Book 4 hours, pay for 3. ' + esc(ex) + '</p></div>' : '')
+    + '<div class="box"><h2>Rentals</h2><div><div class="pr"><span>Paddle</span><b class="num">' + peso(D.rentals.paddle) + ' per hour</b></div><div class="pr"><span>Pickleball</span><b class="num">' + peso(D.rentals.ball) + ' per hour</b></div><div class="pr"><span>Badminton racquets</span><b>Ask us</b></div></div></div>'
+    + '<div class="box"><h2>Drinks at the court</h2><div>' + D.drinks.map(x => '<div class="pr"><span>' + esc(x.name) + '</span><b class="num">' + peso(x.price) + '</b></div>').join('') + '</div></div>'
+    + '<button type="button" class="cta" data-act="tab" data-v="book">' + I.cal + 'See open times</button></div>';
+}
+
+function vInfo() {
+  return '<div class="page"><h1>Court info</h1>'
+    + '<div class="box"><h2>Abri Korte</h2><p>' + esc(D.address) + '</p><p>Covered court for pickleball and badminton, open 24 hours.</p><div class="links"><a class="ghost" href="' + esc(D.maps) + '" target="_blank" rel="noopener">Open in Google Maps</a><a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">Our Facebook page</a></div></div>'
+    + '<div class="quietbox"><b>Quiet hours, 10 PM to 5 AM</b><span>Please keep voices and music low. Our neighbors are sleeping.</span></div>'
+    + '<div class="box"><h2>House rules</h2><ol class="rules">' + D.rules.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol></div></div>';
+}
+
+function tabbar() {
+  const tabs = [['book', 'Schedule', I.cal], ['rates', 'Rates', I.tagic], ['info', 'Court info', I.pin]];
+  return '<nav class="tabbar" aria-label="Sections">' + tabs.map(([k, l, ic]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + ic + '<span>' + l + '</span></button>').join('') + '</nav>';
+}
+
+/* ---------- render ---------- */
+let raf = 0;
+const schedule = () => { if (!raf) raf = requestAnimationFrame(render); };
+const isDesk = () => window.matchMedia('(min-width:960px)').matches;
+function render() {
+  raf = 0;
+  const app = document.getElementById('app');
+  const a = document.activeElement, fid = a && a.id;
+  const sx = document.getElementById('starts'); const sl = sx ? sx.scrollLeft : 0;
+  const ps = document.querySelector('.pscroll'); const pst = ps ? ps.scrollTop : 0;
+  const body = S.tab === 'book' ? vBook() : S.tab === 'rates' ? vRates() : vInfo();
+  const panelOpen = !!S.pick;
+  app.innerHTML = topbar() + '<div class="layout"><main class="main">' + body + '</main>'
+    + (S.tab === 'book' ? '<aside class="panel' + (panelOpen ? ' open' : '') + (panelOpen && !S.sent ? ' has-foot' : '') + '" id="panel" aria-label="Your booking"' + (!panelOpen && !isDesk() ? ' aria-hidden="true"' : '') + '>' + vPanel() + '</aside>' : '') + '</div>' + tabbar();
+  document.getElementById('shade').classList.toggle('on', panelOpen && S.tab === 'book' && !isDesk());
+  document.documentElement.classList.toggle('lock', panelOpen && S.tab === 'book' && !isDesk());
+  const nps = document.querySelector('.pscroll'); if (nps && S.keepScroll) nps.scrollTop = pst; S.keepScroll = true;
+  const nsx = document.getElementById('starts');
+  if (nsx) { nsx.scrollLeft = sl; const on = nsx.querySelector('.st.on'); if (on && S.scrollPick) { on.scrollIntoView({ block: 'nearest', inline: 'center' }); S.scrollPick = false; } }
+  if (fid) { const el = document.getElementById(fid); if (el && el !== document.activeElement) try { el.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+  fitPanel();
+}
+/* on desktop the docked panel always ends inside the window, so its total and button stay visible */
+function fitPanel() {
+  const p = document.getElementById('panel'); if (!p) return;
+  if (!isDesk()) { p.style.maxHeight = ''; return; }
+  const top = Math.max(16, p.getBoundingClientRect().top);
+  p.style.maxHeight = Math.max(360, window.innerHeight - top - 16) + 'px';
+}
+let fitRaf = 0;
+window.addEventListener('scroll', () => { if (!fitRaf) fitRaf = requestAnimationFrame(() => { fitRaf = 0; fitPanel(); }); }, { passive: true });
+
+function pick(s) {
+  S.pick = { s }; S.keepScroll = false;
+  S.sent = false; S.copied = null; S.scrollPick = true;
+  const max = maxHours(s);
+  if (!S.hours || S.hours > max) S.hours = Math.min(2, max);
+  if (S.hours < 1) S.hours = 1;
+}
+function close() { S.pick = null; S.sent = false; S.copied = null; schedule(); }
+function copyMsg() {
+  const text = messageText();
+  try {
+    navigator.clipboard.writeText(text).then(() => { S.copied = true; schedule(); }, () => { S.copied = false; selectMsg(); schedule(); });
+  } catch (e) { S.copied = false; schedule(); }
+}
+function selectMsg() { setTimeout(() => { const box = document.getElementById('msgbox'); if (!box) return; const r = document.createRange(); r.selectNodeContents(box); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }, 60); }
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const act = el.dataset.act;
+  if (act === 'tab') { S.tab = el.dataset.v; S.pick = null; S.sent = false; try { history.replaceState(null, '', '#' + S.tab); } catch (err) { /* ignore */ } window.scrollTo(0, 0); schedule(); return; }
+  if (act === 'today') { S.day = startsFor(TODAY).length || TODAY + 1 >= W0 + 7 * WEEKS ? TODAY : TODAY + 1; S.week = Math.floor((mondayOf(S.day) - W0) / 7); S.pick = null; schedule(); return; }
+  if (act === 'week') { const w = Math.max(0, Math.min(WEEKS - 1, S.week + Number(el.dataset.v))); if (w !== S.week) { S.week = w; const ws = W0 + 7 * w; S.day = Math.max(ws, TODAY); S.pick = null; schedule(); } return; }
+  if (act === 'day') { S.day = Number(el.dataset.dn); S.pick = null; schedule(); return; }
+  if (act === 'pick') { pick(Number(el.dataset.s)); schedule(); return; }
+  if (act === 'start') { pick(Number(el.dataset.s)); S.scrollPick = false; schedule(); return; }
+  if (act === 'step') {
+    const k = el.dataset.k, d = Number(el.dataset.v);
+    if (k === 'hours') S.hours = Math.max(1, Math.min(maxHours(S.pick.s), S.hours + d));
+    if (k === 'paddles') S.paddles = Math.max(0, Math.min(8, S.paddles + d));
+    if (k === 'balls') S.balls = Math.max(0, Math.min(4, S.balls + d));
+    schedule(); return;
+  }
+  if (act === 'hours') { S.hours = Math.min(maxHours(S.pick.s), S.hours + Number(el.dataset.v)); schedule(); return; }
+  if (act === 'sport') { S.sport = el.dataset.v; schedule(); return; }
+  if (act === 'racquets') { S.racquets = el.checked; schedule(); return; }
+  if (act === 'send') { el.href = messengerUrl(); copyMsg(); S.sent = true; setTimeout(schedule, 80); return; }
+  if (act === 'copy') { copyMsg(); return; }
+  if (act === 'open-msgr') { el.href = messengerUrl(); return; }
+  if (act === 'reset') { S.sent = false; S.copied = null; S.pick = null; schedule(); return; }
+  if (act === 'close') { close(); return; }
+});
+document.addEventListener('input', e => {
+  const el = e.target; if (el.dataset.bind !== 'name') return;
+  S.name = el.value.slice(0, 60);
+  try { localStorage.setItem('ak-name', S.name); } catch (err) { /* storage unavailable */ }
+  const cta = document.getElementById('cta'); if (cta) cta.href = messengerUrl();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.pick) close(); });
+window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (TABS.includes(t) && t !== S.tab) { S.tab = t; S.pick = null; schedule(); } });
+window.addEventListener('resize', () => schedule());
+
+/* swipe the week strip to change weeks */
+let tx = null, ty = null;
+document.addEventListener('touchstart', e => { if (!e.target.closest('#strip')) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (tx == null) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+  if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+  const w = Math.max(0, Math.min(WEEKS - 1, S.week + (dx < 0 ? 1 : -1)));
+  if (w !== S.week) { S.week = w; S.day = Math.max(W0 + 7 * w, TODAY); S.pick = null; schedule(); }
+}, { passive: true });
+
+/* the schedule rolls forward on its own: re-check the clock every minute */
+setInterval(() => { if (!S.pick) schedule(); }, 60000);
+render();
+})();
+</script>
