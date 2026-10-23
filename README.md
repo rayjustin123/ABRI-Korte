@@ -31,7 +31,7 @@ Link straight to it with `#tournament` at the end of the site address.
 3. Rebuild the page:
 
    ```
-   python3 src/build.py src/rows.txt --site . --url https://rayjustin123.github.io/ABRI-Korte/
+   python3 src/build.py src/rows.txt --site . --url https://abri-korte.vercel.app/
    ```
 
 4. Commit and push. Vercel or GitHub Pages redeploys on its own.
