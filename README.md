@@ -10,6 +10,12 @@ Players pick a day, see which hours are open or taken, get the price right away 
 - Taken times come from `src/rows.txt`, exported from the ABRI KORTE Reservation Schedule sheet: date, start, end and status only. No guest names or contact details are ever in this repo.
 - Rates, promo, rentals, drinks and house rules are set in `make_data()` in `src/build.py`.
 
+## Tournament
+
+The **Tournament** tab shows the Abri Korte Pickleball Invitational: the run of show for each category, the roster, and results once games are scored. Its data comes from `src/tourney.json`, built from the tournament app with `src/make_tourney.py`. Only confirmed teams' names are published. No contacts, playing history, notes or payment details.
+
+Link straight to it with `#tournament` at the end of the site address.
+
 ## Update the schedule
 
 1. Refresh `src/rows.txt` from the Reservations tab, one taken slot per line:
@@ -20,13 +26,15 @@ Players pick a day, see which hours are open or taken, get the price right away 
 
    Cancelled and No-show rows are ignored. A slot that ends after midnight (9:00 PM to 1:00 AM) runs into the next day.
 
-2. Rebuild the page:
+2. For the tournament, refresh `src/tourney.json` with `src/make_tourney.py` from the tournament app's saved data.
+
+3. Rebuild the page:
 
    ```
    python3 src/build.py src/rows.txt --site . --url https://rayjustin123.github.io/ABRI-Korte/
    ```
 
-3. Commit and push. Vercel or GitHub Pages redeploys on its own.
+4. Commit and push. Vercel or GitHub Pages redeploys on its own.
 
 ## Deploy
 

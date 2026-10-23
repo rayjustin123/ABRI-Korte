@@ -29,7 +29,7 @@ def absmin(iso, m):
     return (dt.date.fromisoformat(iso) - EPOCH).days * DAY + m
 
 
-def make_data(rows_path):
+def make_data(rows_path, tourney_path=None):
     blocks = []
     for line in open(rows_path, encoding="utf-8"):
         line = line.strip()
@@ -79,6 +79,7 @@ def make_data(rows_path):
         "fb": "https://www.facebook.com/profile.php?id=61593743265058",
         "messenger": "https://m.me/61593743265058",
         "booked": sorted(merged + events, key=lambda b: b[0]),
+        "tourney": json.load(open(tourney_path, encoding="utf-8")) if tourney_path and os.path.exists(tourney_path) else None,
     }, len(merged)
 
 
@@ -130,8 +131,9 @@ if __name__ == "__main__":
     ap.add_argument("out", nargs="?", default="abri-korte-booking.html")
     ap.add_argument("--site")
     ap.add_argument("--url", default="")
+    ap.add_argument("--tourney", default=os.path.join(HERE, "tourney.json"))
     a = ap.parse_args()
-    data, n = make_data(a.rows)
+    data, n = make_data(a.rows, a.tourney)
     frag = fragment(data)
     assert "—" not in frag, "em dash in page"
     if a.site:

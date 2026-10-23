@@ -206,8 +206,73 @@ button.card:active{transform:scale(.985)}
 .quietbox span{font-size:13px}
 .links{display:flex;flex-direction:column;gap:8px}
 
+/* tournament */
+.tpage{gap:18px}
+.thero{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.thero h1{font-size:clamp(30px,8.4vw,42px);line-height:1.04;font-weight:700;letter-spacing:-.015em;text-wrap:balance}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip.soft{background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+.subseg{max-width:440px}
+.seg.three{grid-template-columns:repeat(3,1fr)}
+.hint{font-size:13px;color:var(--ink-3)}
+.dchips{display:flex;gap:8px;flex-wrap:wrap}
+.dchip{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 14px;display:flex;flex-direction:column;align-items:flex-start;color:var(--ink);min-width:124px}
+.dchip b{font-size:14px;font-weight:600}
+.dchip span{font-size:12px;color:var(--ink-3)}
+.dchip.on{background:var(--pill);border-color:var(--pill);color:var(--pill-ink)}
+.dchip.on span{color:var(--pill-ink);opacity:.8}
+.tblock{display:flex;flex-direction:column;gap:10px}
+.thead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:4px 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.thead h2{font-size:18px;font-weight:600}
+.thead>span{font-size:13px;color:var(--ink-3)}
+.lvl{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.lvl.b{color:var(--azure-ink)}
+.lvl.n{color:var(--clay-ink)}
+.ros{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.rtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;color:var(--ink-3)}
+.rcard h3{font-size:19px;font-weight:600;margin:0}
+.prz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.prz span{display:block;font-size:11px;letter-spacing:.12em;color:var(--ink-3);font-weight:600}
+.prz b{display:block;font-size:16px;font-weight:600}
+.prz em{display:block;font-style:normal;font-size:12px;color:var(--ink-3)}
+.fill{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--ink-2)}
+.bar{height:6px;border-radius:6px;background:var(--sunk);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--azure);border-radius:6px}
+.rcard.n .bar i{background:var(--clay)}
+.tlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px;font-size:14px}
+.tlist li{overflow-wrap:anywhere}
+.emptyt{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-3)}
+.pools2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.pool{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}
+.pool h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 6px;font-weight:700}
+.qual{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.card.game{background:var(--surface);border-color:var(--line);color:var(--ink-3)}
+.card.game.ko{background:var(--gold-soft);border-color:transparent;color:var(--gold-ink)}
+.team{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:var(--ink)}
+.team span{min-width:0;overflow-wrap:anywhere}
+.team.win{font-weight:600}
+.team.tbd span{color:var(--ink-3);font-style:italic}
+details.games{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:4px 14px}
+details.games summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:14px}
+details.games[open]{padding-bottom:14px}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.place{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.place.p1{border-color:var(--gold)}
+.place span{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink)}
+.place b{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.place em{font-style:normal;font-size:12px;color:var(--ink-3)}
+.stand{width:100%;border-collapse:collapse;font-size:13px}
+.stand th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:4px}
+.stand th:first-child,.stand td:first-child{text-align:left}
+.stand td{padding:5px 4px;text-align:right;border-top:1px solid var(--line)}
+.stand tr.q td:first-child{font-weight:600}
+@media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
+
 /* bottom tab bar */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px max(12px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
 .tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;font-size:11px;font-weight:500;color:var(--ink-3)}
 .tabbar button svg{width:24px;height:24px}
 .tabbar button.on{color:var(--ink)}
@@ -216,6 +281,8 @@ button.card:active{transform:scale(.985)}
 @media (min-width:960px){
   .app{padding-bottom:40px}
   .layout{grid-template-columns:minmax(0,1fr) 380px;align-items:start;gap:32px}
+  .layout.one{grid-template-columns:minmax(0,1fr)}
+  .layout.one .main{width:100%;max-width:920px}
   .toptabs{display:flex}
   .tabbar{display:none}
   .shade{display:none}
@@ -323,10 +390,288 @@ function segments(dn) {
 const openHoursLeft = dn => startsFor(dn).length;
 const loadOf = dn => { const a = dn * DAY + 6 * 60, b = dn * DAY + DAY; let m = 0; BOOKED.forEach(x => { m += Math.max(0, Math.min(b, x.e) - Math.max(a, x.s)); }); return Math.min(1, m / (b - a)); };
 
+/* ---------- tournament: same pool and knockout rules as the organizer app ---------- */
+const T = D.tourney || null;
+const L = p => String.fromCharCode(65 + p);
+const hm = s => { const [h, m] = String(s || '07:00').split(':').map(Number); return (h || 0) * 60 + (m || 0); };
+const durTxt = mins => mins < 60 ? mins + ' min' : hrsTxt(mins);
+function rrPairs(k) {
+  if (k <= 1) return [];
+  if (k === 2) return [[0, 1]];
+  if (k === 3) return [[0, 1], [0, 2], [1, 2]];
+  if (k === 4) return [[0, 1], [2, 3], [0, 2], [1, 3], [0, 3], [1, 2]];
+  const ids = [...Array(k).keys()]; if (k % 2) ids.push(-1);
+  const n = ids.length, out = [];
+  for (let r = 0; r < n - 1; r++) {
+    for (let i = 0; i < n / 2; i++) { const a = ids[i], b = ids[n - 1 - i]; if (a >= 0 && b >= 0) out.push(a < b ? [a, b] : [b, a]); }
+    ids.splice(1, 0, ids.pop());
+  }
+  return out;
+}
+const poolPairs = k => k === 3 ? rrPairs(3).concat(rrPairs(3)) : rrPairs(k);
+const poolCount = n => n <= 5 ? 1 : Math.round(n / 4);
+const poolSizes = n => { const np = poolCount(n); return Array.from({ length: np }, (_, i) => Math.floor(n / np) + (i < n % np ? 1 : 0)); };
+function buildMatches(pools) {
+  const list = [];
+  pools.forEach((pool, p) => poolPairs(pool.length).forEach(([i, j], n) => list.push({ id: 'p' + p + '-' + (n + 1), stage: 'pool', pool: p, a: pool[i], b: pool[j] })));
+  const np = pools.length;
+  if (np === 1) {
+    if (pools[0].length >= 4) list.push({ id: 'br', stage: 'bronze', src: [{ pool: 0, rank: 3 }, { pool: 0, rank: 4 }] });
+    if (pools[0].length >= 2) list.push({ id: 'f', stage: 'final', src: [{ pool: 0, rank: 1 }, { pool: 0, rank: 2 }] });
+    return list;
+  }
+  if (np === 2) {
+    list.push({ id: 'sf1', stage: 'sf', src: [{ pool: 0, rank: 1 }, { pool: 1, rank: 2 }] });
+    list.push({ id: 'sf2', stage: 'sf', src: [{ pool: 1, rank: 1 }, { pool: 0, rank: 2 }] });
+  } else {
+    list.push({ id: 'sf1', stage: 'sf', src: [{ seed: 1 }, { seed: 4 }] });
+    list.push({ id: 'sf2', stage: 'sf', src: [{ seed: 2 }, { seed: 3 }] });
+  }
+  list.push({ id: 'br', stage: 'bronze', src: [{ loser: 'sf1' }, { loser: 'sf2' }] });
+  list.push({ id: 'f', stage: 'final', src: [{ winner: 'sf1' }, { winner: 'sf2' }] });
+  return list;
+}
+const scoredT = s => !!s && s.a != null && s.b != null;
+function poolTable(m, cat, p) {
+  const pool = m.draws[cat].pools[p] || [];
+  const sc = m.scores[cat] || {};
+  const ms = ((m.matches[cat] && m.matches[cat].list) || []).filter(x => x.stage === 'pool' && x.pool === p);
+  const rows = pool.map(id => ({ id, gp: 0, w: 0, l: 0, pf: 0, pa: 0 }));
+  const by = {}; rows.forEach(r => { by[r.id] = r; });
+  let done = 0;
+  ms.forEach(x => {
+    const s = sc[x.id]; if (!scoredT(s)) return; done++;
+    const A = by[x.a], B = by[x.b]; if (!A || !B) return;
+    A.gp++; B.gp++; A.pf += s.a; A.pa += s.b; B.pf += s.b; B.pa += s.a;
+    if (s.a > s.b) { A.w++; B.l++; } else { B.w++; A.l++; }
+  });
+  const h2h = (a, b) => {
+    let wa = 0, wb = 0;
+    ms.forEach(x => {
+      if (!((x.a === a && x.b === b) || (x.a === b && x.b === a))) return;
+      const s = sc[x.id]; if (!scoredT(s)) return;
+      if ((x.a === a) === (s.a > s.b)) wa++; else wb++;
+    });
+    return wa > wb ? -1 : wb > wa ? 1 : 0;
+  };
+  const diff = r => r.pf - r.pa;
+  rows.sort((r1, r2) => r2.w - r1.w);
+  const out = []; let i = 0;
+  while (i < rows.length) {
+    let j = i; while (j < rows.length && rows[j].w === rows[i].w) j++;
+    const g = rows.slice(i, j);
+    if (g.length === 2) { const c = h2h(g[0].id, g[1].id) || (diff(g[1]) - diff(g[0])) || (g[1].pf - g[0].pf); if (c > 0) g.reverse(); }
+    else if (g.length > 2) g.sort((a, b) => (diff(b) - diff(a)) || (b.pf - a.pf));
+    out.push(...g); i = j;
+  }
+  return { rows: out, complete: ms.length > 0 && done === ms.length, played: done, total: ms.length };
+}
+function catState(m, cat) {
+  const d = m.draws[cat]; const mm = m.matches[cat];
+  if (!d || !d.locked || !mm || !mm.list) return null;
+  const tables = d.pools.map((_, p) => poolTable(m, cat, p));
+  const poolsDone = tables.length > 0 && tables.every(t => t.complete);
+  let seeds = [];
+  if (poolsDone) {
+    const rate = r => [r.gp ? r.w / r.gp : 0, r.gp ? (r.pf - r.pa) / r.gp : 0, r.gp ? r.pf / r.gp : 0];
+    const cmp = (a, b) => { const A = rate(a), B = rate(b); return (B[0] - A[0]) || (B[1] - A[1]) || (B[2] - A[2]); };
+    const winners = tables.map(t => t.rows[0]).filter(Boolean).sort(cmp);
+    seeds = winners.slice(0, 4);
+    if (seeds.length < 4) seeds = seeds.concat(tables.map(t => t.rows[1]).filter(Boolean).sort(cmp).slice(0, 4 - seeds.length));
+    seeds = seeds.map(r => r.id);
+  }
+  const sc = m.scores[cat] || {}; const list = mm.list; const res = {};
+  const outcome = (id, win) => { const s = sc[id], r = res[id]; if (!scoredT(s) || !r || !r.a || !r.b) return null; return (s.a > s.b) === win ? r.a : r.b; };
+  const pick = src => {
+    if (!src) return null;
+    if (src.seed) return poolsDone ? (seeds[src.seed - 1] || null) : null;
+    if (src.pool != null) { const t = tables[src.pool]; return t && t.complete && t.rows[src.rank - 1] ? t.rows[src.rank - 1].id : null; }
+    if (src.winner) return outcome(src.winner, true);
+    if (src.loser) return outcome(src.loser, false);
+    return null;
+  };
+  list.forEach(x => {
+    if (x.stage === 'pool') { res[x.id] = { a: x.a, b: x.b }; return; }
+    const s = sc[x.id];
+    res[x.id] = (scoredT(s) && s.ta && s.tb) ? { a: s.ta, b: s.tb } : { a: pick(x.src[0]), b: pick(x.src[1]) };
+  });
+  const fin = list.find(x => x.stage === 'final'), br = list.find(x => x.stage === 'bronze');
+  const podium = { 1: fin ? outcome(fin.id, true) : null, 2: fin ? outcome(fin.id, false) : null, 3: br ? outcome(br.id, true) : null };
+  return { tables, poolsDone, seeds, qual: new Set(seeds), res, podium, list, sc };
+}
+function srcLabel(src) {
+  if (!src) return 'To be decided';
+  if (src.seed) return 'Seed ' + src.seed;
+  if (src.pool != null) return 'Pool ' + L(src.pool) + (src.rank === 1 ? ' winner' : ' #' + src.rank);
+  if (src.winner) return 'Winner of ' + (src.winner === 'sf1' ? 'Semifinal 1' : 'Semifinal 2');
+  if (src.loser) return 'Loser of ' + (src.loser === 'sf1' ? 'Semifinal 1' : 'Semifinal 2');
+  return 'To be decided';
+}
+function stageLabel(x) {
+  if (x.stage === 'pool') return 'Pool ' + L(x.pool);
+  if (x.id === 'sf1') return 'Semifinal 1';
+  if (x.id === 'sf2') return 'Semifinal 2';
+  return x.stage === 'bronze' ? 'Bronze match' : 'Final';
+}
+function advanceLine(np) {
+  if (np <= 1) return 'The top two play the final. Third and fourth play for bronze.';
+  if (np === 2) return 'The top two in each pool advance to the semifinals.';
+  if (np === 3) return 'Pool winners and the best second-place team advance to the semifinals.';
+  return 'Pool winners advance to the semifinals.';
+}
+const tCat = id => T.config.cats.find(c => c.id === id);
+const tName = (m, id) => (id && m.teams[id] && m.teams[id].name) || '';
+const prizeAt = (c, i) => ({ cash: (c.prizes || [])[i] || 0, h: (c.hours || [])[i] || 0 });
+const tDayOf = cid => T.config.days.findIndex(d => d.cats.includes(cid));
+const confirmedOf = (m, cid) => Object.keys(m.teams).filter(id => m.teams[id].cat === cid);
+const regOpen = () => !T.config.regDeadline || isoOf(TODAY) <= T.config.regDeadline;
+const shortIso = iso => shortDate(dnOf(iso));
+
+/* draws that are not set yet are planned as a full category, so the day has real times from the start */
+function tModel() {
+  const cfg = T.config, m = { config: cfg, teams: Object.assign({}, T.teams || {}), draws: {}, matches: {}, scores: T.scores || {}, planned: {} };
+  cfg.cats.forEach(c => {
+    const d = T.draws && T.draws[c.id], mm = T.matches && T.matches[c.id];
+    if (d && d.locked && mm) { m.draws[c.id] = d; m.matches[c.id] = mm; return; }
+    let k = 0; const pools = poolSizes(c.cap).map(n => Array.from({ length: n }, () => '~' + c.id + (k++)));
+    m.draws[c.id] = { pools, locked: true }; m.matches[c.id] = { list: buildMatches(pools) }; m.planned[c.id] = true;
+  });
+  return m;
+}
+function tDay(m, di) {
+  const cfg = m.config, day = cfg.days[di]; let t = hm(day.start), g = 0; const blocks = [];
+  day.cats.forEach(cid => {
+    const st = catState(m, cid);
+    const rows = st.list.map(x => { const row = { x, n: ++g, time: t, st }; t += cfg.slots[x.stage] || 15; return row; });
+    blocks.push({ cat: cid, rows, st, start: rows.length ? rows[0].time : t, end: t, planned: !!m.planned[cid] });
+    t += cfg.breakMin || 0;
+  });
+  return blocks;
+}
+function runOfShow(b) {
+  const cfg = T.config, out = [];
+  b.st.tables.forEach((tb, p) => {
+    const rows = b.rows.filter(r => r.x.stage === 'pool' && r.x.pool === p); if (!rows.length) return;
+    out.push({ kind: 'pool', label: 'Pool ' + L(p), s: rows[0].time, e: rows[rows.length - 1].time + cfg.slots.pool, games: rows.length, size: tb.rows.length });
+  });
+  [['sf', 'Semifinals'], ['bronze', 'Bronze match'], ['final', 'Final']].forEach(([stg, label]) => {
+    const rows = b.rows.filter(r => r.x.stage === stg); if (!rows.length) return;
+    out.push({ kind: stg, label, s: rows[0].time, e: rows[rows.length - 1].time + (cfg.slots[stg] || 15), games: rows.length });
+  });
+  return out;
+}
+function regText(c) {
+  return ['Hi Abri Korte! We would like to register for the ' + T.config.name + '.', '',
+    'Category: ' + c.level + ' ' + c.name,
+    'Player 1: ', 'Player 2: ',
+    'How long each of us has played pickleball: ',
+    'Podium finishes or titles in past tournaments: ',
+    'Racquet sports varsity background: '].join('\n');
+}
+const regUrl = c => D.messenger + '?text=' + encodeURIComponent(regText(c));
+const hasScores = () => !!T && Object.values(T.scores || {}).some(o => Object.values(o || {}).some(scoredT));
+
+function tDates() {
+  const ds = T.config.days.map(d => d.date).sort(), a = dateOf(dnOf(ds[0])), b = dateOf(dnOf(ds[ds.length - 1]));
+  return a.getUTCMonth() === b.getUTCMonth() ? MO3[a.getUTCMonth()] + ' ' + a.getUTCDate() + (ds.length > 1 ? ' & ' + b.getUTCDate() : '') + ', ' + a.getUTCFullYear() : shortIso(ds[0]) + ' & ' + shortIso(ds[ds.length - 1]);
+}
+
+function vTour() {
+  if (!T) return '<div class="page"><h1>Tournament</h1><div class="box"><p>No tournament is scheduled right now. Follow our Facebook page for the next one.</p></div></div>';
+  const cfg = T.config, m = tModel();
+  const cash = cfg.cats.reduce((s, c) => s + (c.prizes || []).reduce((a, b) => a + b, 0), 0);
+  const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
+  const caps = [...new Set(cfg.cats.map(c => c.cap))];
+  const res = hasScores();
+  if (S.tsub === 'results' && !res) S.tsub = 'schedule';
+  const subs = [['schedule', 'Schedule'], ['roster', 'Roster']].concat(res ? [['results', 'Results']] : []);
+  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : vTSchedule(m);
+  return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1>' + esc(cfg.title || cfg.name) + '</h1>'
+    + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
+    + (caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div></section>'
+    + '<div class="seg subseg' + (subs.length === 3 ? ' three' : '') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
+    + body + '<p class="foot">Tournament details as of ' + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
+}
+
+function vTSchedule(m) {
+  const cfg = T.config;
+  const di = Math.min(S.tday, cfg.days.length - 1);
+  const chips = '<div class="dchips">' + cfg.days.map((d, i) => '<button type="button" class="dchip' + (i === di ? ' on' : '') + '" data-act="tday" data-v="' + i + '" aria-pressed="' + (i === di) + '"><b>' + esc(shortIso(d.date)) + '</b><span>' + esc(d.level) + '</span></button>').join('') + '</div>';
+  const blocks = tDay(m, di).map(b => {
+    const c = tCat(b.cat), lv = c.level === 'Novice' ? 'n' : 'b';
+    let html = '<section class="tblock"><div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span class="num">' + tfmt(b.start) + ' to about ' + tfmt(b.end) + '</span></div>';
+    if (b.planned) html += '<p class="hint">Pools are drawn after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '. Times are for a full category of ' + c.cap + ' teams.</p>';
+    html += '<div class="list">' + runOfShow(b).map(p => {
+      const when = '<div class="when"><b class="num">' + tfmt(p.s) + '</b><span>' + durTxt(p.e - p.s) + '</span></div>';
+      if (p.kind === 'pool') return '<div class="slot">' + when + '<div class="card day"><span class="card-top"><span class="tag">' + p.games + ' games · to ' + cfg.scoring.pool + '</span></span><span class="card-title">' + esc(p.label) + '</span><span class="card-sub">Check in by ' + tfmt(p.s - (cfg.checkInMin || 30)) + (p.size === 3 ? ' · each pair plays twice' : '') + '</span></div></div>';
+      const np = b.st.tables.length;
+      const sub = p.kind === 'sf' ? (np === 2 ? 'Top two in each pool' : np === 3 ? 'Pool winners and the best runner-up' : 'Pool winners') : p.kind === 'bronze' ? 'Semifinal losers' : np === 1 ? 'Top two in the pool' : 'Semifinal winners';
+      return '<div class="slot">' + when + '<div class="card event"><span class="card-top"><span class="tag">' + (p.games > 1 ? p.games + ' games · ' : '') + 'to ' + (cfg.scoring[p.kind] || 11) + '</span>' + I.trophy + '</span><span class="card-title">' + esc(p.label) + '</span><span class="card-sub">' + esc(sub) + '</span></div></div>';
+    }).join('') + '</div>';
+    if (!b.planned) {
+      html += '<div class="pools2">' + m.draws[b.cat].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
+      html += '<details class="games"><summary>All ' + b.rows.length + ' games</summary><div class="list">' + b.rows.map(r => gameCard(m, r)).join('') + '</div></details>';
+    }
+    return html + '</section>';
+  }).join('');
+  return chips + blocks;
+}
+
+function gameCard(m, r) {
+  const x = r.x, st = r.st, s = st.sc[x.id], rr = st.res[x.id] || {}, done = scoredT(s);
+  const nA = tName(m, rr.a) || srcLabel(x.src && x.src[0]), nB = tName(m, rr.b) || srcLabel(x.src && x.src[1]);
+  const wA = done && s.a > s.b, wB = done && s.b > s.a;
+  return '<div class="slot"><div class="when"><b class="num">' + tfmt(r.time) + '</b><span>Game ' + r.n + '</span></div><div class="card game' + (x.stage === 'pool' ? '' : ' ko') + '">'
+    + '<span class="card-top"><span class="tag">' + esc(stageLabel(x)) + ' · to ' + (T.config.scoring[x.stage] || 11) + '</span></span>'
+    + '<span class="team' + (wA ? ' win' : '') + (rr.a ? '' : ' tbd') + '"><span>' + esc(nA) + '</span><b class="num">' + (done ? s.a : '') + '</b></span>'
+    + '<span class="team' + (wB ? ' win' : '') + (rr.b ? '' : ' tbd') + '"><span>' + esc(nB) + '</span><b class="num">' + (done ? s.b : '') + '</b></span></div></div>';
+}
+
+function vTRoster(m) {
+  const cfg = T.config;
+  const cards = cfg.cats.map(c => {
+    const ids = confirmedOf(m, c.id), lv = c.level === 'Novice' ? 'n' : 'b', day = cfg.days[tDayOf(c.id)];
+    const n = ids.length, pct = Math.min(100, Math.round(n / Math.max(1, c.cap) * 100));
+    const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : '') + '</div>'; }).join('');
+    let teams;
+    if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
+    else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
+    else teams = '<div class="emptyt">No confirmed teams yet. Teams show here once they qualify and pay.</div>';
+    const full = n >= c.cap;
+    const cta = regOpen() && m.planned[c.id] ? (full ? '<span class="fine" style="text-align:left">This category is full. Message us to join the waitlist.</span>'
+      : '<a class="ghost" href="' + esc(regUrl(c)) + '" target="_blank" rel="noopener" data-act="reg" data-cat="' + c.id + '">' + I.chat + 'Register on Messenger</a>') : '';
+    return '<article class="rcard ' + lv + '"><div class="rtop"><span class="lvl ' + lv + '">' + esc(c.level) + '</span><span>' + esc(day ? shortIso(day.date) : '') + '</span></div><h3>' + esc(c.name) + '</h3>'
+      + '<div class="prz">' + prz + '</div>'
+      + '<div class="fill"><span class="num">' + peso(c.fee) + ' per player</span><span class="num">' + n + ' of ' + c.cap + ' teams</span></div><div class="bar" role="img" aria-label="' + n + ' of ' + c.cap + ' teams confirmed"><i style="width:' + pct + '%"></i></div>'
+      + teams + cta + '</article>';
+  }).join('');
+  const sz = poolSizes(cfg.cats[0].cap);
+  const fmt = ['Two pools of ' + sz[0] + ', round robin. Every team plays at least 3 matches.', advanceLine(sz.length) + ' Semifinal losers play for bronze.', 'Rally scoring, no deuce. Pools to ' + cfg.scoring.pool + ', semifinals and bronze to ' + cfg.scoring.sf + ', final to ' + cfg.scoring.final + '.', 'Check in 30 minutes before your pool starts. Only players competing that day are allowed inside.'];
+  return '<div class="ros">' + cards + '</div>'
+    + (cfg.hoursNote ? '<p class="fine" style="text-align:left">' + esc(cfg.hoursNote) + '</p>' : '')
+    + '<div class="box"><h2>Format</h2><ul class="rules" style="list-style:disc">' + fmt.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>'
+    + '<div class="qual"><div class="box"><h2>Beginners can join if</h2><ul class="rules" style="list-style:disc"><li>No podium or title in any tournament</li><li>Playing pickleball 6 months or less</li><li>No racquet sports varsity background</li></ul></div>'
+    + '<div class="box"><h2>Novice can join if</h2><ul class="rules" style="list-style:disc"><li>No title in Novice or higher</li><li>No podium in Intermediate or higher</li><li>No racquet sports varsity background</li></ul></div></div>'
+    + '<p class="fine" style="text-align:left">Both partners must meet the qualifications. Playing up a level is always allowed. False information means disqualification and forfeited prizes.</p>';
+}
+
+function vTResults(m) {
+  return T.config.cats.map(c => {
+    const st = catState(m, c.id); if (m.planned[c.id] || !st) return '';
+    const any = Object.values(st.sc).some(scoredT); if (!any) return '';
+    let html = '<section class="tblock"><div class="thead"><div><span class="lvl ' + (c.level === 'Novice' ? 'n' : 'b') + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span>' + (st.podium[1] ? 'Final result' : st.poolsDone ? 'Knockout stage' : 'Pool play') + '</span></div>';
+    if (st.podium[1]) html += '<div class="podium">' + [1, 2, 3].map(k => { const p = prizeAt(c, k - 1); return '<div class="place p' + k + '"><span>' + ['1st', '2nd', '3rd'][k - 1] + '</span><b>' + esc(tName(m, st.podium[k]) || 'To be decided') + '</b><em class="num">' + (p.cash ? peso(p.cash) : '') + (p.cash && p.h ? ' + ' : '') + (p.h ? p.h + ' court hrs' : '') + '</em></div>'; }).join('') + '</div>';
+    html += '<div class="pools2">' + st.tables.map((t, p) => '<div class="pool"><h4>Pool ' + L(p) + ' · ' + t.played + ' of ' + t.total + ' played</h4><table class="stand num"><thead><tr><th>Team</th><th>W</th><th>L</th><th>+/-</th></tr></thead><tbody>'
+      + t.rows.map(r => { const d = r.pf - r.pa; return '<tr' + (st.qual.has(r.id) ? ' class="q"' : '') + '><td>' + esc(tName(m, r.id)) + '</td><td>' + r.w + '</td><td>' + r.l + '</td><td>' + (d > 0 ? '+' + d : d) + '</td></tr>'; }).join('') + '</tbody></table></div>').join('') + '</div>';
+    return html + '</section>';
+  }).join('') || '<div class="emptyt">Results show here once games are played.</div>';
+}
+
 /* ---------- state ---------- */
-const S = { tab: 'book', week: 0, day: TODAY, pick: null, hours: 2, sport: 'Pickleball', paddles: 0, balls: 0, racquets: false, name: '', sent: false, copied: null };
+const S = { tab: 'book', tsub: 'schedule', tday: 0, week: 0, day: TODAY, pick: null, hours: 2, sport: 'Pickleball', paddles: 0, balls: 0, racquets: false, name: '', sent: false, copied: null };
 try { const n = localStorage.getItem('ak-name'); if (n) S.name = n; } catch (e) { /* storage unavailable */ }
-const TABS = ['book', 'rates', 'info'];
+const TABS = ['book', 'tournament', 'rates', 'info'];
+if (T) { const i = T.config.days.findIndex(d => d.date >= isoOf(TODAY)); S.tday = i < 0 ? 0 : i; }
 if (TABS.includes(location.hash.slice(1))) S.tab = location.hash.slice(1);
 if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);
@@ -351,7 +696,7 @@ const I = {
 
 /* ---------- views ---------- */
 function topbar() {
-  const tabs = [['book', 'Schedule'], ['rates', 'Rates'], ['info', 'Court info']];
+  const tabs = [['book', 'Book'], ['tournament', 'Tournament'], ['rates', 'Rates'], ['info', 'Court info']];
   return '<header class="top"><div class="brand">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></div>'
     + '<nav class="toptabs" aria-label="Sections">' + tabs.map(([k, l]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') + '</nav>'
     + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '') + '</header>';
@@ -390,7 +735,7 @@ function card(g, pr) {
   const range = tfmt(g.s) + ' to ' + tfmt(g.e);
   if (g.kind === 'past') return '<div class="slot">' + when + '<div class="card past"><span class="card-top"><span class="tag">Earlier</span>' + I.clock + '</span><span class="card-title">Already passed</span><span class="card-sub">' + range + '</span></div></div>';
   if (g.kind === 'booked') return '<div class="slot">' + when + '<div class="card booked"><span class="card-top"><span class="tag">Taken</span>' + I.lock + '</span><span class="card-title">Booked</span><span class="card-sub">' + range + '</span></div></div>';
-  if (g.kind === 'event') return '<div class="slot">' + when + '<div class="card event"><span class="card-top"><span class="tag">Event</span>' + I.trophy + '</span><span class="card-title">' + esc(g.label) + '</span><span class="card-sub">' + range + ' · Court closed to bookings</span></div></div>';
+  if (g.kind === 'event') return '<div class="slot">' + when + '<button type="button" class="card event" data-act="tab" data-v="tournament"><span class="card-top"><span class="tag">Tournament</span>' + I.trophy + '</span><span class="card-title">' + esc(g.label) + '</span><span class="card-sub">' + range + ' · Court closed to bookings · See the schedule</span></button></div>';
   const r = rateSet(S.day), price = g.rate === 'day' ? r.day : r.night;
   const can = g.starts && g.starts.length > 0;
   const mine = pr && pr.s >= g.s && pr.s < g.e;
@@ -495,7 +840,7 @@ function vInfo() {
 }
 
 function tabbar() {
-  const tabs = [['book', 'Schedule', I.cal], ['rates', 'Rates', I.tagic], ['info', 'Court info', I.pin]];
+  const tabs = [['book', 'Book', I.cal], ['tournament', 'Tournament', I.trophy], ['rates', 'Rates', I.tagic], ['info', 'Info', I.pin]];
   return '<nav class="tabbar" aria-label="Sections">' + tabs.map(([k, l, ic]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + ic + '<span>' + l + '</span></button>').join('') + '</nav>';
 }
 
@@ -509,9 +854,9 @@ function render() {
   const a = document.activeElement, fid = a && a.id;
   const sx = document.getElementById('starts'); const sl = sx ? sx.scrollLeft : 0;
   const ps = document.querySelector('.pscroll'); const pst = ps ? ps.scrollTop : 0;
-  const body = S.tab === 'book' ? vBook() : S.tab === 'rates' ? vRates() : vInfo();
+  const body = S.tab === 'book' ? vBook() : S.tab === 'tournament' ? vTour() : S.tab === 'rates' ? vRates() : vInfo();
   const panelOpen = !!S.pick;
-  app.innerHTML = topbar() + '<div class="layout"><main class="main">' + body + '</main>'
+  app.innerHTML = topbar() + '<div class="layout' + (S.tab === 'book' ? '' : ' one') + '"><main class="main">' + body + '</main>'
     + (S.tab === 'book' ? '<aside class="panel' + (panelOpen ? ' open' : '') + (panelOpen && !S.sent ? ' has-foot' : '') + '" id="panel" aria-label="Your booking"' + (!panelOpen && !isDesk() ? ' aria-hidden="true"' : '') + '>' + vPanel() + '</aside>' : '') + '</div>' + tabbar();
   document.getElementById('shade').classList.toggle('on', panelOpen && S.tab === 'book' && !isDesk());
   document.documentElement.classList.toggle('lock', panelOpen && S.tab === 'book' && !isDesk());
@@ -570,6 +915,9 @@ document.addEventListener('click', e => {
   if (act === 'copy') { copyMsg(); return; }
   if (act === 'open-msgr') { el.href = messengerUrl(); return; }
   if (act === 'reset') { S.sent = false; S.copied = null; S.pick = null; schedule(); return; }
+  if (act === 'tsub') { S.tsub = el.dataset.v; schedule(); return; }
+  if (act === 'tday') { S.tday = Number(el.dataset.v); schedule(); return; }
+  if (act === 'reg') { const c = tCat(el.dataset.cat); if (c) { try { navigator.clipboard.writeText(regText(c)).catch(() => {}); } catch (err) { /* ignore */ } } return; }
   if (act === 'close') { close(); return; }
 });
 document.addEventListener('input', e => {

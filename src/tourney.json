@@ -1,0 +1,118 @@
+{
+ "updatedLabel": "Oct 24, 6:25 AM",
+ "config": {
+  "name": "Abri Korte Pickleball Invitational",
+  "title": "Pickleball Invitational",
+  "days": [
+   {
+    "cats": [
+     "bwd",
+     "bxd"
+    ],
+    "date": "2026-11-21",
+    "level": "Beginners",
+    "start": "07:00"
+   },
+   {
+    "cats": [
+     "nmd",
+     "nxd"
+    ],
+    "date": "2026-11-22",
+    "level": "Novice",
+    "start": "07:00"
+   }
+  ],
+  "cats": [
+   {
+    "cap": 8,
+    "fee": 400,
+    "hours": [
+     5,
+     4,
+     3
+    ],
+    "id": "bwd",
+    "level": "Beginners",
+    "name": "Women's Doubles",
+    "prizes": [
+     2000,
+     1000,
+     500
+    ]
+   },
+   {
+    "cap": 8,
+    "fee": 400,
+    "hours": [
+     5,
+     4,
+     3
+    ],
+    "id": "bxd",
+    "level": "Beginners",
+    "name": "Mixed Doubles",
+    "prizes": [
+     2000,
+     1000,
+     500
+    ]
+   },
+   {
+    "cap": 8,
+    "fee": 500,
+    "hours": [
+     5,
+     4,
+     3
+    ],
+    "id": "nmd",
+    "level": "Novice",
+    "name": "Men's Doubles",
+    "prizes": [
+     2500,
+     1000,
+     500
+    ]
+   },
+   {
+    "cap": 8,
+    "fee": 500,
+    "hours": [
+     5,
+     4,
+     3
+    ],
+    "id": "nxd",
+    "level": "Novice",
+    "name": "Mixed Doubles",
+    "prizes": [
+     2500,
+     1000,
+     500
+    ]
+   }
+  ],
+  "scoring": {
+   "bronze": 15,
+   "final": 21,
+   "pool": 11,
+   "sf": 15
+  },
+  "slots": {
+   "bronze": 20,
+   "final": 25,
+   "pool": 15,
+   "sf": 20
+  },
+  "breakMin": 15,
+  "checkInMin": 30,
+  "regDeadline": "2026-11-09",
+  "minTeams": 6,
+  "hoursNote": "Free court hours can be used on weekdays before 5 PM, until January 31, 2027."
+ },
+ "teams": {},
+ "draws": {},
+ "matches": {},
+ "scores": {}
+}
