@@ -2,48 +2,41 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Cormorant+Garamond:wght@600&display=swap">
 <style>
 /* Layout: phone-first schedule column with a bottom tab bar; tapping an open time slides a booking sheet up.
    From 960px the booking sheet docks as a sticky right column and the tabs move into the top bar. */
 :root{
-  --bg:#EDF2F5;--surface:#FFFFFF;--sunk:#F2F6F8;--ink:#131A1F;--ink-2:#465765;--ink-3:#748795;--line:#DAE3E9;
-  --azure:#0080C4;--azure-soft:#DCEEF8;--azure-ink:#005B8E;
-  --dusk-soft:#E4E6F6;--dusk-ink:#353F80;
-  --gold:#F2B233;--gold-soft:#FCEFD1;--gold-ink:#7A5200;
-  --clay:#A8442F;--clay-soft:#F4E3DD;--clay-ink:#8C3523;
-  --pill:#131A1F;--pill-ink:#FFFFFF;--tag:#FFFFFF;
-  --cta:#0072AF;--cta-ink:#FFFFFF;
-  --shade:rgba(19,26,31,.45);
-  --shadow:0 1px 2px rgba(19,26,31,.05),0 12px 32px rgba(19,26,31,.10);
-  --font:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#F5F0EA;--surface:#FFFFFF;--sunk:#EFE8DE;--ink:#1B242D;--ink-2:#4B5865;--ink-3:#5F6C79;--line:#E2D9CD;
+  --azure:#028FD6;--azure-soft:#DDEFFA;--azure-ink:#005E92;
+  --dusk-soft:#E4E8F0;--dusk-ink:#22374F;
+  --gold:#F2B233;--gold-soft:#FBEFD2;--gold-ink:#7A5200;
+  --clay:#AA442D;--clay-soft:#F4E2DC;--clay-ink:#8C3523;
+  --pill:#0170AD;--pill-ink:#FFFFFF;--tag:#FFFFFF;
+  --cta:#1B242D;--cta-ink:#F5F0EA;
+  --band:#016FA8;--band-ink:#FFFFFF;--band-ink-2:rgba(255,255,255,.9);--band-chip:rgba(255,255,255,.14);--band-line:rgba(255,255,255,.34);--band-on:#FFFFFF;--band-on-ink:#1B242D;
+  --shade:rgba(27,36,45,.45);
+  --shadow:0 1px 2px rgba(27,36,45,.06),0 12px 32px rgba(27,36,45,.10);
+  --font:"Barlow","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --font-display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --font-cond:"Barlow Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0D1418;--surface:#152029;--sunk:#1A2731;--ink:#F1EEE7;--ink-2:#B2C1CC;--ink-3:#8398A7;--line:#24343F;
-  --azure:#36A9E6;--azure-soft:#0F3048;--azure-ink:#93D2F6;
-  --dusk-soft:#1E2448;--dusk-ink:#B8C0F6;
-  --gold:#F2B233;--gold-soft:#3A2E12;--gold-ink:#F7CB6E;
-  --clay:#D56A51;--clay-soft:#3B1F18;--clay-ink:#F3AA95;
-  --pill:#F2B233;--pill-ink:#131A1F;--tag:#0D1418;
-  --cta:#F2B233;--cta-ink:#131A1F;
-  --shade:rgba(0,0,0,.6);
-  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 32px rgba(0,0,0,.4);
-  color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0D1418;--surface:#152029;--sunk:#1A2731;--ink:#F1EEE7;--ink-2:#B2C1CC;--ink-3:#8398A7;--line:#24343F;
-  --azure:#36A9E6;--azure-soft:#0F3048;--azure-ink:#93D2F6;
-  --dusk-soft:#1E2448;--dusk-ink:#B8C0F6;
+  --bg:#0B1117;--surface:#121C25;--sunk:#18242F;--ink:#EFEAE2;--ink-2:#A9B6C1;--ink-3:#8796A3;--line:#24333F;
+  --azure:#4CB8F3;--azure-soft:#0E2E45;--azure-ink:#9AD6F8;
+  --dusk-soft:#1C2540;--dusk-ink:#B9C4E8;
   --gold:#F2B233;--gold-soft:#3A2E12;--gold-ink:#F7CB6E;
   --clay:#D56A51;--clay-soft:#3B1F18;--clay-ink:#F3AA95;
-  --pill:#F2B233;--pill-ink:#131A1F;--tag:#0D1418;
-  --cta:#F2B233;--cta-ink:#131A1F;
+  --pill:#DDEB3F;--pill-ink:#10161C;--tag:#0B1117;
+  --cta:#DDEB3F;--cta-ink:#10161C;
+  --band:#08131D;--band-ink:#EFEAE2;--band-ink-2:#A9B6C1;--band-chip:#121C25;--band-line:#24333F;--band-on:#DDEB3F;--band-on-ink:#10161C;
   --shade:rgba(0,0,0,.6);
   --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 32px rgba(0,0,0,.4);
   color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink)}
-body{font:400 15px/1.5 var(--font);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+body{font:400 15px/1.5 var(--font);font-size-adjust:.53;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--band)}
 html.lock,html.lock body{overflow:hidden}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;-webkit-appearance:none;appearance:none}
@@ -57,20 +50,27 @@ svg{display:block}
 .main{min-width:0;display:flex;flex-direction:column;gap:18px}
 
 /* top bar */
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:6px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;background:var(--band);color:var(--band-ink);box-shadow:0 0 0 100vmax var(--band);clip-path:inset(0 -100vmax)}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 a.brand{text-decoration:none;color:inherit;border-radius:12px}
-.mark{width:34px;height:34px;flex:none}
+.chipmark{width:38px;height:38px;border-radius:10px;background:#F5F0EA;display:grid;place-items:center;flex:none;box-shadow:0 1px 2px rgba(0,0,0,.14)}
+.mark{width:27px;height:27px;flex:none}
 .brand b{display:block;font-weight:600;font-size:13px;letter-spacing:.28em}
-.brand span{display:block;font-size:11px;color:var(--ink-3);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.toptabs{display:none;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
-.toptabs button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--ink-2)}
-.toptabs button.on{background:var(--pill);color:var(--pill-ink)}
-.todaybtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--ink)}
+.brand>div{min-width:0}
+.brand span{display:block;font-size:11px;color:var(--band-ink-2);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toptabs{display:none;gap:4px;background:var(--band-chip);border:1px solid var(--band-line);border-radius:999px;padding:4px}
+.toptabs button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--band-ink-2)}
+.toptabs button.on{background:var(--band-on);color:var(--band-on-ink)}
+.topacts{display:flex;align-items:center;gap:8px;flex:none}
+.todaybtn{border:1px solid var(--band-line);background:var(--band-chip);border-radius:999px;padding:9px 15px;font-size:13px;font-weight:600;color:var(--band-ink)}
+.themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--band-line);background:var(--band-chip);color:var(--band-ink);display:grid;place-items:center;flex:none}
+.themebtn svg{width:19px;height:19px}
+.themebtn .moon,:root[data-theme="dark"] .themebtn .sun{display:none}
+:root[data-theme="dark"] .themebtn .moon{display:block}
 
 /* schedule header */
 .hero{display:flex;flex-direction:column;gap:10px}
-.hero h1{font-size:clamp(30px,8.4vw,42px);line-height:1.04;font-weight:700;letter-spacing:-.015em;text-wrap:balance}
+.hero h1{font:600 clamp(38px,10vw,56px)/1 var(--font-display);font-size-adjust:none;letter-spacing:-.01em;text-wrap:balance}
 .promo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
 .chip{display:inline-flex;align-items:center;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
 .chip.gold{background:var(--gold-soft);color:var(--gold-ink)}
@@ -86,7 +86,7 @@ a.brand{text-decoration:none;color:inherit;border-radius:12px}
 .d .dd{font-size:18px;font-weight:600;line-height:1.2}
 .d .load{width:22px;height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:3px}
 .d .load i{display:block;height:100%;background:var(--azure);border-radius:4px}
-.d.today .dd{color:var(--azure)}
+.d.today .dd{color:var(--azure-ink)}
 .d.sel{background:var(--pill);color:var(--pill-ink)}
 .d.sel .dw,.d.sel .dd{color:var(--pill-ink)}
 .d.sel .load{background:rgba(127,127,127,.35)}
@@ -133,7 +133,7 @@ button.card:active{transform:scale(.985)}
 .pfoot-in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:14px}
 .pfoot .sum{display:flex;flex-direction:column;min-width:0;flex:1 1 auto;line-height:1.25}
 .pfoot .sum span{font-size:12px;color:var(--ink-3)}
-.pfoot .sum b{font-size:21px;font-weight:700}
+.pfoot .sum b{font:600 28px/1.05 var(--font-display);font-size-adjust:none}
 .pfoot .cta{width:auto;flex:none;padding:14px 18px}
 .panel.open{transform:none}
 .panel-in{display:flex;flex-direction:column;gap:16px;max-width:520px;margin:0 auto}
@@ -175,7 +175,7 @@ button.card:active{transform:scale(.985)}
 .bill .l.total span:first-child{color:var(--ink)}
 .nudge{font-size:13px;background:var(--gold-soft);color:var(--gold-ink);border-radius:12px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nudge button{border:0;background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;flex:none}
-.cta{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);text-decoration:none;border:0;border-radius:16px;padding:15px 18px;font-weight:600;font-size:16px;width:100%}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);text-decoration:none;border:0;border-radius:999px;padding:15px 20px;font:700 16px/1 var(--font-cond);font-size-adjust:none;letter-spacing:.08em;text-transform:uppercase;width:100%}
 .cta:hover{filter:brightness(1.06)}
 .ghost{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface);color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:500;font-size:15px;width:100%}
 .fine{font-size:12px;color:var(--ink-3);text-align:center}
@@ -186,14 +186,16 @@ button.card:active{transform:scale(.985)}
 
 /* rates + info */
 .page{display:flex;flex-direction:column;gap:16px}
-.page h1{font-size:clamp(28px,7.6vw,38px);line-height:1.08;font-weight:700;letter-spacing:-.015em}
+.page h1{font:600 clamp(36px,9vw,52px)/1.02 var(--font-display);font-size-adjust:none;letter-spacing:-.01em}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .box h2{font-size:16px;font-weight:600}
 .box p{font-size:14px;color:var(--ink-2)}
 .ratecard{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
 .ratecard th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:0 4px}
 .ratecard th:first-child,.ratecard td:first-child{text-align:left}
-.ratecard td{padding:10px 4px;text-align:right;font-weight:600;font-size:16px}
+.ratecard td{padding:10px 4px;text-align:right;font:600 26px/1 var(--font-display);font-size-adjust:none}
+.ratecard td:first-child{font-family:var(--font);font-size-adjust:.53}
+.cta svg{width:20px;height:20px;flex:none}
 .ratecard td:first-child{font-weight:500;font-size:14px}
 .ratecard td small{display:block;font-size:11px;font-weight:400;color:var(--ink-3)}
 .pr{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding-block:8px;border-bottom:1px solid var(--line)}
@@ -211,7 +213,7 @@ button.card:active{transform:scale(.985)}
 .tpage{gap:18px}
 .thero{display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
-.thero h1{font-size:clamp(30px,8.4vw,42px);line-height:1.04;font-weight:700;letter-spacing:-.015em;text-wrap:balance}
+.thero h1{font:600 clamp(38px,10vw,58px)/1 var(--font-display);font-size-adjust:none;letter-spacing:-.01em;text-wrap:balance}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip.soft{background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
 .subseg{max-width:440px}
@@ -303,6 +305,7 @@ details.games[open]{padding-bottom:14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<script>try{var t=localStorage.getItem("abri-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <div class="app" id="app"></div>
 <div class="shade" id="shade" data-act="close"></div>
 <script type="application/json" id="data">/*__DATA__*/</script>
@@ -678,7 +681,7 @@ if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY +
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);
 
 /* ---------- icons ---------- */
-const MARK = '<svg class="mark" viewBox="-76 -84 152 150" aria-hidden="true"><polygon points="-44.3,33 44.3,33 48.9,41 -48.9,41" fill="#A8442F"/><g stroke="currentColor" stroke-linecap="round" fill="none"><line x1="0" y1="-75" x2="-65" y2="55" stroke-width="11"/><line x1="0" y1="-75" x2="65" y2="55" stroke-width="11"/><line x1="-45" y1="15" x2="45" y2="15" stroke-width="9"/><line x1="0" y1="15" x2="0" y2="-75" stroke-width="7"/><line x1="-45" y1="15" x2="0" y2="-30" stroke-width="7"/><line x1="45" y1="15" x2="0" y2="-30" stroke-width="7"/></g></svg>';
+const MARK = '<span class="chipmark"><svg class="mark" viewBox="30 40 660 650" aria-hidden="true"><polygon points="178,505 542,505 620,660 100,660" fill="#028FD6"/><polygon points="150.3,560 569.7,560 586.8,594 133.2,594" fill="#AA442D"/><g fill="none" stroke="#1B242D" stroke-linecap="round" stroke-linejoin="round"><polyline points="60,662 360,70 660,662" stroke-width="46"/><line x1="360" y1="70" x2="360" y2="465" stroke-width="30"/><line x1="160" y1="465" x2="560" y2="465" stroke-width="38"/><polyline points="205,380 360,270 515,380" stroke-width="30"/></g></svg></span>';
 const I = {
   sun: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>',
   moon: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1z"/></svg>',
@@ -700,7 +703,11 @@ function topbar() {
   const tabs = [['book', 'Book'], ['tournament', 'Tournament'], ['rates', 'Rates'], ['info', 'Court info']];
   return '<header class="top"><a class="brand" href="' + esc(D.home || 'home/') + '" title="About Abri Korte">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></a>'
     + '<nav class="toptabs" aria-label="Sections">' + tabs.map(([k, l]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') + '</nav>'
-    + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '') + '</header>';
+    + '<div class="topacts">' + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '')
+    + '<button type="button" class="themebtn" data-act="theme" aria-label="' + (isDark() ? 'Switch to light mode' : 'Switch to dark mode') + '" aria-pressed="' + isDark() + '">'
+    + '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>'
+    + '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>'
+    + '</button></div></header>';
 }
 
 function weekLabel(w) {
@@ -845,6 +852,11 @@ function tabbar() {
   return '<nav class="tabbar" aria-label="Sections">' + tabs.map(([k, l, ic]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + ic + '<span>' + l + '</span></button>').join('') + '</nav>';
 }
 
+/* ---------- theme: light first, a toggle for dark, the same saved choice as the home page ---------- */
+const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+function themeColor() { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', isDark() ? '#08131D' : '#016FA8'); }
+themeColor();
+
 /* ---------- render ---------- */
 let raf = 0;
 const schedule = () => { if (!raf) raf = requestAnimationFrame(render); };
@@ -920,6 +932,7 @@ document.addEventListener('click', e => {
   if (act === 'tday') { S.tday = Number(el.dataset.v); schedule(); return; }
   if (act === 'reg') { const c = tCat(el.dataset.cat); if (c) { try { navigator.clipboard.writeText(regText(c)).catch(() => {}); } catch (err) { /* ignore */ } } return; }
   if (act === 'close') { close(); return; }
+  if (act === 'theme') { const n = isDark() ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('abri-theme', n); } catch (err) { /* ignore */ } themeColor(); schedule(); return; }
 });
 document.addEventListener('input', e => {
   const el = e.target; if (el.dataset.bind !== 'name') return;

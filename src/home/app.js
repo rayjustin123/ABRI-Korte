@@ -23,8 +23,9 @@ themeBtn.addEventListener('click', () => {
   try { localStorage.setItem('abri-theme', next); } catch (e) {}
 });
 const themeHooks = [];
-new MutationObserver(() => { syncTheme(); themeHooks.forEach(f => f()); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-syncTheme();
+const themeColor = () => { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', isDark() ? '#08131D' : '#0896DB'); };
+new MutationObserver(() => { syncTheme(); themeColor(); themeHooks.forEach(f => f()); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+syncTheme(); themeColor();
 
 /* ---------- live bits: Manila clock, current rate, tournament countdown ---------- */
 const RATES = CFG.rates || { weekday: { day: 200, night: 350 }, weekend: { day: 300, night: 400 }, dayStart: 360, dayEnd: 1020 };

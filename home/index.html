@@ -377,6 +377,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 </style>
 </head>
 <body>
+<script>try{var t=localStorage.getItem("abri-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="mark" viewBox="30 40 660 650">
     <polygon points="178,505 542,505 620,660 100,660" fill="#028FD6"/>
@@ -693,8 +694,9 @@ themeBtn.addEventListener('click', () => {
   try { localStorage.setItem('abri-theme', next); } catch (e) {}
 });
 const themeHooks = [];
-new MutationObserver(() => { syncTheme(); themeHooks.forEach(f => f()); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-syncTheme();
+const themeColor = () => { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', isDark() ? '#08131D' : '#0896DB'); };
+new MutationObserver(() => { syncTheme(); themeColor(); themeHooks.forEach(f => f()); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+syncTheme(); themeColor();
 
 /* ---------- live bits: Manila clock, current rate, tournament countdown ---------- */
 const RATES = CFG.rates || { weekday: { day: 200, night: 350 }, weekend: { day: 300, night: 400 }, dayStart: 360, dayEnd: 1020 };

@@ -103,8 +103,7 @@ def standalone(frag, url):
     base = url.rstrip("/") + "/" if url else ""
     meta = [
         '<meta name="description" content="' + DESC + '">',
-        '<meta name="theme-color" content="#EDF2F5" media="(prefers-color-scheme: light)">',
-        '<meta name="theme-color" content="#0D1418" media="(prefers-color-scheme: dark)">',
+        '<meta name="theme-color" content="#016FA8">',
         '<link rel="icon" href="favicon.svg" type="image/svg+xml">',
         '<link rel="apple-touch-icon" href="apple-touch-icon.png">',
         '<link rel="manifest" href="site.webmanifest">',
