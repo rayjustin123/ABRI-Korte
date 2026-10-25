@@ -59,6 +59,7 @@ svg{display:block}
 /* top bar */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:6px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
+a.brand{text-decoration:none;color:inherit;border-radius:12px}
 .mark{width:34px;height:34px;flex:none}
 .brand b{display:block;font-weight:600;font-size:13px;letter-spacing:.28em}
 .brand span{display:block;font-size:11px;color:var(--ink-3);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -697,7 +698,7 @@ const I = {
 /* ---------- views ---------- */
 function topbar() {
   const tabs = [['book', 'Book'], ['tournament', 'Tournament'], ['rates', 'Rates'], ['info', 'Court info']];
-  return '<header class="top"><div class="brand">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></div>'
+  return '<header class="top"><a class="brand" href="' + esc(D.home || 'home/') + '" title="About Abri Korte">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></a>'
     + '<nav class="toptabs" aria-label="Sections">' + tabs.map(([k, l]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') + '</nav>'
     + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '') + '</header>';
 }
@@ -834,7 +835,7 @@ function vRates() {
 
 function vInfo() {
   return '<div class="page"><h1>Court info</h1>'
-    + '<div class="box"><h2>Abri Korte</h2><p>' + esc(D.address) + '</p><p>Covered court for pickleball and badminton, open 24 hours.</p><div class="links"><a class="ghost" href="' + esc(D.maps) + '" target="_blank" rel="noopener">Open in Google Maps</a><a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">Our Facebook page</a></div></div>'
+    + '<div class="box"><h2>Abri Korte</h2><p>' + esc(D.address) + '</p><p>Covered court for pickleball and badminton, open 24 hours.</p><div class="links"><a class="ghost" href="' + esc(D.maps) + '" target="_blank" rel="noopener">Open in Google Maps</a><a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">Our Facebook page</a><a class="ghost" href="' + esc(D.home || 'home/') + '">About Abri Korte</a></div></div>'
     + '<div class="quietbox"><b>Quiet hours, 10 PM to 5 AM</b><span>Please keep voices and music low. Our neighbors are sleeping.</span></div>'
     + '<div class="box"><h2>House rules</h2><ol class="rules">' + D.rules.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol></div></div>';
 }

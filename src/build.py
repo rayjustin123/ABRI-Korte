@@ -78,6 +78,7 @@ def make_data(rows_path, tourney_path=None):
         "maps": "https://www.google.com/maps/search/?api=1&query=724+Upper+Tugbongan+Consolacion+Cebu",
         "fb": "https://www.facebook.com/profile.php?id=61593743265058",
         "messenger": "https://m.me/61593743265058",
+        "home": "home/",
         "booked": sorted(merged + events, key=lambda b: b[0]),
         "tourney": json.load(open(tourney_path, encoding="utf-8")) if tourney_path and os.path.exists(tourney_path) else None,
     }, len(merged)
@@ -134,6 +135,8 @@ if __name__ == "__main__":
     ap.add_argument("--tourney", default=os.path.join(HERE, "tourney.json"))
     a = ap.parse_args()
     data, n = make_data(a.rows, a.tourney)
+    if not a.site:
+        data["home"] = "https://abri-korte.vercel.app/home/"
     frag = fragment(data)
     assert "—" not in frag, "em dash in page"
     if a.site:

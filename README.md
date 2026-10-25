@@ -16,6 +16,18 @@ The **Tournament** tab shows the Abri Korte Pickleball Invitational: the run of 
 
 Link straight to it with `#tournament` at the end of the site address.
 
+## Home page
+
+The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the court, rentals, open hours, rates, private events, the Invitational, how booking works and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr.
+
+The logo on the booking page links to it, and every Book button on it links back to the booking page.
+
+Sources are in `src/home/`. After changing them, rebuild:
+
+```
+python3 src/home/build_home.py --site-out home
+```
+
 ## Update the schedule
 
 1. Refresh `src/rows.txt` from the Reservations tab, one taken slot per line:
