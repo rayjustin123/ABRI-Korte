@@ -526,7 +526,7 @@ function beam(a, b, r, mat) {
   return m;
 }
 
-/* the shelter: four posts down each long side, a low gable roof on trusses, sheeted on the far slope.
+/* the shelter: four posts down each long side and a low gable roof on trusses, sheeted on the far slope.
    The near slope is left open so you can see the game underneath */
 const ROOF = { xp: 1.42, eave: 1.3, ridge: 1.86, over: 0.2, ys: [-2.25, -0.75, 0.75, 2.25], y0: -2.62, y1: 2.62 };
 function roofFrames() {
@@ -548,14 +548,18 @@ function roofFrames() {
     }
   }
   for (const sx of [-1, 1]) roof.add(beam(V(sx * X / 2, y0, zAt(X / 2)), V(sx * X / 2, y1, zAt(X / 2)), 0.012, mat));
-  const c = document.createElement('canvas'); c.width = 8; c.height = 64; const g = c.getContext('2d');
-  g.fillStyle = '#F5F0EA'; g.fillRect(0, 0, 8, 64); g.fillStyle = '#CFC8BE'; g.fillRect(0, 0, 8, 7);
-  const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(1, 30); tex.encoding = THREE.sRGBEncoding;
-  const run = xo, rise = Z - zo, len = Math.hypot(run, rise);
-  const sheetMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false });
-  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(len, y1 - y0 + 0.1), sheetMat);
-  sheet.position.set(-run / 2, 0, (zo + Z) / 2 + 0.03);
-  sheet.rotation.set(0, Math.atan2(rise, run), 0);
+  /* corrugated sheeting laid on the far slope, from the eave up to the ridge; the ribs run down the slope */
+  const c = document.createElement('canvas'); c.width = 4; c.height = 32; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 32);
+  gr.addColorStop(0, '#FFFFFF'); gr.addColorStop(0.5, '#A9A9A9'); gr.addColorStop(1, '#FFFFFF');
+  g.fillStyle = gr; g.fillRect(0, 0, 4, 32);
+  const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(1, 44); tex.encoding = THREE.sRGBEncoding;
+  const run = xo, rise = Z - zo, len = Math.hypot(run, rise), tilt = Math.atan2(rise, run), lift = 0.035;
+  const sheetMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false });
+  sheetMat.toneMapped = false;
+  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(len + 0.02, y1 - y0 + 0.08), sheetMat);
+  sheet.rotation.set(0, -tilt, 0);
+  sheet.position.set(-run / 2 - Math.sin(tilt) * lift, 0, (zo + Z) / 2 + Math.cos(tilt) * lift);
   roof.add(sheet);
   return { posts, roof, mat, sheet: sheetMat };
 }
@@ -590,7 +594,7 @@ function courtView() {
   court.frustumCulled = false; world.add(court);
 
   const frame = roofFrames(), roof = frame.roof, posts = frame.posts; world.add(posts, roof);
-  const paintRoof = () => { const d = isDark(); frame.mat.color.copy(lin(d ? '#C3CEDA' : '#1B242D')); frame.sheet.opacity = d ? 0.16 : 0.5; };
+  const paintRoof = () => { const d = isDark(); frame.mat.color.copy(lin(d ? '#C3CEDA' : '#1B242D')); frame.sheet.color.copy(lin(d ? '#5B7088' : '#3B4A58')); frame.sheet.opacity = 0.9; };
   paintRoof(); themeHooks.push(paintRoof);
   const net = new THREE.Group(), NH = 0.29;
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.24, NH - 0.03), new THREE.MeshBasicMaterial({ map: netTexture(), transparent: true, side: THREE.DoubleSide, depthWrite: false }));
@@ -693,7 +697,7 @@ function courtView() {
     pose(hit, reduce ? 0.3 : shot.t, play); pose(rec, reduce ? -0.3 : shot.t - shot.dur, play);
     players.forEach(pl => { pl.pivot.visible = play > 0.02; pl.shd.visible = pl.pivot.visible; });
   }
-  window.__abriCourt = { players, shot, get amt() { return amt; }, get play() { return play; } };
+  window.__abriCourt = { players, shot, sheet: frame.sheet, get amt() { return amt; }, get play() { return play; } };
   return { name: 'court', el, scene, camera: cam, update };
 }
 
