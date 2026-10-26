@@ -1,9 +1,10 @@
 """Build the Abri Korte home page.
 
-  python3 build_home.py --site-out home              the website page: home/index.html and home/group.jpg
+  python3 build_home.py --site-out home              the website page: home/index.html, group.jpg and group-depth.png
   python3 build_home.py --artifact-out page.html     the preview page (no document skeleton, photo inlined)
 
-Sources sit beside this script (style.css, body.html, app.js, group.jpg), or in src/ next to it.
+Sources sit beside this script (style.css, body.html, app.js, group.jpg, group-depth.png), or in src/ next to it.
+group-depth.png holds the depth (red) and the outline of the players (green) for the point cloud in the booking section.
 On the website the home page lives at /home/ and links back to the booking page at the site root.
 """
 import argparse
@@ -37,7 +38,8 @@ LIBS = [
 ]
 FONTS = ("https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600"
          "&family=Barlow+Condensed:wght@600;700"
-         "&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&display=swap")
+         "&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600"
+         "&family=Poppins:wght@300;400;500;600;700&display=swap")
 CFG = {"rates": {"weekday": {"day": 200, "night": 350}, "weekend": {"day": 300, "night": 400},
                  "dayStart": 6 * 60, "dayEnd": 17 * 60}}
 DESC = ("Abri Korte is one covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. "
@@ -68,11 +70,15 @@ def links(site):
     }
 
 
-def page(site, photo):
+def depth_png():
+    return open(os.path.join(SRC, "group-depth.png"), "rb").read()
+
+
+def page(site, photo, depth):
     css = open(os.path.join(SRC, "style.css"), encoding="utf-8").read()
     body = open(os.path.join(SRC, "body.html"), encoding="utf-8").read()
     js = open(os.path.join(SRC, "app.js"), encoding="utf-8").read()
-    subs = dict(links(site), PHOTO=photo)
+    subs = dict(links(site), PHOTO=photo, DEPTH=depth)
     for k, v in subs.items():
         body = body.replace("{{" + k + "}}", html.escape(v, quote=True))
     assert "{{" not in body, "unfilled placeholder"
@@ -127,7 +133,9 @@ if __name__ == "__main__":
     if a.site_out:
         os.makedirs(a.site_out, exist_ok=True)
         open(os.path.join(a.site_out, "group.jpg"), "wb").write(jpg)
-        write(os.path.join(a.site_out, "index.html"), page(True, "group.jpg"))
+        open(os.path.join(a.site_out, "group-depth.png"), "wb").write(depth_png())
+        write(os.path.join(a.site_out, "index.html"), page(True, "group.jpg", "group-depth.png"))
     if a.artifact_out:
         os.makedirs(os.path.dirname(os.path.abspath(a.artifact_out)), exist_ok=True)
-        write(a.artifact_out, page(False, "data:image/jpeg;base64," + base64.b64encode(jpg).decode()))
+        write(a.artifact_out, page(False, "data:image/jpeg;base64," + base64.b64encode(jpg).decode(),
+                                   "data:image/png;base64," + base64.b64encode(depth_png()).decode()))

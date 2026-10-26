@@ -49,7 +49,7 @@
         <line x1="66" y1="61" x2="96.5" y2="61"/>
       </svg>
     </div>
-    <p class="hero-loc layer" data-intro><span>Upper Tugbongan</span><i aria-hidden="true"></i><span>Consolacion, Cebu</span></p>
+    <p class="hero-loc layer" data-intro><span>Upper Tugbongan</span><i class="pball" aria-hidden="true"></i><span>Consolacion, Cebu</span></p>
     <h1 class="hero-words layer">
       <span class="sr">Abri Korte, a covered pickleball and badminton court</span>
       <span class="w w1" aria-hidden="true" data-collide>ABRI</span>
@@ -58,7 +58,7 @@
     <div class="hero-copy layer" data-intro>
       <p data-solid>One covered court for pickleball and badminton in Upper Tugbongan, Consolacion. Open 24 hours, every day.</p>
       <div class="hero-cta">
-        <a class="ballbtn" href="{{BOOK}}" data-magnet data-solid="circle"><span>Book a court</span></a>
+        <a class="ballbtn pball" href="{{BOOK}}" data-magnet data-solid="circle"><span>Book a court</span></a>
         <a class="textlink" href="#rates" data-solid>See rates
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </a>
@@ -71,19 +71,24 @@
     <div class="court-in">
       <div class="court-copy layer">
         <p class="eyebrow" data-rise>The court</p>
-        <h2 class="display" data-rise>One roof.<br>Two games.</h2>
-        <p class="lede" data-rise>Pickleball and badminton are both played on a 20 &times; 44 ft court, so our one court is ready for either. The roof keeps the midday sun off, and the lights stay on all night.</p>
+        <h2 class="lockup" data-rise aria-label="Covered court, for pickleball and badminton">
+          <span class="lk1" data-fit="size" aria-hidden="true">Covered</span>
+          <span class="lk2" data-fit="space" data-k="0.9" aria-hidden="true">Court</span>
+          <i class="lkrule" aria-hidden="true"></i>
+          <span class="lk3" aria-hidden="true">Pickleball &middot; Badminton</span>
+        </h2>
+        <p class="lede" data-rise>Abri is French for shelter, and the roof is the whole idea. Play through the noon sun or an afternoon shower, then stay late under the lights. Pickleball and badminton both fit our one 20 &times; 44 ft court.</p>
         <dl class="facts" data-rise>
-          <div><dt>Court</dt><dd class="num">20 &times; 44 ft, covered</dd></div>
+          <div><dt>Court</dt><dd>Covered, <span class="num">20 &times; 44 ft</span></dd></div>
           <div><dt>Games</dt><dd>Pickleball, badminton</dd></div>
           <div><dt>Hours</dt><dd>Open 24 hours</dd></div>
+          <div><dt>Lights</dt><dd>On all night</dd></div>
           <div><dt>Music</dt><dd>Free Bluetooth speaker</dd></div>
-          <div><dt>Drinks</dt><dd>Water, Coke, Pocari Sweat</dd></div>
           <div><dt>Comfort room</dt><dd>Ask our staff</dd></div>
         </dl>
         <p class="court-key" aria-hidden="true"><span><i class="pk"></i>Pickleball lines</span><span><i class="bd"></i>Badminton lines</span></p>
       </div>
-      <div class="court-gl" data-view="court" role="img" aria-label="Top view of a 20 by 44 foot court drawn with pickleball and badminton lines"></div>
+      <div class="court-gl" data-view="court" role="img" aria-label="Two paddles rallying a pickleball on the covered Abri Korte court"></div>
     </div>
   </section>
 
@@ -103,26 +108,14 @@
     </div>
   </section>
 
-  <section class="night" id="hours">
-    <div class="night-gl" data-view="ring" aria-hidden="true"></div>
-    <div class="night-in layer">
-      <p class="eyebrow" data-rise>Open 24 hours</p>
-      <h2 class="display" data-rise>Day game. Night game.</h2>
-      <p class="clock" id="clock">The court is open 24 hours, every day.</p>
-      <p data-rise>Night rate starts at 5 PM. Quiet hours run from 10 PM to 5 AM, so keep the music and the cheering low for our neighbors.</p>
-      <div><a class="btn yellow" href="{{BOOK}}">Find a late slot</a></div>
-    </div>
-  </section>
-
   <section class="rates" id="rates">
-    <div class="wrap rates-in">
-      <div class="rates-head">
-        <p class="eyebrow" data-rise>Rates</p>
-        <h2 class="display" data-rise>Pay by the hour.</h2>
-        <p class="lede" data-rise>One price for the whole court, whatever you play. Book one hour or the whole night. Sessions end on the hour.</p>
-        <div data-rise><a class="btn" href="{{BOOK}}">Check open times</a></div>
-      </div>
-      <div class="rates-body" style="display:flex;flex-direction:column;gap:22px;min-width:0">
+    <div class="rates-glwrap" aria-hidden="true"><div class="rates-gl" data-view="ring"></div></div>
+    <div class="wrap rates-in layer">
+      <div class="rates-main">
+        <p class="eyebrow" data-rise>Rates <i class="sep" aria-hidden="true"></i> Open 24 hours</p>
+        <h2 class="display" data-rise>Day game.<br>Night game.</h2>
+        <p class="clock" id="clock">The court is open 24 hours, every day.</p>
+        <p class="lede" data-rise>Pay by the hour. One price for the whole court, whatever you play. Book one hour or the whole night, and sessions end on the hour.</p>
         <div class="ratecard" data-rise>
           <table>
             <caption class="sr">Court rates per hour</caption>
@@ -136,7 +129,10 @@
           </table>
         </div>
         <div class="promo" data-rise><b>3+1</b><span>Book 4 hours and the 4th hour is free.</span></div>
-        <p class="fine">A booking that runs past 5 PM is charged at each rate for the hours that fall in it.</p>
+        <ul class="small-print" data-rise>
+          <li>A booking that runs past 5 PM is charged at each rate for the hours that fall in it.</li>
+          <li>Quiet hours run from 10 PM to 5 AM, so keep the music and the cheering low for our neighbors.</li>
+        </ul>
         <div class="extras" data-rise>
           <div>
             <h3>Rentals</h3>
@@ -156,6 +152,7 @@
             </ul>
           </div>
         </div>
+        <div class="rates-cta" data-rise><a class="btn yellow" href="{{BOOK}}">Check open times</a></div>
       </div>
     </div>
   </section>
@@ -163,17 +160,14 @@
   <section class="events" id="events">
     <div class="events-in">
       <div class="cols" aria-hidden="true">
-        <div class="col"><ul data-speed="-0.42"></ul></div>
-        <div class="col"><ul data-speed="0.30"></ul></div>
+        <div class="col"><ul data-speed="-0.40"></ul></div>
         <div class="col mid"></div>
-        <div class="col"><ul data-speed="0.36"></ul></div>
-        <div class="col"><ul data-speed="-0.30"></ul></div>
+        <div class="col"><ul data-speed="0.34"></ul></div>
       </div>
       <div class="events-stage">
         <div class="marq" aria-hidden="true"><ul data-dir="1"></ul></div>
         <div class="events-copy layer">
-          <p class="eyebrow">Private events</p>
-          <h2 class="display">Bring the whole barkada.</h2>
+          <h2 class="display">Private Group Events</h2>
         </div>
         <div class="events-gl" data-view="turn" aria-hidden="true"></div>
         <div class="events-copy layer">
@@ -187,67 +181,77 @@
 
   <section class="tour" id="tournament">
     <div class="wrap tour-in">
-      <div style="display:flex;flex-direction:column;gap:26px;min-width:0">
-        <p class="eyebrow" data-rise>November 21 &amp; 22, 2026 &middot; At Abri Korte</p>
-        <h2 class="tour-title" data-rise><span>Pickleball</span><span><em>Invitational</em></span></h2>
-        <p class="tour-lede" data-rise>Two days, four doubles categories, eight teams in each. Open to players who have played at Abri Korte, or know someone who has. Register by November 9.</p>
-        <div class="prize" data-rise><b class="num">&#8369;15,000</b><span>Cash prizes + 48 free court hours</span></div>
-        <div class="tour-actions" data-rise>
-          <a class="goldbtn" href="{{MSG_REG}}"><span>Register on Messenger</span></a>
-          <a class="btn ghost" href="{{TOUR}}">Schedule and roster</a>
+      <div class="tour-head">
+        <p class="tour-kicker" data-rise><span class="chip"><svg aria-hidden="true"><use href="#mark"/></svg></span><span>Abri Korte</span></p>
+        <h2 class="tour-title" data-rise aria-label="Pickleball Invitational">
+          <span class="tt1" data-fit="size" aria-hidden="true">Pickleball</span>
+          <span class="tt2" data-fit="space" data-k="0.6" aria-hidden="true">Invitational</span>
+        </h2>
+        <p class="tour-date" data-rise><i aria-hidden="true"></i><span>November 21 &amp; 22, 2026</span><i aria-hidden="true"></i></p>
+      </div>
+
+      <div class="board" data-rise>
+        <div class="brow bhead" aria-hidden="true"><span>Day</span><span>Categories</span><span>Entry</span><span>1st</span><span>2nd</span><span>3rd</span></div>
+        <article class="brow">
+          <p class="bday"><b class="num">21</b><span>Sat<br>Nov</span></p>
+          <div class="bcat"><em>Beginners</em><h3>Women&rsquo;s Doubles<br>Mixed Doubles</h3></div>
+          <p class="bfee"><span class="lbl">Entry</span><b class="num">&#8369;400</b><span>per player</span></p>
+          <p class="bprize"><span class="lbl">1st</span><b class="num">&#8369;2,000</b><span>+ 5 court hrs</span></p>
+          <p class="bprize"><span class="lbl">2nd</span><b class="num">&#8369;1,000</b><span>+ 4 court hrs</span></p>
+          <p class="bprize"><span class="lbl">3rd</span><b class="num">&#8369;500</b><span>+ 3 court hrs</span></p>
+        </article>
+        <article class="brow">
+          <p class="bday"><b class="num">22</b><span>Sun<br>Nov</span></p>
+          <div class="bcat"><em>Novice</em><h3>Men&rsquo;s Doubles<br>Mixed Doubles</h3></div>
+          <p class="bfee"><span class="lbl">Entry</span><b class="num">&#8369;500</b><span>per player</span></p>
+          <p class="bprize"><span class="lbl">1st</span><b class="num">&#8369;2,500</b><span>+ 5 court hrs</span></p>
+          <p class="bprize"><span class="lbl">2nd</span><b class="num">&#8369;1,000</b><span>+ 4 court hrs</span></p>
+          <p class="bprize"><span class="lbl">3rd</span><b class="num">&#8369;500</b><span>+ 3 court hrs</span></p>
+        </article>
+        <p class="bnote">Prizes are paid in each of the four categories. <b class="num">&#8369;15,000</b> in cash and <b class="num">48</b> free court hours in all.</p>
+      </div>
+
+      <div class="tour-foot">
+        <ul class="tour-facts" data-rise>
+          <li><b class="num">8</b><span>teams per category</span></li>
+          <li><b class="num">3+</b><span>matches for every team</span></li>
+          <li><b class="num">Nov 9</b><span>last day to register</span></li>
+        </ul>
+        <div class="tour-act" data-rise>
+          <p>Open to players who have played at Abri Korte, or know someone who has.</p>
+          <div class="tour-btns">
+            <a class="btn gold" href="{{MSG_REG}}">Register on Messenger</a>
+            <a class="btn ghost" href="{{TOUR}}">Schedule and roster</a>
+          </div>
           <p class="count" id="count"><b class="num">Nov 21</b>Saturday, 7 AM start</p>
         </div>
-      </div>
-      <div class="days">
-        <article class="day" data-rise>
-          <div class="day-top"><b>Beginners</b><span>Sat &middot; Nov 21</span></div>
-          <h3>Women's Doubles<br>Mixed Doubles</h3>
-          <div class="places num">
-            <div><span>1ST</span><b>&#8369;2,000</b><em>+ 5 court hrs</em></div>
-            <div><span>2ND</span><b>&#8369;1,000</b><em>+ 4 court hrs</em></div>
-            <div><span>3RD</span><b>&#8369;500</b><em>+ 3 court hrs</em></div>
-          </div>
-          <p class="fee">Prizes in each category. Entry &#8369;400 per player.</p>
-        </article>
-        <article class="day" data-rise>
-          <div class="day-top"><b>Novice</b><span>Sun &middot; Nov 22</span></div>
-          <h3>Men's Doubles<br>Mixed Doubles</h3>
-          <div class="places num">
-            <div><span>1ST</span><b>&#8369;2,500</b><em>+ 5 court hrs</em></div>
-            <div><span>2ND</span><b>&#8369;1,000</b><em>+ 4 court hrs</em></div>
-            <div><span>3RD</span><b>&#8369;500</b><em>+ 3 court hrs</em></div>
-          </div>
-          <p class="fee">Prizes in each category. Entry &#8369;500 per player.</p>
-        </article>
       </div>
     </div>
   </section>
 
-  <section class="how" id="how">
-    <div class="wrap how-in">
-      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
-        <p class="eyebrow" data-rise>How booking works</p>
-        <h2 class="display" data-rise>Booking takes a minute.</h2>
-        <ol class="steps">
-          <li data-rise><h3>Pick a time</h3><p>Our schedule shows every open hour, with the price worked out for you.</p></li>
-          <li data-rise><h3>Send it on Messenger</h3><p>Tap Book and your date, time and hours are written into the message for you.</p></li>
-          <li data-rise><h3>Lock it in</h3><p>Pay one hour as a reservation fee by GCash or cash. Your court is held once we confirm, and you pay the rest when you arrive.</p></li>
+  <section class="how" id="how" aria-labelledby="how-title">
+    <div class="how-grid" aria-hidden="true"></div>
+    <i class="corner c1" aria-hidden="true"></i><i class="corner c2" aria-hidden="true"></i><i class="corner c3" aria-hidden="true"></i><i class="corner c4" aria-hidden="true"></i>
+    <div class="how-stage">
+      <div class="how-in layer">
+        <h2 class="how-top" id="how-title"><span>How booking works</span><i class="pball" aria-hidden="true"></i><span>About a minute</span></h2>
+        <div class="how-gl" data-view="cloud" data-photo="{{PHOTO}}" data-depth="{{DEPTH}}" role="img" aria-label="Players at a game night at Abri Korte, drawn in points of light"></div>
+        <img class="how-fallback" src="{{PHOTO}}" alt="A group of players with paddles on the Abri Korte court at night" width="608" height="362" loading="lazy" decoding="async">
+        <ol class="how-words">
+          <li class="hw hw1"><span class="word" aria-hidden="true">Pick</span><p><b class="num">01</b><span><strong>Pick a time.</strong> Every open hour is on our schedule, with the price worked out for you.</span></p></li>
+          <li class="hw hw2"><span class="word" aria-hidden="true">Send</span><p><b class="num">02</b><span><strong>Send it on Messenger.</strong> Tap Book and your date, time and hours are typed into the message for you.</span></p></li>
+          <li class="hw hw3"><span class="word" aria-hidden="true">Play</span><p><b class="num">03</b><span><strong>Lock it in, then play.</strong> Pay one hour by GCash or cash. We confirm and hold your court, and you pay the rest when you arrive.</span></p></li>
         </ol>
-        <div data-rise><a class="btn" href="{{BOOK}}">Open the schedule</a></div>
-      </div>
-      <div class="how-side">
-        <figure class="photo" data-rise>
-          <img src="{{PHOTO}}" alt="A group of players with paddles on the Abri Korte court at night" width="608" height="362" loading="lazy" decoding="async">
-          <figcaption>Game night at Abri Korte.</figcaption>
-        </figure>
-        <ul class="know">
-          <li><b>Need to move it?</b>One free move with 24 hours' notice.</li>
-          <li><b>Running late?</b>We hold your court for 15 minutes past your start.</li>
-          <li><b>Can't make it?</b>Hand your slot to a friend anytime, for free.</li>
-          <li><b>Refunds</b>Only when it's on us, like rain on the court, a power outage or repairs.</li>
-        </ul>
+        <a class="how-cta" href="{{BOOK}}"><span class="coin" aria-hidden="true"><svg><use href="#mark"/></svg></span><span>Open the schedule</span></a>
+        <p class="how-cap" aria-hidden="true">Game night at Abri Korte</p>
       </div>
     </div>
+    <ul class="how-notes wrap">
+      <li><b>Need to move it?</b>One free move with 24 hours&rsquo; notice.</li>
+      <li><b>Running late?</b>We hold your court for 15 minutes past your start.</li>
+      <li><b>Can&rsquo;t make it?</b>Hand your slot to a friend anytime, for free.</li>
+      <li><b>Refunds</b>Only when it&rsquo;s on us, like rain on the court, a power outage or repairs.</li>
+    </ul>
   </section>
 </main>
 

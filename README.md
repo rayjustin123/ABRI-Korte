@@ -18,7 +18,9 @@ Link straight to it with `#tournament` at the end of the site address.
 
 ## Home page
 
-The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the court, rentals, open hours, rates, private events, the Invitational, how booking works and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr.
+The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the covered court with two paddles rallying under the roof, rentals, rates and open hours, private group events, the Invitational, how booking works (the game night photo rebuilt from points of light) and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr, and Poppins, Barlow and Cormorant Garamond from Google Fonts.
+
+`src/home/group-depth.png` holds the depth (red channel) and the outline of the players (green channel) for the points in the booking section. It was made from `group.jpg` with a depth model, so if the photo changes, that file needs to be made again.
 
 The logo on the booking page links to it, and every Book button on it links back to the booking page.
 
