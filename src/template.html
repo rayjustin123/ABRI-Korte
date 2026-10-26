@@ -2,10 +2,12 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Cormorant+Garamond:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&text=%E2%82%B1&display=swap">
 <style>
 /* Layout: phone-first schedule column with a bottom tab bar; tapping an open time slides a booking sheet up.
-   From 960px the booking sheet docks as a sticky right column and the tabs move into the top bar. */
+   From 960px the booking sheet docks as a sticky right column and the tabs move into the top bar.
+   Headings are set in Poppins like the ABRI KORTE logo: a heavier word, then a lighter, wider-spaced one. */
 :root{
   --bg:#F5F0EA;--surface:#FFFFFF;--sunk:#EFE8DE;--ink:#1B242D;--ink-2:#4B5865;--ink-3:#5F6C79;--line:#E2D9CD;
   --azure:#028FD6;--azure-soft:#DDEFFA;--azure-ink:#005E92;
@@ -17,8 +19,8 @@
   --band:#016FA8;--band-ink:#FFFFFF;--band-ink-2:rgba(255,255,255,.9);--band-chip:rgba(255,255,255,.14);--band-line:rgba(255,255,255,.34);--band-on:#FFFFFF;--band-on-ink:#1B242D;
   --shade:rgba(27,36,45,.45);
   --shadow:0 1px 2px rgba(27,36,45,.06),0 12px 32px rgba(27,36,45,.10);
-  --font:"Barlow","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
-  --font-display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --font:"Barlow","Noto Sans","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --font-brand:"Poppins","Noto Sans","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
   --font-cond:"Barlow Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
 }
 :root[data-theme="dark"]{
@@ -45,8 +47,8 @@ h1,h2,h3,p{margin:0}
 .num{font-variant-numeric:tabular-nums}
 svg{display:block}
 
-.app{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px calc(100px + env(safe-area-inset-bottom,0px))}
-.layout{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);margin-top:14px}
+.app{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 calc(100px + env(safe-area-inset-bottom,0px))}
+.layout{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);margin-top:24px}
 .main{min-width:0;display:flex;flex-direction:column;gap:18px}
 
 /* top bar */
@@ -55,14 +57,14 @@ svg{display:block}
 a.brand{text-decoration:none;color:inherit;border-radius:12px}
 .chipmark{width:38px;height:38px;border-radius:10px;background:#F5F0EA;display:grid;place-items:center;flex:none;box-shadow:0 1px 2px rgba(0,0,0,.14)}
 .mark{width:27px;height:27px;flex:none}
-.brand b{display:block;font-weight:600;font-size:13px;letter-spacing:.28em}
+.brand b{display:block;font:500 13px/1.25 var(--font-brand);letter-spacing:.3em}
 .brand>div{min-width:0}
 .brand span{display:block;font-size:11px;color:var(--band-ink-2);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .toptabs{display:none;gap:4px;background:var(--band-chip);border:1px solid var(--band-line);border-radius:999px;padding:4px}
-.toptabs button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--band-ink-2)}
-.toptabs button.on{background:var(--band-on);color:var(--band-on-ink)}
+.toptabs a{border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--band-ink-2);text-decoration:none;white-space:nowrap}
+.toptabs a:hover{color:var(--band-ink)}
+.toptabs a.on{background:var(--band-on);color:var(--band-on-ink)}
 .topacts{display:flex;align-items:center;gap:8px;flex:none}
-.todaybtn{border:1px solid var(--band-line);background:var(--band-chip);border-radius:999px;padding:9px 15px;font-size:13px;font-weight:600;color:var(--band-ink)}
 .themebtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--band-line);background:var(--band-chip);color:var(--band-ink);display:grid;place-items:center;flex:none}
 .themebtn svg{width:19px;height:19px}
 .themebtn .moon,:root[data-theme="dark"] .themebtn .sun{display:none}
@@ -70,7 +72,8 @@ a.brand{text-decoration:none;color:inherit;border-radius:12px}
 
 /* schedule header */
 .hero{display:flex;flex-direction:column;gap:10px}
-.hero h1{font:600 clamp(38px,10vw,56px)/1 var(--font-display);font-size-adjust:none;letter-spacing:-.01em;text-wrap:balance}
+.lh{font:500 clamp(30px,8.4vw,46px)/1.05 var(--font-brand);font-size-adjust:none;text-transform:uppercase;letter-spacing:.05em;text-wrap:balance}
+.lh .lt{font-weight:300;letter-spacing:.16em}
 .promo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
 .chip{display:inline-flex;align-items:center;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
 .chip.gold{background:var(--gold-soft);color:var(--gold-ink)}
@@ -78,6 +81,8 @@ a.brand{text-decoration:none;color:inherit;border-radius:12px}
 .weekbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding-block:8px 10px;margin-inline:-4px;padding-inline:4px}
 .weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
 .weeknav b{font-size:14px;font-weight:600}
+.wk{display:flex;align-items:center;gap:10px;min-width:0}
+.todaychip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink)}
 .arrow{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .arrow:disabled{opacity:.35;cursor:default}
 .strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;touch-action:pan-y}
@@ -94,7 +99,7 @@ a.brand{text-decoration:none;color:inherit;border-radius:12px}
 .d:disabled{opacity:.35;cursor:default}
 
 .dayhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
-.dayhead h2{font-size:17px;font-weight:600}
+.dayhead h2{font:500 17px/1.3 var(--font-brand)}
 .dayhead span{font-size:13px;color:var(--ink-3)}
 
 /* day list */
@@ -133,13 +138,13 @@ button.card:active{transform:scale(.985)}
 .pfoot-in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:14px}
 .pfoot .sum{display:flex;flex-direction:column;min-width:0;flex:1 1 auto;line-height:1.25}
 .pfoot .sum span{font-size:12px;color:var(--ink-3)}
-.pfoot .sum b{font:600 28px/1.05 var(--font-display);font-size-adjust:none}
+.pfoot .sum b{font:600 26px/1.1 var(--font-brand);font-size-adjust:none}
 .pfoot .cta{width:auto;flex:none;padding:14px 18px}
 .panel.open{transform:none}
 .panel-in{display:flex;flex-direction:column;gap:16px;max-width:520px;margin:0 auto}
 .grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:4px auto 2px}
 .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.ph h2{font-size:20px;font-weight:700;line-height:1.2}
+.ph h2{font:600 20px/1.2 var(--font-brand)}
 .ph p{font-size:13px;color:var(--ink-3);margin-top:2px}
 .x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);display:grid;place-items:center;flex:none;color:var(--ink)}
 .field{display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -186,14 +191,13 @@ button.card:active{transform:scale(.985)}
 
 /* rates + info */
 .page{display:flex;flex-direction:column;gap:16px}
-.page h1{font:600 clamp(36px,9vw,52px)/1.02 var(--font-display);font-size-adjust:none;letter-spacing:-.01em}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.box h2{font-size:16px;font-weight:600}
+.box h2{font:500 16px/1.3 var(--font-brand)}
 .box p{font-size:14px;color:var(--ink-2)}
 .ratecard{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
 .ratecard th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:0 4px}
 .ratecard th:first-child,.ratecard td:first-child{text-align:left}
-.ratecard td{padding:10px 4px;text-align:right;font:600 26px/1 var(--font-display);font-size-adjust:none}
+.ratecard td{padding:10px 4px;text-align:right;font:600 24px/1 var(--font-brand);font-size-adjust:none}
 .ratecard td:first-child{font-family:var(--font);font-size-adjust:.53}
 .cta svg{width:20px;height:20px;flex:none}
 .ratecard td:first-child{font-weight:500;font-size:14px}
@@ -212,8 +216,7 @@ button.card:active{transform:scale(.985)}
 /* tournament */
 .tpage{gap:18px}
 .thero{display:flex;flex-direction:column;gap:10px}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
-.thero h1{font:600 clamp(38px,10vw,58px)/1 var(--font-display);font-size-adjust:none;letter-spacing:-.01em;text-wrap:balance}
+.eyebrow{font:500 12px/1.3 var(--font-brand);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip.soft{background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
 .subseg{max-width:440px}
@@ -227,7 +230,7 @@ button.card:active{transform:scale(.985)}
 .dchip.on span{color:var(--pill-ink);opacity:.8}
 .tblock{display:flex;flex-direction:column;gap:10px}
 .thead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:4px 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
-.thead h2{font-size:18px;font-weight:600}
+.thead h2{font:500 18px/1.3 var(--font-brand)}
 .thead>span{font-size:13px;color:var(--ink-3)}
 .lvl{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .lvl.b{color:var(--azure-ink)}
@@ -235,7 +238,7 @@ button.card:active{transform:scale(.985)}
 .ros{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 .rcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .rtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;color:var(--ink-3)}
-.rcard h3{font-size:19px;font-weight:600;margin:0}
+.rcard h3{font:500 19px/1.3 var(--font-brand);margin:0}
 .prz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:10px}
 .prz span{display:block;font-size:11px;letter-spacing:.12em;color:var(--ink-3);font-weight:600}
 .prz b{display:block;font-size:16px;font-weight:600}
@@ -249,7 +252,7 @@ button.card:active{transform:scale(.985)}
 .emptyt{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-3)}
 .pools2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .pool{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}
-.pool h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 6px;font-weight:700}
+.pool h4{font:600 12px/1.3 var(--font-brand);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 6px}
 .qual{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 .card.game{background:var(--surface);border-color:var(--line);color:var(--ink-3)}
 .card.game.ko{background:var(--gold-soft);border-color:transparent;color:var(--gold-ink)}
@@ -275,11 +278,11 @@ details.games[open]{padding-bottom:14px}
 @media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
 
 /* bottom tab bar */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
-.tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;font-size:11px;font-weight:500;color:var(--ink-3)}
-.tabbar button svg{width:24px;height:24px}
-.tabbar button.on{color:var(--ink)}
-.tabbar button.on svg{color:var(--azure)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:11px;font-weight:500;color:var(--ink-3);text-decoration:none;white-space:nowrap;min-width:0}
+.tabbar a svg{width:24px;height:24px}
+.tabbar a.on{color:var(--ink)}
+.tabbar a.on svg{color:var(--azure)}
 
 @media (min-width:960px){
   .app{padding-bottom:40px}
@@ -328,6 +331,8 @@ const nowAbs = () => Math.floor((Date.now() + 8 * 36e5) / 6e4);
 const mondayOf = dn => dn - ((dow(dn) + 6) % 7);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const peso = n => '₱' + Math.round(n).toLocaleString('en-US');
+/* a heading set like the logo: the last word lighter and spaced out */
+const lockH = t => { const w = String(t).trim().split(/\s+/); return w.length > 1 ? esc(w.slice(0, -1).join(' ')) + ' <span class="lt">' + esc(w[w.length - 1]) + '</span>' : esc(t); };
 const tfmt = m => { m = ((m % DAY) + DAY) % DAY; let h = Math.floor(m / 60); const mi = m % 60; const ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + String(mi).padStart(2, '0') + ' ' + ap; };
 const hrsTxt = mins => { const h = mins / 60; return (Number.isInteger(h) ? h : h.toFixed(1)) + (h === 1 ? ' hr' : ' hrs'); };
 const longDate = dn => { const d = dateOf(dn); return WD[d.getUTCDay()] + ', ' + MO[d.getUTCMonth()] + ' ' + d.getUTCDate(); };
@@ -371,7 +376,7 @@ function quote(s, h, sport, paddles, balls) {
   return { r, dayH, nightH, free, freeVal, court, rp, rb, total: court - freeVal + rp + rb, weekend: isWeekend(dn) };
 }
 
-/* the day as cards: open time split at the day/night rate change, taken time, and what's already past */
+/* the day as cards: open time split at the day/night rate change and taken time. Hours that already passed are left out */
 function segments(dn) {
   /* anything before the first hour you can still book counts as earlier */
   const a = dn * DAY, b = a + DAY, now = Math.ceil((nowAbs() + LEAD) / 60) * 60, out = [];
@@ -389,7 +394,7 @@ function segments(dn) {
     if (last && last.kind === 'past' && g.kind === 'past') last.e = g.e; else merged.push(g);
   });
   merged.forEach(g => { if (g.kind === 'open') g.starts = startsFor(dn).filter(s => s >= g.s && s < g.e); });
-  return merged;
+  return merged.filter(g => g.kind !== 'past');
 }
 const openHoursLeft = dn => startsFor(dn).length;
 const loadOf = dn => { const a = dn * DAY + 6 * 60, b = dn * DAY + DAY; let m = 0; BOOKED.forEach(x => { m += Math.max(0, Math.min(b, x.e) - Math.max(a, x.s)); }); return Math.min(1, m / (b - a)); };
@@ -581,7 +586,7 @@ function tDates() {
 }
 
 function vTour() {
-  if (!T) return '<div class="page"><h1>Tournament</h1><div class="box"><p>No tournament is scheduled right now. Follow our Facebook page for the next one.</p></div></div>';
+  if (!T) return '<div class="page"><h1 class="lh">Tournament</h1><div class="box"><p>No tournament is scheduled right now. Follow our Facebook page for the next one.</p></div></div>';
   const cfg = T.config, m = tModel();
   const cash = cfg.cats.reduce((s, c) => s + (c.prizes || []).reduce((a, b) => a + b, 0), 0);
   const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
@@ -590,7 +595,7 @@ function vTour() {
   if (S.tsub === 'results' && !res) S.tsub = 'schedule';
   const subs = [['schedule', 'Schedule'], ['roster', 'Roster']].concat(res ? [['results', 'Results']] : []);
   const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : vTSchedule(m);
-  return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1>' + esc(cfg.title || cfg.name) + '</h1>'
+  return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1 class="lh">' + lockH(cfg.title || cfg.name) + '</h1>'
     + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
     + (caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div></section>'
     + '<div class="seg subseg' + (subs.length === 3 ? ' three' : '') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
@@ -693,18 +698,20 @@ const I = {
   x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor"/><circle cx="12" cy="14.5" r="1" fill="currentColor"/></svg>',
   tagic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.4 1.4 0 0 1 0 2l-6.7 6.7a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.6"/></svg>',
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M6 9.6V20h12V9.6"/><path d="M10 20v-5.2h4V20"/></svg>',
   pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   chat: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c-4.9 0-8.5 3.4-8.5 7.8 0 2.4 1.1 4.5 2.9 5.9v3.3l3.1-1.7c.8.2 1.6.3 2.5.3 4.9 0 8.5-3.4 8.5-7.8S16.9 3.5 12 3.5z"/><path d="M7.8 13l2.8-3 2.2 2 3.4-3.2"/></svg>',
   check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
 };
 
 /* ---------- views ---------- */
+const NAV = [['home', 'Home'], ['book', 'Book'], ['tournament', 'Tournament'], ['rates', 'Rates'], ['info', 'Court Info']];
+const navHref = k => k === 'home' ? (D.home || 'home/') : '#' + k;
+const navLink = (k, inner) => '<a href="' + esc(navHref(k)) + '"' + (k === 'home' ? '' : ' data-act="tab" data-v="' + k + '"') + ' class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + inner + '</a>';
 function topbar() {
-  const tabs = [['book', 'Book'], ['tournament', 'Tournament'], ['rates', 'Rates'], ['info', 'Court info']];
-  return '<header class="top"><a class="brand" href="' + esc(D.home || 'home/') + '" title="About Abri Korte">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></a>'
-    + '<nav class="toptabs" aria-label="Sections">' + tabs.map(([k, l]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + l + '</button>').join('') + '</nav>'
-    + '<div class="topacts">' + (S.tab === 'book' ? '<button type="button" class="todaybtn" data-act="today">Today</button>' : '')
-    + '<button type="button" class="themebtn" data-act="theme" aria-label="' + (isDark() ? 'Switch to light mode' : 'Switch to dark mode') + '" aria-pressed="' + isDark() + '">'
+  return '<header class="top"><a class="brand" href="' + esc(D.home || 'home/') + '" title="Abri Korte home">' + MARK + '<div><b>ABRI KORTE</b><span>Pickleball and badminton · Consolacion</span></div></a>'
+    + '<nav class="toptabs" aria-label="Main">' + NAV.map(([k, l]) => navLink(k, l)).join('') + '</nav>'
+    + '<div class="topacts"><button type="button" class="themebtn" data-act="theme" aria-label="' + (isDark() ? 'Switch to light mode' : 'Switch to dark mode') + '" aria-pressed="' + isDark() + '">'
     + '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>'
     + '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>'
     + '</button></div></header>';
@@ -727,10 +734,11 @@ function vBook() {
   const segs = segments(S.day);
   const left = openHoursLeft(S.day);
   const pr = S.pick;
-  const list = segs.map(g => card(g, pr)).join('');
+  const list = segs.map(g => card(g, pr)).join('') || '<div class="emptyt">Nothing left to book today. Pick another day above.</div>';
   const promo = D.promo && promoOn(TODAY) ? '<div class="promo"><span class="chip gold">3+1 promo</span><span>Book 4 hours and the 4th hour is free</span></div>' : '';
-  return '<section class="hero"><h1>Court schedule</h1>' + promo + '</section>'
-    + '<div class="weekbar"><div class="weeknav"><button type="button" class="arrow" data-act="week" data-v="-1" aria-label="Previous week"' + (S.week <= 0 ? ' disabled' : '') + '>' + I.left + '</button><b class="num">' + weekLabel(S.week) + '</b><button type="button" class="arrow" data-act="week" data-v="1" aria-label="Next week"' + (S.week >= WEEKS - 1 ? ' disabled' : '') + '>' + I.right + '</button></div>'
+  const away = S.day !== TODAY;
+  return '<section class="hero"><h1 class="lh">' + lockH('Court schedule') + '</h1>' + promo + '</section>'
+    + '<div class="weekbar"><div class="weeknav"><button type="button" class="arrow" data-act="week" data-v="-1" aria-label="Previous week"' + (S.week <= 0 ? ' disabled' : '') + '>' + I.left + '</button><span class="wk"><b class="num">' + weekLabel(S.week) + '</b>' + (away ? '<button type="button" class="todaychip" data-act="today">Today</button>' : '') + '</span><button type="button" class="arrow" data-act="week" data-v="1" aria-label="Next week"' + (S.week >= WEEKS - 1 ? ' disabled' : '') + '>' + I.right + '</button></div>'
     + '<div class="strip" id="strip">' + strip + '</div></div>'
     + '<div class="dayhead"><h2>' + esc(longDate(S.day)) + '</h2><span class="num">' + (left ? left + (left === 1 ? ' open hour' : ' open hours') + ' to book' : 'Fully booked') + '</span></div>'
     + '<div class="list" id="list">' + list + '</div>'
@@ -741,7 +749,6 @@ function card(g, pr) {
   const dur = g.e - g.s;
   const when = '<div class="when"><b class="num">' + tfmt(g.s) + '</b><span>' + hrsTxt(dur) + '</span></div>';
   const range = tfmt(g.s) + ' to ' + tfmt(g.e);
-  if (g.kind === 'past') return '<div class="slot">' + when + '<div class="card past"><span class="card-top"><span class="tag">Earlier</span>' + I.clock + '</span><span class="card-title">Already passed</span><span class="card-sub">' + range + '</span></div></div>';
   if (g.kind === 'booked') return '<div class="slot">' + when + '<div class="card booked"><span class="card-top"><span class="tag">Taken</span>' + I.lock + '</span><span class="card-title">Booked</span><span class="card-sub">' + range + '</span></div></div>';
   if (g.kind === 'event') return '<div class="slot">' + when + '<button type="button" class="card event" data-act="tab" data-v="tournament"><span class="card-top"><span class="tag">Tournament</span>' + I.trophy + '</span><span class="card-title">' + esc(g.label) + '</span><span class="card-sub">' + range + ' · Court closed to bookings · See the schedule</span></button></div>';
   const r = rateSet(S.day), price = g.rate === 'day' ? r.day : r.night;
@@ -777,7 +784,7 @@ function vPanel() {
   const p = S.pick;
   if (!p) {
     const r = D.rates;
-    return '<div class="pscroll"><div class="panel-in"><div class="empty"><h2 style="font-size:18px;font-weight:700">Pick an open time</h2><p style="font-size:14px;color:var(--ink-2)">Tap any open slot in the schedule. You will see the price right away and can send the booking to us on Messenger.</p>'
+    return '<div class="pscroll"><div class="panel-in"><div class="empty"><h2 style="font:600 18px/1.3 var(--font-brand)">Pick an open time</h2><p style="font-size:14px;color:var(--ink-2)">Tap any open slot in the schedule. You will see the price right away and can send the booking to us on Messenger.</p>'
       + '<div class="bill"><div class="l"><span>Mon to Fri, day</span><span class="num">' + peso(r.weekday.day) + '/hr</span></div><div class="l"><span>Mon to Fri, night</span><span class="num">' + peso(r.weekday.night) + '/hr</span></div><div class="l"><span>Sat and Sun, day</span><span class="num">' + peso(r.weekend.day) + '/hr</span></div><div class="l"><span>Sat and Sun, night</span><span class="num">' + peso(r.weekend.night) + '/hr</span></div></div>'
       + '<p class="fine" style="text-align:left">Day rate runs ' + tfmt(r.dayStart) + ' to ' + tfmt(r.dayEnd) + '. Every other hour is night rate.</p></div></div></div>';
   }
@@ -829,7 +836,7 @@ function stepper(key, v, lo, hi, label) {
 function vRates() {
   const r = D.rates;
   const ex = 'For example, 4 night hours on a weekend cost ' + peso(4 * r.weekend.night) + ', and you pay ' + peso(3 * r.weekend.night) + '.';
-  return '<div class="page"><h1>Rates</h1>'
+  return '<div class="page"><h1 class="lh">' + lockH('Court rates') + '</h1>'
     + '<div class="box"><h2>Court, per hour</h2><table class="ratecard"><thead><tr><th scope="col"></th><th scope="col">Day</th><th scope="col">Night</th></tr></thead><tbody>'
     + '<tr><td>Mon to Fri</td><td class="num">' + peso(r.weekday.day) + '</td><td class="num">' + peso(r.weekday.night) + '</td></tr>'
     + '<tr><td>Sat and Sun</td><td class="num">' + peso(r.weekend.day) + '</td><td class="num">' + peso(r.weekend.night) + '</td></tr></tbody></table>'
@@ -841,15 +848,15 @@ function vRates() {
 }
 
 function vInfo() {
-  return '<div class="page"><h1>Court info</h1>'
+  return '<div class="page"><h1 class="lh">' + lockH('Court info') + '</h1>'
     + '<div class="box"><h2>Abri Korte</h2><p>' + esc(D.address) + '</p><p>Covered court for pickleball and badminton, open 24 hours.</p><div class="links"><a class="ghost" href="' + esc(D.maps) + '" target="_blank" rel="noopener">Open in Google Maps</a><a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">Our Facebook page</a><a class="ghost" href="' + esc(D.home || 'home/') + '">About Abri Korte</a></div></div>'
     + '<div class="quietbox"><b>Quiet hours, 10 PM to 5 AM</b><span>Please keep voices and music low. Our neighbors are sleeping.</span></div>'
     + '<div class="box"><h2>House rules</h2><ol class="rules">' + D.rules.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol></div></div>';
 }
 
 function tabbar() {
-  const tabs = [['book', 'Book', I.cal], ['tournament', 'Tournament', I.trophy], ['rates', 'Rates', I.tagic], ['info', 'Info', I.pin]];
-  return '<nav class="tabbar" aria-label="Sections">' + tabs.map(([k, l, ic]) => '<button type="button" data-act="tab" data-v="' + k + '" class="' + (S.tab === k ? 'on' : '') + '"' + (S.tab === k ? ' aria-current="page"' : '') + '>' + ic + '<span>' + l + '</span></button>').join('') + '</nav>';
+  const ic = { home: I.home, book: I.cal, tournament: I.trophy, rates: I.tagic, info: I.pin };
+  return '<nav class="tabbar" aria-label="Main">' + NAV.map(([k, l]) => navLink(k, ic[k] + '<span>' + l + '</span>')).join('') + '</nav>';
 }
 
 /* ---------- theme: light first, a toggle for dark, the same saved choice as the home page ---------- */
@@ -908,7 +915,7 @@ function selectMsg() { setTimeout(() => { const box = document.getElementById('m
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const act = el.dataset.act;
-  if (act === 'tab') { S.tab = el.dataset.v; S.pick = null; S.sent = false; try { history.replaceState(null, '', '#' + S.tab); } catch (err) { /* ignore */ } window.scrollTo(0, 0); schedule(); return; }
+  if (act === 'tab') { e.preventDefault(); S.tab = el.dataset.v; S.pick = null; S.sent = false; try { history.replaceState(null, '', '#' + S.tab); } catch (err) { /* ignore */ } window.scrollTo(0, 0); schedule(); return; }
   if (act === 'today') { S.day = startsFor(TODAY).length || TODAY + 1 >= W0 + 7 * WEEKS ? TODAY : TODAY + 1; S.week = Math.floor((mondayOf(S.day) - W0) / 7); S.pick = null; schedule(); return; }
   if (act === 'week') { const w = Math.max(0, Math.min(WEEKS - 1, S.week + Number(el.dataset.v))); if (w !== S.week) { S.week = w; const ws = W0 + 7 * w; S.day = Math.max(ws, TODAY); S.pick = null; schedule(); } return; }
   if (act === 'day') { S.day = Number(el.dataset.dn); S.pick = null; schedule(); return; }

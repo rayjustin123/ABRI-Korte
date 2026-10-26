@@ -14,15 +14,17 @@ Players pick a day, see which hours are open or taken, get the price right away 
 
 The **Tournament** tab shows the Abri Korte Pickleball Invitational: the run of show for each category, the roster, and results once games are scored. Its data comes from `src/tourney.json`, built from the tournament app with `src/make_tourney.py`. Only confirmed teams' names are published. No contacts, playing history, notes or payment details.
 
-Link straight to it with `#tournament` at the end of the site address.
+Link straight to it with `#tournament` at the end of the site address. `#book`, `#rates` and `#info` open the other tabs the same way.
 
 ## Home page
 
-The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the covered court with two paddles rallying under the roof, rentals, rates and open hours, private group events, the Invitational, how booking works (the game night photo rebuilt from points of light) and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr, and Poppins, Barlow and Cormorant Garamond from Google Fonts.
+The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the covered court with two paddles rallying under the roof, rentals, rates and open hours, private group events, the Invitational, how booking works (a player rebuilt from points of light) and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr, and Poppins and Barlow from Google Fonts (plus Noto Sans for the peso sign only, since the other two have none).
 
-`src/home/group-depth.png` holds the depth (red channel) and the outline of the players (green channel) for the points in the booking section. It was made from `group.jpg` with a depth model, so if the photo changes, that file needs to be made again.
+Both pages share one navigation: Home, Book, Tournament, Rates and Court Info. On phones it sits in a bar at the bottom. Headings everywhere are set in Poppins like the logo, a heavier word followed by a lighter, spaced-out one.
 
-The logo on the booking page links to it, and every Book button on it links back to the booking page.
+`src/home/player.jpg` is the photo for the points in the booking section, and `src/home/player-depth.png` holds its depth (red channel) and the outline of the player (green channel). The outline and depth were made from the photo with a depth model and a person cutout, so if the photo changes, both files need to be made again.
+
+The logo and the Home link on the booking page go to it, and every Book link on it goes back to the booking page.
 
 Sources are in `src/home/`. After changing them, rebuild:
 

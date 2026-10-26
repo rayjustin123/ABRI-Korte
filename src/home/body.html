@@ -16,26 +16,31 @@
 
 <header class="top" id="top">
   <div class="top-in">
-    <a class="brand" href="#hero" aria-label="Abri Korte, back to top">
+    <a class="brand" href="#hero" aria-label="Abri Korte home, back to top">
       <span class="chip"><svg aria-hidden="true"><use href="#mark"/></svg></span>
-      <b>ABRI KORTE</b>
+      <span class="brand-t"><b>ABRI KORTE</b><span>Pickleball and badminton &middot; Consolacion</span></span>
     </a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#court">Court</a>
-      <a href="#rates">Rates</a>
-      <a href="#events">Events</a>
-      <a href="#tournament">Tournament</a>
-      <a href="#visit">Visit</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#hero" class="on" aria-current="page">Home</a>
+      <a href="{{BOOK}}">Book</a>
+      <a href="{{TOUR}}">Tournament</a>
+      <a href="{{RATES}}">Rates</a>
+      <a href="{{INFO}}">Court Info</a>
     </nav>
-    <div class="acts">
-      <button class="theme" id="theme" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
-      </button>
-      <a class="book" href="{{BOOK}}">Book a court</a>
-    </div>
+    <button class="theme" id="theme" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
+    </button>
   </div>
 </header>
+
+<nav class="tabbar" aria-label="Main">
+  <a href="#hero" class="on" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M6 9.6V20h12V9.6"/><path d="M10 20v-5.2h4V20"/></svg><span>Home</span></a>
+  <a href="{{BOOK}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor"/><circle cx="12" cy="14.5" r="1" fill="currentColor"/></svg><span>Book</span></a>
+  <a href="{{TOUR}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg><span>Tournament</span></a>
+  <a href="{{RATES}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.4 1.4 0 0 1 0 2l-6.7 6.7a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.6"/></svg><span>Rates</span></a>
+  <a href="{{INFO}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Court Info</span></a>
+</nav>
 
 <main>
   <section class="hero" id="hero">
@@ -49,11 +54,11 @@
         <line x1="66" y1="61" x2="96.5" y2="61"/>
       </svg>
     </div>
-    <p class="hero-loc layer" data-intro><span>Upper Tugbongan</span><i class="pball" aria-hidden="true"></i><span>Consolacion, Cebu</span></p>
+    <a class="hero-loc layer" data-intro href="{{MAPS}}" target="_blank" rel="noopener" aria-label="Upper Tugbongan, Consolacion, Cebu. Open in Google Maps"><span>Upper Tugbongan</span><i class="pball" aria-hidden="true"></i><span>Consolacion, Cebu</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
     <h1 class="hero-words layer">
       <span class="sr">Abri Korte, a covered pickleball and badminton court</span>
       <span class="w w1" aria-hidden="true" data-collide>ABRI</span>
-      <span class="w w2" aria-hidden="true" data-collide>KORTE</span>
+      <span class="w w2" aria-hidden="true"><span class="kw" data-collide>KORTE</span><i class="krule"></i><span class="ktag">Pickleball &middot; Badminton</span></span>
     </h1>
     <div class="hero-copy layer" data-intro>
       <p data-solid>One covered court for pickleball and badminton in Upper Tugbongan, Consolacion. Open 24 hours, every day.</p>
@@ -64,7 +69,6 @@
         </a>
       </div>
     </div>
-    <p class="hero-hint layer" aria-hidden="true" id="hint">Click anywhere to drop a ball</p>
   </section>
 
   <section class="court" id="court">
@@ -88,7 +92,7 @@
         </dl>
         <p class="court-key" aria-hidden="true"><span><i class="pk"></i>Pickleball lines</span><span><i class="bd"></i>Badminton lines</span></p>
       </div>
-      <div class="court-gl" data-view="court" role="img" aria-label="Two paddles rallying a pickleball on the covered Abri Korte court"></div>
+      <div class="court-gl" data-view="court" role="img" aria-label="Two paddles rallying a pickleball on the Abri Korte court, under a roof held up by posts down both sides"></div>
     </div>
   </section>
 
@@ -113,7 +117,7 @@
     <div class="wrap rates-in layer">
       <div class="rates-main">
         <p class="eyebrow" data-rise>Rates <i class="sep" aria-hidden="true"></i> Open 24 hours</p>
-        <h2 class="display" data-rise>Day game.<br>Night game.</h2>
+        <h2 class="lockup lk-rates" data-rise aria-label="Day game. Night game."><span class="lk1" data-fit="size" aria-hidden="true">Day game.</span><span class="lk2" data-fit="space" data-k="0.8" aria-hidden="true">Night game.</span></h2>
         <p class="clock" id="clock">The court is open 24 hours, every day.</p>
         <p class="lede" data-rise>Pay by the hour. One price for the whole court, whatever you play. Book one hour or the whole night, and sessions end on the hour.</p>
         <div class="ratecard" data-rise>
@@ -167,7 +171,7 @@
       <div class="events-stage">
         <div class="marq" aria-hidden="true"><ul data-dir="1"></ul></div>
         <div class="events-copy layer">
-          <h2 class="display">Private Group Events</h2>
+          <h2 class="lockup lk-events" aria-label="Private Group Events"><span class="lk1" data-fit="size" aria-hidden="true">Private</span><span class="lk2" data-fit="space" data-k="0.62" aria-hidden="true">Group Events</span></h2>
         </div>
         <div class="events-gl" data-view="turn" aria-hidden="true"></div>
         <div class="events-copy layer">
@@ -235,15 +239,14 @@
     <div class="how-stage">
       <div class="how-in layer">
         <h2 class="how-top" id="how-title"><span>How booking works</span><i class="pball" aria-hidden="true"></i><span>About a minute</span></h2>
-        <div class="how-gl" data-view="cloud" data-photo="{{PHOTO}}" data-depth="{{DEPTH}}" role="img" aria-label="Players at a game night at Abri Korte, drawn in points of light"></div>
-        <img class="how-fallback" src="{{PHOTO}}" alt="A group of players with paddles on the Abri Korte court at night" width="608" height="362" loading="lazy" decoding="async">
+        <div class="how-gl" data-view="cloud" data-photo="{{PHOTO}}" data-depth="{{DEPTH}}" role="img" aria-label="A pickleball player about to hit the ball, drawn in points of light"></div>
+        <img class="how-fallback" src="{{PHOTO}}" alt="A pickleball player about to hit the ball" width="317" height="403" loading="lazy" decoding="async">
         <ol class="how-words">
           <li class="hw hw1"><span class="word" aria-hidden="true">Pick</span><p><b class="num">01</b><span><strong>Pick a time.</strong> Every open hour is on our schedule, with the price worked out for you.</span></p></li>
           <li class="hw hw2"><span class="word" aria-hidden="true">Send</span><p><b class="num">02</b><span><strong>Send it on Messenger.</strong> Tap Book and your date, time and hours are typed into the message for you.</span></p></li>
           <li class="hw hw3"><span class="word" aria-hidden="true">Play</span><p><b class="num">03</b><span><strong>Lock it in, then play.</strong> Pay one hour by GCash or cash. We confirm and hold your court, and you pay the rest when you arrive.</span></p></li>
         </ol>
         <a class="how-cta" href="{{BOOK}}"><span class="coin" aria-hidden="true"><svg><use href="#mark"/></svg></span><span>Open the schedule</span></a>
-        <p class="how-cap" aria-hidden="true">Game night at Abri Korte</p>
       </div>
     </div>
     <ul class="how-notes wrap">
@@ -259,7 +262,7 @@
   <div class="wrap visit-in">
     <div style="display:flex;flex-direction:column;gap:14px">
       <p class="eyebrow">Visit</p>
-      <h2 class="display">Come play.</h2>
+      <h2 class="lockup lk-visit" aria-label="Come play"><span class="lk1" data-fit="size" aria-hidden="true">Come</span><span class="lk2" data-fit="space" data-k="0.86" aria-hidden="true">Play</span></h2>
     </div>
     <div class="visit-grid">
       <div>
@@ -283,7 +286,7 @@
       </div>
     </div>
     <a class="btn yellow" href="{{BOOK}}">Book a court</a>
-    <p class="wordmark" aria-hidden="true">Abri Korte</p>
+    <div class="wordbox" aria-hidden="true"><p class="wordmark" data-fit="size"><b>ABRI</b><span>KORTE</span></p></div>
     <div class="foot-row"><span>&copy; 2026 Abri Korte</span><span>Pickleball and badminton in Upper Tugbongan, Consolacion, Cebu</span></div>
   </div>
 </footer>

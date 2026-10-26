@@ -23,7 +23,7 @@ themeBtn.addEventListener('click', () => {
   try { localStorage.setItem('abri-theme', next); } catch (e) {}
 });
 const themeHooks = [];
-const themeColor = () => { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', isDark() ? '#08131D' : '#0896DB'); };
+const themeColor = () => { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', isDark() ? '#08131D' : '#016FA8'); };
 new MutationObserver(() => { syncTheme(); themeColor(); themeHooks.forEach(f => f()); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 syncTheme(); themeColor();
 
@@ -63,7 +63,7 @@ $$('.marq ul').forEach((ul, i) => {
 
 /* ---------- brand lockups: the heavier word sets the size, the lighter word is spaced out to the same width ---------- */
 function fitLockups() {
-  $$('.lockup, .tour-title').forEach(box => {
+  $$('.lockup, .tour-title, .wordbox').forEach(box => {
     const lines = $$('[data-fit]', box);
     lines.forEach(el => { el.style.fontSize = ''; el.style.letterSpacing = ''; });
     const W = box.getBoundingClientRect().width;
@@ -90,9 +90,25 @@ function fitLockups() {
     });
   });
 }
-fitLockups();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLockups);
-{ let ft = null; addEventListener('resize', () => { clearTimeout(ft); ft = setTimeout(fitLockups, 120); }); }
+function fitHero() {
+  const w1 = $('.hero-words .w1'), kw = $('.hero-words .kw'), tag = $('.hero-words .ktag');
+  if (!w1 || !kw) return;
+  const W = w1.getBoundingClientRect().width; if (W < 20) return;
+  const spread = (el, lastSel) => {
+    el.style.fontSize = ''; el.style.letterSpacing = '0px'; el.style.marginRight = '';
+    let w = el.getBoundingClientRect().width;
+    if (w > W) { el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * W / w).toFixed(2) + 'px'; w = el.getBoundingClientRect().width; }
+    const n = Math.max(2, el.textContent.trim().length), ls = Math.max(0, (W - w) / (n - 1));
+    el.style.letterSpacing = ls.toFixed(2) + 'px';
+    const last = lastSel ? $$(lastSel, el).pop() : null;
+    if (last) last.style.letterSpacing = '0px'; else el.style.marginRight = (-ls).toFixed(2) + 'px';
+  };
+  spread(kw, '.ch');
+  if (tag) spread(tag, null);
+}
+fitLockups(); fitHero();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitLockups(); fitHero(); });
+{ let ft = null; addEventListener('resize', () => { clearTimeout(ft); ft = setTimeout(() => { fitLockups(); fitHero(); }, 120); }); }
 
 /* the booking section: a faint grid follows the pointer, and the cloud of players turns toward it */
 const howEl = $('#how'), howPtr = { x: 0, y: 0, on: false };
@@ -105,9 +121,8 @@ if (howEl) howEl.addEventListener('pointermove', e => {
 if (howEl) howEl.addEventListener('pointerleave', () => { howPtr.on = false; });
 
 /* ---------- GSAP: header state, transform-only reveals, magnetic ball button, scrubbed columns ---------- */
-const header = $('#top'), heroEl = $('#hero');
+const heroEl = $('#hero');
 if (G && ST) {
-  ST.create({ trigger: heroEl, start: 'bottom top+=76', end: 999999, toggleClass: { targets: [header, root], className: 'solid' } });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ST.refresh());
   if (!reduce) {
     G.from('[data-intro]', { y: 22, duration: 1.1, ease: 'power3.out', stagger: 0.12, delay: 0.15 });
@@ -130,11 +145,7 @@ if (G && ST) {
       el.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
     });
   }
-} else {
-  const onS = () => { const on = heroEl.getBoundingClientRect().bottom < 76; header.classList.toggle('solid', on); root.classList.toggle('solid', on); };
-  addEventListener('scroll', onS, { passive: true }); onS();
 }
-const hint = $('#hint');
 
 /* ---------- WebGL: one renderer, one fixed canvas, a scene per section box ---------- */
 const THREE = window.THREE;
@@ -150,7 +161,6 @@ try {
   R.setClearColor(0x000000, 0);
   R.autoClear = false;
 } catch (e) { R = null; root.classList.add('no-gl'); }
-if (hint) hint.textContent = reduce || !R || !window.Matter ? '' : (coarse ? 'Tap anywhere to drop a ball' : 'Click anywhere to drop a ball');
 if (!R) return;
 canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); root.classList.add('no-gl'); R = null; }, false);
 
@@ -373,6 +383,7 @@ function heroView() {
 
   function rebuild() {
     if (!engine) return;
+    fitHero();
     const w1 = $('.w1', el); const hw = parseFloat(getComputedStyle(w1).fontSize) || 120;
     const r = clamp(Math.round(hw * 0.115), 11, 30);
     const changed = Math.abs(r - st.r) > 1 || !st.ready;
@@ -403,7 +414,7 @@ function heroView() {
     if (fontsOk) tmr = setTimeout(rebuild, first ? 0 : 220);
   }
   const fontsReady = (document.fonts && document.fonts.load)
-    ? Promise.race([Promise.all([document.fonts.load('600 100px "Cormorant Garamond"'), document.fonts.ready]), new Promise(r => setTimeout(r, 2500))])
+    ? Promise.race([Promise.all([document.fonts.load('500 100px Poppins'), document.fonts.load('300 100px Poppins'), document.fonts.ready]), new Promise(r => setTimeout(r, 2500))])
     : Promise.resolve();
   fontsReady.then(() => { fontsOk = true; if (st.W) rebuild(); }, () => { fontsOk = true; if (st.W) rebuild(); });
 
@@ -468,7 +479,7 @@ function heroView() {
   return { name: 'hero', el, scene, camera: cam, update };
 }
 
-/* ---------- court: the surface crumples like cloth and lies flat as you scroll in ---------- */
+/* ---------- court: the surface lies flat as you scroll in, the posts go up, the roof comes down, and two paddles rally ---------- */
 const WAVES = [
   [1.7, 0.9, 0.11, 0.3, 0.21, 0], [-1.1, 2.3, 0.085, 1.9, -0.17, 0], [3.3, -1.4, 0.06, 4.1, 0.13, 0], [-2.9, -3.1, 0.05, 2.2, 0.0, 0],
   [5.1, 2.7, 0.038, 0.7, -0.11, 0], [-4.3, 5.9, 0.03, 5.3, 0.0, 0], [7.7, -6.1, 0.022, 3.4, 0.09, 0], [-9.3, -8.1, 0.016, 1.1, 0.0, 0],
@@ -515,33 +526,38 @@ function beam(a, b, r, mat) {
   return m;
 }
 
-/* the shelter, drawn like the Abri mark: A-frames standing over the court, with a tie, a king post and a chevron */
-const ROOF = { xf: 1.6, za: 2.15, ys: [-2.45, -0.82, 0.82, 2.45] };
+/* the shelter: four posts down each long side, a low gable roof on trusses, sheeted on the far slope.
+   The near slope is left open so you can see the game underneath */
+const ROOF = { xp: 1.42, eave: 1.3, ridge: 1.86, over: 0.2, ys: [-2.25, -0.75, 0.75, 2.25], y0: -2.62, y1: 2.62 };
 function roofFrames() {
   const mat = new THREE.MeshStandardMaterial({ color: lin('#1B242D'), roughness: 0.55, metalness: 0.1, envMapIntensity: 0.5 });
-  const grp = new THREE.Group(), V = (x, y, z) => new THREE.Vector3(x, y, z);
-  const { xf: XF, za: ZA, ys: YS } = ROOF, ZT = ZA * 0.4, ZS = ZA * 0.56, ZK = ZA * 0.76, xAt = z => XF * (1 - z / ZA);
-  const y0 = YS[0], y1 = YS[YS.length - 1];
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const { xp: X, eave: E, ridge: Z, over: O, ys: YS, y0, y1 } = ROOF;
+  const slope = (Z - E) / X, zAt = x => Z - slope * Math.abs(x), xo = X + O, zo = E - slope * O;
+  const posts = new THREE.Group(), roof = new THREE.Group();
+  for (const y of YS) for (const sx of [-1, 1]) posts.add(beam(V(sx * X, y, 0), V(sx * X, y, E), 0.034, mat));
+  for (const sx of [-1, 1]) roof.add(beam(V(sx * X, y0, E), V(sx * X, y1, E), 0.024, mat));
+  roof.add(beam(V(0, y0, Z), V(0, y1, Z), 0.022, mat));
   for (const y of YS) {
-    grp.add(beam(V(-XF, y, 0), V(0, y, ZA), 0.024, mat), beam(V(XF, y, 0), V(0, y, ZA), 0.024, mat));
-    grp.add(beam(V(-xAt(ZT), y, ZT), V(xAt(ZT), y, ZT), 0.017, mat));
-    grp.add(beam(V(0, y, ZT), V(0, y, ZA), 0.013, mat));
-    grp.add(beam(V(-xAt(ZS), y, ZS), V(0, y, ZK), 0.012, mat), beam(V(xAt(ZS), y, ZS), V(0, y, ZK), 0.012, mat));
+    roof.add(beam(V(-xo, y, zo), V(0, y, Z), 0.02, mat), beam(V(xo, y, zo), V(0, y, Z), 0.02, mat));
+    roof.add(beam(V(-X, y, E), V(X, y, E), 0.016, mat));
+    roof.add(beam(V(0, y, E), V(0, y, Z), 0.012, mat));
+    for (const sx of [-1, 1]) {
+      roof.add(beam(V(sx * X / 2, y, E), V(sx * X / 2, y, zAt(X / 2)), 0.011, mat));
+      roof.add(beam(V(0, y, E), V(sx * X / 2, y, zAt(X / 2)), 0.011, mat));
+    }
   }
-  grp.add(beam(V(0, y0, ZA), V(0, y1, ZA), 0.022, mat));
-  const zp = ZA * 0.58;
-  grp.add(beam(V(-xAt(zp), y0, zp), V(-xAt(zp), y1, zp), 0.011, mat), beam(V(xAt(zp), y0, zp), V(xAt(zp), y1, zp), 0.011, mat));
-  /* the far slope keeps its roof sheet; the near one is cut away so you can see in */
+  for (const sx of [-1, 1]) roof.add(beam(V(sx * X / 2, y0, zAt(X / 2)), V(sx * X / 2, y1, zAt(X / 2)), 0.012, mat));
   const c = document.createElement('canvas'); c.width = 8; c.height = 64; const g = c.getContext('2d');
-  g.fillStyle = '#F5F0EA'; g.fillRect(0, 0, 8, 64); g.fillStyle = '#C9C2B8'; g.fillRect(0, 0, 8, 6);
-  const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(1, 26); tex.encoding = THREE.sRGBEncoding;
-  const z0 = ZA * 0.3, run = xAt(z0), slope = Math.hypot(run, ZA - z0);
-  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(slope, y1 - y0 + 0.16), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.42, side: THREE.DoubleSide, depthWrite: false }));
-  sheet.position.set(-run / 2, 0, (z0 + ZA) / 2 + 0.01);
-  sheet.rotation.set(0, Math.atan2(ZA - z0, run), 0);
-  grp.add(sheet);
-  grp.userData = { beam: mat, sheet: sheet.material };
-  return grp;
+  g.fillStyle = '#F5F0EA'; g.fillRect(0, 0, 8, 64); g.fillStyle = '#CFC8BE'; g.fillRect(0, 0, 8, 7);
+  const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(1, 30); tex.encoding = THREE.sRGBEncoding;
+  const run = xo, rise = Z - zo, len = Math.hypot(run, rise);
+  const sheetMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false });
+  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(len, y1 - y0 + 0.1), sheetMat);
+  sheet.position.set(-run / 2, 0, (zo + Z) / 2 + 0.03);
+  sheet.rotation.set(0, Math.atan2(rise, run), 0);
+  roof.add(sheet);
+  return { posts, roof, mat, sheet: sheetMat };
 }
 
 function courtView() {
@@ -573,8 +589,8 @@ function courtView() {
   const court = new THREE.Mesh(new THREE.PlaneGeometry(2 * CT.sw, 2 * CT.sl, seg[0], seg[1]), mat);
   court.frustumCulled = false; world.add(court);
 
-  const roof = roofFrames(); world.add(roof);
-  const paintRoof = () => { const d = isDark(); roof.userData.beam.color.copy(lin(d ? '#C3CEDA' : '#1B242D')); roof.userData.sheet.opacity = d ? 0.14 : 0.42; };
+  const frame = roofFrames(), roof = frame.roof, posts = frame.posts; world.add(posts, roof);
+  const paintRoof = () => { const d = isDark(); frame.mat.color.copy(lin(d ? '#C3CEDA' : '#1B242D')); frame.sheet.opacity = d ? 0.16 : 0.5; };
   paintRoof(); themeHooks.push(paintRoof);
   const net = new THREE.Group(), NH = 0.29;
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.24, NH - 0.03), new THREE.MeshBasicMaterial({ map: netTexture(), transparent: true, side: THREE.DoubleSide, depthWrite: false }));
@@ -625,8 +641,9 @@ function courtView() {
   }
 
   /* points that outline the scene, in three.js space (court x, court z up, minus court y) */
-  const hull = [];
-  for (const y of [ROOF.ys[0], ROOF.ys[ROOF.ys.length - 1]]) { hull.push(new THREE.Vector3(-ROOF.xf, 0, -y), new THREE.Vector3(ROOF.xf, 0, -y), new THREE.Vector3(0, ROOF.za, -y)); }
+  const hull = [], xo = ROOF.xp + ROOF.over, zo = ROOF.eave - (ROOF.ridge - ROOF.eave) / ROOF.xp * ROOF.over;
+  for (const y of [ROOF.y0, ROOF.y1]) hull.push(new THREE.Vector3(-xo, zo, -y), new THREE.Vector3(xo, zo, -y), new THREE.Vector3(0, ROOF.ridge, -y));
+  for (const y of [ROOF.ys[0], ROOF.ys[ROOF.ys.length - 1]]) for (const x of [-ROOF.xp, ROOF.xp]) hull.push(new THREE.Vector3(x, 0, -y));
   for (const x of [-CT.sw, CT.sw]) for (const y of [-CT.sl, CT.sl]) hull.push(new THREE.Vector3(x, 0, -y));
   const camTarget = new THREE.Vector3(0, 0.62, -0.15), camDir = new THREE.Vector3(3.3, 3.0, 4.7).normalize(), pv = new THREE.Vector3();
   let fitAspect = 0;
@@ -642,16 +659,18 @@ function courtView() {
     }
     cam.position.copy(camTarget).addScaledVector(camDir, hi); cam.lookAt(camTarget); cam.updateProjectionMatrix();
   }
-  let amt = reduce ? 0 : 1, rise = reduce ? 1 : 0, play = reduce ? 1 : 0;
+  let amt = reduce ? 0 : 1, rise = reduce ? 1 : 0, cover = reduce ? 1 : 0, play = reduce ? 1 : 0;
   function update(dt, r, p) {
     const aspect = r.width / r.height;
     if (Math.abs(aspect - fitAspect) > 0.002) fitCam(aspect);
     amt = reduce ? 0 : damp(amt, 1 - smooth(0.06, 0.36, p), 4, dt);
-    rise = reduce ? 1 : damp(rise, smooth(0.24, 0.44, p), 5, dt);
+    rise = reduce ? 1 : damp(rise, smooth(0.2, 0.34, p), 5, dt);
+    cover = reduce ? 1 : damp(cover, smooth(0.3, 0.46, p), 5, dt);
     play = reduce ? 1 : damp(play, smooth(0.34, 0.48, p), 6, dt);
     if (amt > 0.002) uni.uT.value += dt * 0.55;
     uni.uAmt.value = amt;
-    roof.position.z = (1 - rise) * (1 - rise) * 3.2; roof.visible = rise > 0.02;   // the roof comes down over the court
+    posts.scale.set(1, 1, Math.max(0.001, rise)); posts.visible = rise > 0.02;      // the posts go up
+    roof.position.z = (1 - cover) * (1 - cover) * 3.2; roof.visible = cover > 0.02;  // then the roof comes down onto them
     net.scale.set(1, 1, Math.max(0.001, rise)); net.visible = rise > 0.01;
 
     if (!reduce && play > 0.6) shot.t += dt;
@@ -799,7 +818,7 @@ function turnView() {
   return { name: 'turn', el, scene, camera: cam, update };
 }
 
-/* ---------- how: the game night photo, rebuilt from points of light that drift in and gather as you scroll ---------- */
+/* ---------- how: a player about to hit the ball, rebuilt from points of light that drift in and gather as you scroll ---------- */
 function cloudView() {
   const el = $('[data-view="cloud"]');
   if (!el || !el.dataset.photo || !el.dataset.depth) return null;
@@ -835,7 +854,7 @@ function cloudView() {
       'varying vec3 vC; varying float vA;',
       'void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; gl_FragColor = vec4(vC, smoothstep(0.5, 0.2, d) * vA); }'].join('\n')
   });
-  const st = { ready: false, n: 0, SW: 4.2, H: 1.5, step: 0.01, yaw: 0, pitch: 0, t: 0 };
+  const st = { ready: false, n: 0, SW: 3.3, H: 4.2, step: 0.01, yaw: 0, pitch: 0, t: 0 };
   const load = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
   Promise.all([load(el.dataset.photo), load(el.dataset.depth)]).then(([ph, dp]) => {
     const W = ph.naturalWidth, H = ph.naturalHeight;
@@ -843,15 +862,15 @@ function cloudView() {
     const g = cv.getContext('2d', { willReadFrequently: true });
     g.drawImage(ph, 0, 0, W, H); const C = g.getImageData(0, 0, W, H).data;
     g.clearRect(0, 0, W, H); g.drawImage(dp, 0, 0, W, H); const D = g.getImageData(0, 0, W, H).data;
-    let y0 = H, y1 = 0;
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x += 3) if (D[(y * W + x) * 4 + 1] > 40) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
-    const step = coarse || innerWidth < 900 ? 1.9 : 1.15, sc = st.SW / W, cy = (y0 + y1) / 2;
+    let x0 = W, x1 = 0, y0 = H, y1 = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (D[(y * W + x) * 4 + 1] > 40) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+    const step = coarse || innerWidth < 900 ? 1.05 : 0.72, sc = st.H / Math.max(1, y1 - y0), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
     const pos = [], col = [], rnd = [];
-    for (let gy = y0; gy <= y1; gy += step) for (let gx = 0; gx < W; gx += step) {
+    for (let gy = y0; gy <= y1; gy += step) for (let gx = x0; gx <= x1; gx += step) {
       const x = clamp(Math.round(gx + (Math.random() - 0.5) * step), 0, W - 1), y = clamp(Math.round(gy + (Math.random() - 0.5) * step), 0, H - 1);
       const i = (y * W + x) * 4, m = D[i + 1] / 255;
       if (m < 0.06 || Math.random() > m) continue;
-      pos.push((x - W / 2) * sc, -(y - cy) * sc, (D[i] / 255 - 0.55) * 1.15);
+      pos.push((x - cx) * sc, -(y - cy) * sc, (D[i] / 255 - 0.5) * 1.1);
       let r = Math.pow(C[i] / 255, 0.7), gg = Math.pow(C[i + 1] / 255, 0.7), b = Math.pow(C[i + 2] / 255, 0.7);
       const L = 0.2126 * r + 0.7152 * gg + 0.0722 * b;
       r = L + (r - L) * 1.2; gg = L + (gg - L) * 1.2; b = L + (b - L) * 1.2;
@@ -865,15 +884,15 @@ function cloudView() {
     geo.setAttribute('aCol', new THREE.Float32BufferAttribute(col, 3));
     geo.setAttribute('aRnd', new THREE.Float32BufferAttribute(rnd, 4));
     const pts = new THREE.Points(geo, mat); pts.frustumCulled = false; grp.add(pts);
-    st.n = pos.length / 3; st.H = (y1 - y0) * sc; st.step = step * sc; uni.uFloor.value = -st.H / 2 + st.H * 0.17;
+    st.n = pos.length / 3; st.SW = (x1 - x0) * sc; st.step = step * sc; uni.uFloor.value = -st.H / 2 + st.H * 0.1;
     st.ready = true;
   }).catch(e => { console.warn('[abri] cloud', e); if (howEl) howEl.classList.add('cloud-off'); });
 
   function update(dt, r, p) {
     if (!st.ready) return;
     const aspect = r.width / r.height, tf = Math.tan(THREE.MathUtils.degToRad(FOV / 2)), wide = innerWidth >= 900;
-    const D = Math.max(st.SW / ((wide ? 0.76 : 1.16) * 2 * tf * aspect), st.H / ((wide ? 0.52 : 0.7) * 2 * tf));
-    const lift = wide ? 0.11 * 2 * tf * D : 0;
+    const D = Math.max(st.SW / (0.9 * 2 * tf * aspect), st.H / ((wide ? 0.82 : 0.86) * 2 * tf));
+    const lift = wide ? 0.03 * 2 * tf * D : 0;
     cam.aspect = aspect; cam.position.set(0, lift, D); cam.lookAt(0, lift, 0); cam.updateProjectionMatrix();
     uni.uDist.value = D; uni.uPR.value = R.getPixelRatio();
     uni.uSize.value = st.step * (r.height / (2 * tf * D)) * 1.3;
