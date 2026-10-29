@@ -600,7 +600,7 @@ function courtView() {
   const paintRoof = () => {
     const d = isDark(); frame.mat.color.copy(lin(d ? '#C3CEDA' : '#1B242D'));
     frame.sheet.color.copy(lin(d ? '#5B7088' : '#3B4A58')); frame.sheet.opacity = 0.9;
-    frame.near.color.copy(lin(d ? '#5B7088' : '#3B4A58')); frame.near.opacity = d ? 0.36 : 0.32;
+    frame.near.color.copy(lin(d ? '#5B7088' : '#3B4A58')); frame.near.opacity = d ? 0.26 : 0.22;
   };
   paintRoof(); themeHooks.push(paintRoof);
   const net = new THREE.Group(), NH = 0.29;
