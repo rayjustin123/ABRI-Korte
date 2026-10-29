@@ -70,11 +70,21 @@ def depth_png():
     return open(os.path.join(SRC, "player-depth.png"), "rb").read()
 
 
+def reg_by():
+    """'Nov 18' from the tournament snapshot (src/tourney.json), so the home page follows the tournament app."""
+    for p in (os.path.join(HERE, "..", "tourney.json"), os.path.join(SRC, "tourney.json")):
+        if os.path.exists(p):
+            d = json.load(open(p, encoding="utf-8"))["config"]["regDeadline"]
+            y, m, day = (int(x) for x in d.split("-"))
+            return "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()[m - 1] + " " + str(day)
+    raise SystemExit("tourney.json not found for the registration deadline")
+
+
 def page(site, photo, depth):
     css = open(os.path.join(SRC, "style.css"), encoding="utf-8").read()
     body = open(os.path.join(SRC, "body.html"), encoding="utf-8").read()
     js = open(os.path.join(SRC, "app.js"), encoding="utf-8").read()
-    subs = dict(links(site), PHOTO=photo, DEPTH=depth)
+    subs = dict(links(site), PHOTO=photo, DEPTH=depth, REGBY=reg_by())
     for k, v in subs.items():
         body = body.replace("{{" + k + "}}", html.escape(v, quote=True))
     assert "{{" not in body, "unfilled placeholder"

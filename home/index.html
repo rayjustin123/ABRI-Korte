@@ -617,7 +617,7 @@ section[id],footer[id]{scroll-margin-top:calc(60px + env(safe-area-inset-top,0px
           <div><dt>Lights</dt><dd>On all night</dd></div>
           <div><dt>Quiet hours</dt><dd>10 PM to 5 AM</dd></div>
           <div><dt>Music</dt><dd>Free Bluetooth speaker</dd></div>
-          <div><dt>Comfort room</dt><dd>Ask our staff</dd></div>
+          <div><dt>Food and drinks</dt><dd>Available at the court</dd></div>
         </dl>
         <p class="court-key" aria-hidden="true"><span><i class="pk"></i>Pickleball lines</span><span><i class="bd"></i>Badminton lines</span></p>
       </div>
@@ -748,7 +748,7 @@ section[id],footer[id]{scroll-margin-top:calc(60px + env(safe-area-inset-top,0px
         <ul class="tour-facts" data-rise>
           <li><b class="num">8</b><span>teams per category</span></li>
           <li><b class="num">3+</b><span>matches for every team</span></li>
-          <li><b class="num">Nov 9</b><span>last day to register</span></li>
+          <li><b class="num">Nov 18</b><span>last day to register</span></li>
         </ul>
         <div class="tour-act" data-rise>
           <p>Open to players who have played at Abri Korte, or know someone who has.</p>
@@ -1152,33 +1152,71 @@ function heroView() {
   const rnd = () => Math.random();
   const randQ = () => new THREE.Quaternion().setFromEuler(new THREE.Euler(rnd() * 6.283, rnd() * 6.283, rnd() * 6.283));
 
+  /* collision groups: balls hit each other, the letters and the frame (floor, walls, the Book ball).
+     When the name spans the whole width (phones), nothing can fall past it, so a ball that comes to rest on
+     the letters rolls off the front after a moment: it stops touching the letters and the other balls, drops
+     in front of the name, and turns solid again below it, so every ball ends up at the bottom of the hero */
+  const BALL = { group: 0, category: 1, mask: 7 }, GLYPH = { group: 0, category: 2, mask: 1 };
+  const FRAME = { group: 0, category: 4, mask: 0xFFFF }, GHOST = { group: 0, category: 8, mask: 4 };
   function spawn(x, y, vx, vy) {
     if (!engine) return;
     if (st.balls.length >= MAX) { const old = st.balls.shift(); M.Composite.remove(engine.world, old.b); }
-    const b = M.Bodies.circle(x, y, st.r, { restitution: 0.55, friction: 0.04, frictionStatic: 0.5, frictionAir: 0.006, density: 0.0016, slop: 0.03 });
+    const b = M.Bodies.circle(x, y, st.r, { restitution: 0.55, friction: 0.04, frictionStatic: 0.5, frictionAir: 0.006, density: 0.0016, slop: 0.03, collisionFilter: { ...BALL } });
     M.Body.setVelocity(b, { x: vx || 0, y: vy || 0 });
     M.Body.setAngularVelocity(b, (rnd() - 0.5) * 0.25);
     M.Composite.add(engine.world, b);
-    st.balls.push({ b, q0: randQ() });
+    st.balls.push({ b, q0: randQ(), rest: 0, wait: 0.5 + rnd() * 2.2, ghost: false, z: 0 });
   }
+  function drain(sec) {
+    const g = st.gb; if (!st.narrow || !g) return;
+    for (const o of st.balls) {
+      const b = o.b;
+      if (o.ghost) {
+        if (b.position.y - st.r > g.y1 + 2) { b.collisionFilter = { ...BALL }; o.ghost = false; }
+        continue;
+      }
+      const v = M.Body.getVelocity(b);
+      if (b.position.y < g.y1 && (b.isSleeping || v.x * v.x + v.y * v.y < 0.09)) {
+        o.rest += sec;
+        if (o.rest > o.wait) {
+          o.ghost = true; o.rest = 0; b.collisionFilter = { ...GHOST };
+          M.Sleeping.set(b, false);
+          M.Body.setVelocity(b, { x: (rnd() - 0.5) * 0.8, y: 0.6 });
+        }
+      } else o.rest = 0;
+    }
+  }
+  const step = h => { M.Engine.update(engine, h); drain(h / 1000); };
 
   function colliders() {
     M.Composite.remove(engine.world, st.statics); st.statics = [];
     const hr = el.getBoundingClientRect(), W = st.W, H = st.H, t = 400;
-    st.statics.push(M.Bodies.rectangle(W / 2, H + t / 2, W * 3, t, { isStatic: true, friction: 0.6 }));
-    st.statics.push(M.Bodies.rectangle(-t / 2, -H, t, H * 5, { isStatic: true }));
-    st.statics.push(M.Bodies.rectangle(W + t / 2, -H, t, H * 5, { isStatic: true }));
+    // on phones the tab bar covers the foot of the hero; the balls settle just above it so they stay in view
+    const tb = $('.tabbar'); let fy = H;
+    if (tb && getComputedStyle(tb).display !== 'none') {
+      const top = innerHeight - tb.getBoundingClientRect().height - (hr.top + scrollY);
+      if (top > H * 0.5) fy = Math.min(H, top);
+    }
+    st.fy = fy;
+    st.statics.push(M.Bodies.rectangle(W / 2, fy + t / 2, W * 3, t, { isStatic: true, friction: 0.6, collisionFilter: { ...FRAME } }));
+    st.statics.push(M.Bodies.rectangle(-t / 2, -H, t, H * 5, { isStatic: true, collisionFilter: { ...FRAME } }));
+    st.statics.push(M.Bodies.rectangle(W + t / 2, -H, t, H * 5, { isStatic: true, collisionFilter: { ...FRAME } }));
     const cw = Math.max(1, Math.ceil(W)), ch = Math.max(1, Math.ceil(H));
     const c = document.createElement('canvas'); c.width = cw; c.height = ch;
     const g = c.getContext('2d', { willReadFrequently: true });
     g.fillStyle = '#000'; g.textBaseline = 'alphabetic';
+    const gb = { x0: 1e9, x1: -1e9, y1: -1e9 };
     for (const sp of $$('.hero-words .ch', el)) {
       const cs = getComputedStyle(sp);
       g.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
       const m = g.measureText(sp.textContent), r = sp.getBoundingClientRect();
       const asc = m.fontBoundingBoxAscent != null ? m.fontBoundingBoxAscent : r.height * 0.8;
-      g.fillText(sp.textContent, r.left - hr.left, r.top - hr.top + asc);
+      const x = r.left - hr.left, base = r.top - hr.top + asc;
+      g.fillText(sp.textContent, x, base);
+      gb.x0 = Math.min(gb.x0, x); gb.x1 = Math.max(gb.x1, x + m.width); gb.y1 = Math.max(gb.y1, base + (m.actualBoundingBoxDescent || 0));
     }
+    // the name blocks every way down when neither side leaves room for a ball to pass
+    st.gb = gb; st.narrow = gb.x0 < 2 * st.r + 6 && W - gb.x1 < 2 * st.r + 6;
     const data = g.getImageData(0, 0, cw, ch).data;
     const cell = Math.max(4, Math.round(st.r * 0.42)), gw = Math.ceil(cw / cell), gh = Math.ceil(ch / cell);
     const inside = new Uint8Array(gw * gh);
@@ -1194,17 +1232,18 @@ function heroView() {
     for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
       if (!on(gx, gy)) continue;
       if (on(gx - 1, gy) && on(gx + 1, gy) && on(gx, gy - 1) && on(gx, gy + 1)) continue;
-      st.statics.push(M.Bodies.circle(gx * cell + cell / 2, gy * cell + cell / 2, cell * 0.74, { isStatic: true, friction: 0.25, restitution: 0.4 }));
+      st.statics.push(M.Bodies.circle(gx * cell + cell / 2, gy * cell + cell / 2, cell * 0.74, { isStatic: true, friction: 0.25, restitution: 0.4, collisionFilter: { ...GLYPH } }));
       n++;
     }
     st.glyphCells = n;
     for (const so of $$('[data-solid]', el)) {
+      if (st.narrow && so.dataset.solid !== 'circle') continue;   // full-width shelves on phones; only the round Book ball stays in the way
       const anc = so.closest('[data-intro]'), dy = anc && G ? (parseFloat(G.getProperty(anc, 'y')) || 0) : 0;
       const r = so.getBoundingClientRect(); if (r.width < 2 || r.height < 2) continue;
       const x = r.left - hr.left + r.width / 2, y = r.top - hr.top - dy + r.height / 2;
       st.statics.push(so.dataset.solid === 'circle'
-        ? M.Bodies.circle(x, y, r.width / 2, { isStatic: true, restitution: 0.6, friction: 0.2 })
-        : M.Bodies.rectangle(x, y, r.width, r.height, { isStatic: true, friction: 0.3, chamfer: { radius: Math.min(10, r.height / 2) } }));
+        ? M.Bodies.circle(x, y, r.width / 2, { isStatic: true, restitution: 0.6, friction: 0.2, collisionFilter: { ...FRAME } })
+        : M.Bodies.rectangle(x, y, r.width, r.height, { isStatic: true, friction: 0.3, chamfer: { radius: Math.min(10, r.height / 2) }, collisionFilter: { ...FRAME } }));
     }
     M.Composite.add(engine.world, st.statics);
   }
@@ -1222,12 +1261,12 @@ function heroView() {
       const n = clamp(Math.round(st.W / (2 * r) * 2.0), 24, 80);
       if (reduce) {
         for (let i = 0; i < n; i++) spawn(r + rnd() * (st.W - 2 * r), -rnd() * st.H * 0.9, 0, 0);
-        for (let i = 0; i < 900; i++) M.Engine.update(engine, 1000 / 120);
+        for (let i = 0; i < (st.narrow ? 1800 : 900); i++) step(1000 / 120);
       } else {
         for (let i = 0; i < n; i++) st.queue.push({ t: 0.35 + i * (2.5 / n) + rnd() * 0.06, x: r + rnd() * (st.W - 2 * r) });
       }
     } else {
-      st.balls.forEach(o => { const p = o.b.position; M.Body.setPosition(o.b, { x: clamp(p.x, r, st.W - r), y: Math.min(p.y, st.H - r) }); M.Sleeping.set(o.b, false); });
+      st.balls.forEach(o => { const p = o.b.position; M.Body.setPosition(o.b, { x: clamp(p.x, r, st.W - r), y: Math.min(p.y, (st.fy || st.H) - r) }); M.Sleeping.set(o.b, false); });
     }
     st.ready = true;
   }
@@ -1289,20 +1328,22 @@ function heroView() {
       sweep();
       st.acc += dt * 1000; let n = 0; const h = 1000 / 120, vmax = st.r * 1.7;
       while (st.acc >= h && n < 8) {
-        M.Engine.update(engine, h); st.acc -= h; n++;
+        step(h); st.acc -= h; n++;
         for (const o of st.balls) { const v = M.Body.getVelocity(o.b), s = Math.hypot(v.x, v.y); if (s > vmax) M.Body.setVelocity(o.b, { x: v.x / s * vmax, y: v.y / s * vmax }); }
       }
       if (n === 8) st.acc = 0;
     }
     const cnt = Math.min(st.balls.length, MAX);
+    const kz = Math.min(1, dt * 9);
     for (let i = 0; i < cnt; i++) {
       const o = st.balls[i], b = o.b;
-      pos.set(b.position.x, -b.position.y, 0); qz.setFromAxisAngle(Z, -b.angle); q.multiplyQuaternions(qz, o.q0); sc.setScalar(st.r);
+      o.z += ((o.ghost ? st.r * 1.15 : 0) - o.z) * kz;      // a ball rolling off the name passes in front of the others
+      pos.set(b.position.x, -b.position.y, o.z); qz.setFromAxisAngle(Z, -b.angle); q.multiplyQuaternions(qz, o.q0); sc.setScalar(st.r);
       m4.compose(pos, q, sc); mesh.setMatrixAt(i, m4);
     }
     mesh.count = cnt; mesh.instanceMatrix.needsUpdate = true;
   }
-  st.ff = sec => { const h = 1000 / 120; for (let i = 0; i < sec * 120; i++) { st.t += h / 1000; while (st.queue.length && st.queue[0].t <= st.t) { const it = st.queue.shift(); spawn(it.x, -st.r * (1.4 + rnd() * 2.5), 0, 2); } M.Engine.update(engine, h); } };
+  st.ff = sec => { const h = 1000 / 120; for (let i = 0; i < sec * 120; i++) { st.t += h / 1000; while (st.queue.length && st.queue[0].t <= st.t) { const it = st.queue.shift(); spawn(it.x, -st.r * (1.4 + rnd() * 2.5), 0, 2); } step(h); } };
   window.__abriHero = st;
   return { name: 'hero', el, scene, camera: cam, update };
 }
