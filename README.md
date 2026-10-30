@@ -52,6 +52,10 @@ python3 src/home/build_home.py --site-out home
 
 4. Commit and push. Vercel or GitHub Pages redeploys on its own.
 
+## Tools and notes for Claude
+
+`tools/` has the page tests, the point-cloud player maker and the Reel and post renderers (see `tools/README.md`). `CLAUDE.md` is the working guide Claude reads first: where things live, the standing rules, the brand and the usual routines.
+
 ## Deploy
 
 - **Vercel:** New Project, import this repo, Framework Preset "Other", no build command, output directory left as the root.

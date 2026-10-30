@@ -1,0 +1,13 @@
+{
+  "name": "abri-korte-tools",
+  "private": true,
+  "description": "Local copies of the home page libraries and fonts, so the page tests and the social media renders work offline.",
+  "dependencies": {
+    "@fontsource/barlow": "5.3.0",
+    "@fontsource/barlow-condensed": "5.3.0",
+    "@fontsource/poppins": "5.3.0",
+    "gsap": "3.12.5",
+    "matter-js": "0.19.0",
+    "three": "0.149.0"
+  }
+}

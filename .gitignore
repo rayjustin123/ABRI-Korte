@@ -1,2 +1,11 @@
 __pycache__/
 *.pyc
+
+# tools: installed libraries, models, renders and working files stay out of git
+tools/node_modules/
+tools/site/build/
+tools/site/shots/
+tools/point-cloud/models/
+tools/point-cloud/work/
+tools/social/*/work/
+*.onnx

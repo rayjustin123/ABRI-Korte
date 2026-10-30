@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;font-weight:300;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-300-normal.woff2)}
+@font-face{font-family:P;font-weight:400;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2)}
+@font-face{font-family:P;font-weight:500;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2)}
+@font-face{font-family:P;font-weight:600;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2)}
+:root{--cream:#F5F0EA;--charcoal:#1B242D;--night:#121920;--gold:#F2B233;--sky:#A8D6F0;--clay:#A8442F}
+html,body{margin:0;background:var(--night)}
+#post{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--night);font-family:P,sans-serif;color:var(--cream)}
+#photo{position:absolute;left:0;top:0;width:1080px;height:829px;object-fit:cover}
+#fade{position:absolute;left:0;top:640px;width:1080px;height:190px;background:linear-gradient(180deg,rgba(18,25,32,0) 0%,rgba(18,25,32,.55) 55%,var(--night) 100%)}
+#below{position:absolute;left:64px;right:64px;top:902px;display:flex;justify-content:space-between;align-items:flex-start}
+.lockup{display:flex;flex-direction:column;align-items:flex-start;text-transform:uppercase}
+.l1{display:block;font-weight:500;line-height:.86;letter-spacing:.01em;white-space:nowrap}
+.l2{display:block;font-weight:300;line-height:1.15;white-space:nowrap;margin-top:6px}
+.l2 .last{letter-spacing:0}
+.rule{height:6px;border-radius:3px;background:var(--gold);margin:24px 0 20px}
+.tag{display:inline-block;font-weight:500;font-size:21px;letter-spacing:.32em;color:var(--sky);white-space:nowrap}
+.spons{display:flex;flex-direction:column;align-items:flex-start;padding:6px 0 0 44px;border-left:2px solid rgba(245,240,234,.16);margin-top:4px}
+.spons .lab{font-weight:500;font-size:20px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;line-height:1.5}
+.spons .name{font-weight:600;font-size:46px;letter-spacing:.06em;line-height:1.1;margin-top:22px;text-transform:uppercase}
+.spons .name2{font-weight:500;font-size:30px;letter-spacing:.05em;line-height:1.2;text-transform:uppercase}
+.spons .sub{font-weight:400;font-size:21px;letter-spacing:.24em;color:rgba(245,240,234,.7);text-transform:uppercase;margin-top:6px}
+.spons hr{width:64px;height:2px;border:0;background:rgba(245,240,234,.22);margin:22px 0}
+#foot{position:absolute;left:64px;right:64px;bottom:44px;display:flex;justify-content:space-between;align-items:center;padding-top:22px;border-top:1px solid rgba(245,240,234,.14);font-size:22px;letter-spacing:.06em;color:rgba(245,240,234,.72)}
+#foot b{font-weight:500;color:var(--cream)}
+#foot .mk{display:flex;align-items:center;gap:16px}
+#foot img{height:34px}
+</style></head>
+<body>
+<div id="post">
+  <img id="photo" src="work/team.jpg" alt="">
+  <div id="fade"></div>
+  <div id="below">
+    <div class="lockup">
+      <span class="l1" data-w="470">Team</span>
+      <span class="l2" data-w="470" data-fs="42">Abri Korte</span>
+      <div class="rule" style="width:470px"></div>
+      <div class="tag" data-w="470">Pickleball &middot; Consolacion</div>
+    </div>
+    <div class="spons">
+      <div class="lab">Thank you to<br>our sponsors</div>
+      <div class="name">Webik</div>
+      <hr>
+      <div class="name2">Seamaster</div>
+      <div class="sub">Food Products Co.</div>
+    </div>
+  </div>
+  <div id="foot"><span class="mk"><img src="../assets/mark.png" alt=""><b>abri-korte.vercel.app</b></span><span>Open 24 hours</span></div>
+</div>
+<script>
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([300, 400, 500, 600].map(w => document.fonts.load(w + ' 100px P')));
+  await Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => i.onload = r)));
+  document.querySelectorAll('.l1[data-w]').forEach(el => {
+    el.style.fontSize = '100px'; const w = el.getBoundingClientRect().width;
+    el.style.fontSize = (100 * (+el.dataset.w) / w) + 'px';
+  });
+  document.querySelectorAll('.l2[data-w]').forEach(el => {
+    const t = el.textContent.trim();
+    el.innerHTML = t.slice(0, -1).replace(/ /g, '&nbsp;') + '<span class="last">' + t.slice(-1) + '</span>';
+    el.style.fontSize = el.dataset.fs + 'px'; el.style.letterSpacing = '0px';
+    const w0 = el.getBoundingClientRect().width;
+    el.style.letterSpacing = ((+el.dataset.w - w0) / (t.length - 1)) + 'px';
+  });
+  document.querySelectorAll('.tag[data-w]').forEach(el => {
+    const t = el.textContent.trim();
+    el.innerHTML = t.slice(0, -1).replace(/ /g, '&nbsp;') + '<span style="letter-spacing:0">' + t.slice(-1) + '</span>';
+    el.style.letterSpacing = '0px'; const w0 = el.getBoundingClientRect().width;
+    el.style.letterSpacing = ((+el.dataset.w - w0) / (t.length - 1)) + 'px';
+  });
+  return true;
+})();
+</script>
+</body></html>

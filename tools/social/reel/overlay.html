@@ -1,0 +1,139 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;font-weight:300;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-300-normal.woff2)}
+@font-face{font-family:P;font-weight:400;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2)}
+@font-face{font-family:P;font-weight:500;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2)}
+@font-face{font-family:P;font-weight:600;src:url(../../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2)}
+:root{--cream:#F5F0EA;--charcoal:#1B242D;--gold:#F2B233;--azure:#028FD6;--band:#016FA8;--sky:#A8D6F0;--shade:14,19,24}
+html,body{margin:0;background:transparent}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:P,sans-serif;color:var(--cream)}
+.scrim{position:absolute;left:0;right:0;opacity:0}
+#scrim1{top:620px;height:1300px;background:linear-gradient(180deg,rgba(var(--shade),0) 0%,rgba(var(--shade),.42) 20%,rgba(var(--shade),.66) 38%,rgba(var(--shade),.66) 62%,rgba(var(--shade),.42) 82%,rgba(var(--shade),.30) 100%)}
+.lockup{position:absolute;left:84px;display:flex;flex-direction:column;align-items:flex-start;text-transform:uppercase;text-shadow:0 2px 30px rgba(var(--shade),.35)}
+.mask{overflow:hidden;padding:0 .02em .04em 0;margin-bottom:-.04em}
+.l1{display:block;font-weight:500;line-height:.9;letter-spacing:.01em;white-space:nowrap}
+.l2{display:block;font-weight:300;line-height:1.1;white-space:nowrap}
+.l2 .last{letter-spacing:0}
+.rule{height:8px;border-radius:4px;background:var(--gold);transform-origin:left center}
+.tag{font-weight:500;letter-spacing:.34em;white-space:nowrap;color:var(--gold);text-shadow:0 2px 18px rgba(var(--shade),.5)}
+.pill{display:inline-flex;align-items:center;gap:18px;background:var(--gold);color:var(--charcoal);font-weight:600;letter-spacing:.14em;border-radius:999px;white-space:nowrap;text-shadow:none}
+.pill i{display:block;width:12px;height:12px;border-radius:50%;background:var(--charcoal)}
+#endbg{position:absolute;inset:0;background:linear-gradient(165deg,#0293DB 0%,#016FA8 52%,#014F7A 100%);opacity:0}
+#end{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center}
+#logo{position:absolute;width:780px;left:150px}
+.cta{position:absolute;left:50%;display:inline-flex;align-items:center;gap:22px;background:var(--cream);color:var(--charcoal);font-weight:600;font-size:44px;letter-spacing:.1em;text-transform:uppercase;padding:30px 58px 28px;border-radius:999px;white-space:nowrap;box-shadow:0 18px 50px rgba(0,30,60,.28)}
+.cta svg{width:40px;height:40px}
+.url{position:absolute;left:50%;font-weight:500;font-size:46px;letter-spacing:.02em;white-space:nowrap}
+.url b{font-weight:500;color:var(--cream)}
+.uline{position:absolute;left:50%;height:5px;border-radius:3px;background:var(--gold);transform-origin:left center}
+.info{position:absolute;left:50%;font-weight:400;font-size:27px;letter-spacing:.3em;text-transform:uppercase;color:var(--sky);white-space:nowrap}
+</style></head>
+<body>
+<div id="stage">
+  <div class="scrim" id="scrim1"></div>
+  
+  <div class="lockup" id="b1" style="top:1036px">
+    <div class="mask"><span class="l1" data-w="740">New</span></div>
+    <div class="mask"><span class="l2" data-w="740" data-fs="62">Regulation net</span></div>
+    <div class="rule" style="width:740px;margin:32px 0 26px"></div>
+    <div class="tag" style="font-size:34px">Just installed</div>
+  </div>
+
+  <div class="lockup" id="b2" style="top:1012px">
+    <div class="mask"><span class="l1" data-w="740">Ready</span></div>
+    <div class="mask"><span class="l2" data-w="740" data-fs="50">For tournament play</span></div>
+    <div class="rule" style="width:740px;margin:32px 0 26px"></div>
+    <div class="tag" style="font-size:34px">Pickleball Invitational</div>
+    <div class="pill" style="font-size:36px;padding:16px 36px 14px;margin-top:24px"><i></i>Nov 21 &amp; 22</div>
+  </div>
+
+  <div id="endbg"></div>
+  <div id="end">
+    <img id="logo" src="../assets/logo.png" alt="">
+    <div class="cta" id="cta">Book a court now<svg viewBox="0 0 24 24" fill="none" stroke="#1B242D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="url" id="url">abri-korte.vercel.app</div>
+    <div class="uline" id="uline"></div>
+    <div class="info" id="info">Open 24 hours &middot; Consolacion, Cebu</div>
+  </div>
+</div>
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const CFG = window.CFG || {};
+function fit(){
+  document.querySelectorAll('.l1[data-w]').forEach(el => {
+    el.style.fontSize = '100px';
+    const w = el.getBoundingClientRect().width;
+    el.style.fontSize = (100 * (+el.dataset.w) / w) + 'px';
+  });
+  document.querySelectorAll('.l2[data-w]').forEach(el => {
+    const t = el.textContent.trim();
+    el.innerHTML = t.slice(0, -1).replace(/ /g, '&nbsp;') + '<span class="last">' + t.slice(-1) + '</span>';
+    el.style.fontSize = el.dataset.fs + 'px';
+    el.style.letterSpacing = '0px';
+    const w0 = el.getBoundingClientRect().width;
+    const n = t.length - 1;
+    el.style.letterSpacing = ((+el.dataset.w - w0) / n) + 'px';
+  });
+}
+function centerX(el){ const w = el.getBoundingClientRect().width; el.style.left = ((1080 - w) / 2) + 'px'; }
+function layoutEnd(){
+  const L = CFG.end || {};
+  const logo = document.getElementById('logo'); logo.style.top = (L.logoY || 470) + 'px';
+  const cta = document.getElementById('cta'); cta.style.top = (L.ctaY || 900) + 'px'; centerX(cta);
+  const url = document.getElementById('url'); url.style.top = (L.urlY || 1062) + 'px'; centerX(url);
+  const ul = document.getElementById('uline'); const ur = url.getBoundingClientRect();
+  ul.style.left = ur.left + 'px'; ul.style.width = ur.width + 'px'; ul.style.top = (ur.bottom + 6) + 'px';
+  const info = document.getElementById('info'); info.style.top = (L.infoY || 1190) + 'px'; centerX(info);
+  // trailing letter-spacing makes the box wider than the glyphs, nudge right by half of it
+  info.style.left = (parseFloat(info.style.left) + 0.15 * 27) + 'px';
+}
+function beatIn(tl, id, t0){
+  const b = document.getElementById(id);
+  const l1 = b.querySelector('.l1'), l2 = b.querySelector('.l2'), rule = b.querySelector('.rule');
+  const rest = [...b.querySelectorAll('.tag,.pill')];
+  tl.fromTo(l1, {yPercent: 105}, {yPercent: 0, duration: .62, ease: 'power4.out'}, t0);
+  tl.fromTo(l2, {yPercent: 110, opacity: 0}, {yPercent: 0, opacity: 1, duration: .6, ease: 'power3.out'}, t0 + .14);
+  tl.fromTo(rule, {scaleX: 0}, {scaleX: 1, duration: .55, ease: 'power3.inOut'}, t0 + .26);
+  rest.forEach((el, i) => tl.fromTo(el, {y: 26, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: 'power2.out'}, t0 + .42 + i * .12));
+}
+function beatOut(tl, id, t1){
+  const b = document.getElementById(id);
+  const l1 = b.querySelector('.l1'), l2 = b.querySelector('.l2'), rule = b.querySelector('.rule');
+  const rest = [...b.querySelectorAll('.tag,.pill')];
+  tl.to(l1, {yPercent: -105, duration: .34, ease: 'power3.in'}, t1);
+  tl.to(l2, {yPercent: -110, duration: .32, ease: 'power3.in'}, t1 + .04);
+  tl.to(rule, {scaleX: 0, transformOrigin: 'right center', duration: .3, ease: 'power3.in'}, t1 + .02);
+  rest.forEach(el => tl.to(el, {opacity: 0, y: -16, duration: .24, ease: 'power2.in'}, t1));
+}
+function build(){
+  const C = Object.assign({b1: [0.04, 3.5], b2: [3.92, 7.8], end: 8.0}, CFG);
+  const tl = gsap.timeline({paused: true});
+  tl.set({}, {}, 0);
+  tl.fromTo('#scrim1', {opacity: 1}, {opacity: 1, duration: .01}, 0);
+  beatIn(tl, 'b1', C.b1[0]);
+  beatOut(tl, 'b1', C.b1[1]);
+  beatIn(tl, 'b2', C.b2[0]);
+  beatOut(tl, 'b2', C.b2[1]);
+  tl.to('#scrim1', {opacity: 0, duration: .5, ease: 'none'}, C.end);
+  const e = C.end;
+  tl.fromTo('#endbg', {opacity: 0}, {opacity: .9, duration: .55, ease: 'power1.inOut'}, e);
+  tl.fromTo('#logo', {y: 40, opacity: 0}, {y: 0, opacity: 1, duration: .7, ease: 'power3.out'}, e + .25);
+  tl.fromTo('#cta', {y: 30, opacity: 0, scale: .94}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: 'back.out(1.6)'}, e + .65);
+  tl.fromTo('#url', {y: 20, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: 'power2.out'}, e + .9);
+  tl.fromTo('#uline', {scaleX: 0}, {scaleX: 1, duration: .5, ease: 'power3.inOut'}, e + 1.05);
+  tl.fromTo('#info', {opacity: 0}, {opacity: 1, duration: .5, ease: 'power1.out'}, e + 1.2);
+  tl.set({}, {}, C.total || 12.5);
+  return tl;
+}
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([300, 400, 500, 600].map(w => document.fonts.load(w + ' 100px P')));
+  await new Promise(r => { const i = document.getElementById('logo'); i.complete ? r() : i.onload = r; });
+  fit(); layoutEnd();
+  window.tl = build();
+  window.seek = t => { window.tl.seek(t, false); };
+  return true;
+})();
+</script>
+</body></html>
