@@ -21,7 +21,7 @@ def main():
     data = json.loads(re.search(r'<script type="application/json" id="data">(.*?)</script>', src, re.S).group(1))
     if "--tourney" in sys.argv[1:]:
         data["tourney"] = json.load(open(os.path.join(ROOT, "src", "tourney.json"), encoding="utf-8"))
-    out = build.standalone(build.fragment(data), "https://abri-korte.vercel.app/")
+    out = build.standalone(build.fragment(data), "https://abrikorte.com/")
     assert "—" not in out, "em dash in page"
     open(p, "w", encoding="utf-8").write(out)
     t = data.get("tourney") or {}

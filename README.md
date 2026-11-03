@@ -47,7 +47,7 @@ python3 src/home/build_home.py --site-out home
 3. Rebuild the page:
 
    ```
-   python3 src/build.py src/rows.txt --site . --url https://abri-korte.vercel.app/
+   python3 src/build.py src/rows.txt --site . --url https://abrikorte.com/
    ```
 
 4. Commit and push. Vercel or GitHub Pages redeploys on its own.
@@ -60,3 +60,4 @@ python3 src/home/build_home.py --site-out home
 
 - **Vercel:** New Project, import this repo, Framework Preset "Other", no build command, output directory left as the root.
 - **GitHub Pages:** Settings, Pages, Deploy from a branch, `main`, `/ (root)`.
+- **Domain:** the site lives at https://abrikorte.com on Vercel, and www.abrikorte.com redirects to it. The domain's DNS (at Hostinger) has an A record for `@` and a CNAME for `www`, set to the values in the Vercel project's Domains settings.

@@ -135,7 +135,7 @@ if __name__ == "__main__":
     a = ap.parse_args()
     data, n = make_data(a.rows, a.tourney)
     if not a.site:
-        data["home"] = "https://abri-korte.vercel.app/home/"
+        data["home"] = "https://abrikorte.com/home/"
     frag = fragment(data)
     assert "—" not in frag, "em dash in page"
     if a.site:

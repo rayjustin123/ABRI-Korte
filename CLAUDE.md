@@ -4,7 +4,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 
 ## Where things live
 
-- Live site: https://abri-korte.vercel.app. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success".
+- Live site: https://abrikorte.com. www.abrikorte.com redirects to it, and https://abri-korte.vercel.app still works. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success".
 - Booking page, the landing page at the site root: `index.html`, built by `src/build.py` from `src/template.html`, `src/rows.txt` (taken slots) and `src/tourney.json`. Tabs open with `#book`, `#tournament`, `#rates` and `#info`.
 - Home page: `home/index.html` with `home/player.jpg` and `home/player-depth.png`, built by `src/home/build_home.py` from `src/home/`. Its registration deadline comes from `src/tourney.json`.
 - `tools/`: page tests, the point-cloud player, and the Reel and post renderers. See `tools/README.md`. Not part of the site.
@@ -12,6 +12,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
   - Bookings: the Google Sheet "ABRI KORTE Reservation Schedule", Reservations tab, bookings from row 7.
   - Tournament: the Abri Korte Pickleball Invitational app, a Claude artifact in RJ's account. Its database has `event` (doc `config`), `teams`, `draws`, `matches` and `scores`.
   - Messenger (every Book button opens it with the booking typed in): m.me/61593743265058. Facebook: ABRIKorteCebu. Instagram: @abrikorte.
+  - Domain: abrikorte.com, registered at Hostinger on November 3, 2026 for one year. Its DNS at Hostinger points to Vercel: an A record for `@` and a CNAME for `www`, with the values shown in the Vercel project's Domains settings.
 
 ## RJ's standing rules
 
@@ -36,7 +37,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 
 1. In the browser, signed in as RJ, open the sheet. Read the Reservations tab as CSV by fetching `gviz/tq?tqx=out:csv&sheet=Reservations` on the same spreadsheet URL from inside the sheet page.
 2. Write `src/rows.txt`, one taken slot per line: `2026-10-31|7:00 PM|11:00 PM|Confirmed`. Never copy names. Confirmed, Pending, Completed, Unpaid and blank statuses block a slot; Cancelled and No-show don't. A slot that runs past midnight ends the next day.
-3. `python3 src/build.py src/rows.txt --site . --url https://abri-korte.vercel.app/`, check the page, commit, push, confirm the deploy.
+3. `python3 src/build.py src/rows.txt --site . --url https://abrikorte.com/`, check the page, commit, push, confirm the deploy.
 
 ### Add bookings to the sheet
 
@@ -66,9 +67,10 @@ Edit `src/home/`, rebuild with `python3 src/home/build_home.py --site-out home`,
 - Light by default, dark through the toggle, saved in localStorage `abri-theme` and shared with the booking page.
 - Test hooks: `window.__abriDt`, `window.__abriHero.ff(seconds)`, `window.__abriCourt`, `window.__abriCloud`.
 
-## Recent history (October 2026)
+## Recent history (October and November 2026)
 
 - Home page redesigned in three rounds: logo-style headings, one shared navigation, the covered court with posts and a roof, both meanings of Abri, food and drinks at the court, and a ready-stance player in the point cloud.
 - Booking page: past hours hidden, a Today chip, and weekly regulars through December 2026 (Wednesday 6 to 10 PM, Thursday 7 to 11 PM, Friday 8 PM to 12 AM, Saturday and Sunday 7 to 11 PM).
 - Invitational: November 21 and 22, 2026. Registration closes November 18.
 - Social, October 29: a 12.5 second Reel of the new regulation net, and a Team Abri Korte photo post thanking sponsors WEBIK and Seamaster Food Products Co.
+- November 3: abrikorte.com connected. Share links and canonical addresses on both pages use it, and the Reel and post templates show it.

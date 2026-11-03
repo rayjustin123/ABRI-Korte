@@ -16,7 +16,7 @@ import urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "src") if os.path.isdir(os.path.join(HERE, "src")) else HERE
-SITE = "https://abri-korte.vercel.app/"
+SITE = "https://abrikorte.com/"
 
 MSGR = "https://m.me/61593743265058"
 EVENT_TEXT = "\n".join([
