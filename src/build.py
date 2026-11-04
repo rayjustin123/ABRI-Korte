@@ -10,6 +10,8 @@ import datetime as dt
 import json
 import os
 
+import seo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 BLOCKING = {"Confirmed", "Pending", "Completed", "Unpaid", ""}
 DAY = 1440
@@ -99,12 +101,13 @@ def fragment(data):
     return tpl.replace("/*__DATA__*/", js)
 
 
+TITLE = "Abri Korte | Book a Pickleball Court in Consolacion, Cebu"
 DESC = "See open court times at Abri Korte, get the price right away, and book on Messenger. Covered pickleball and badminton court in Consolacion, Cebu, open 24 hours."
 RESET = (":root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}"
          "body{margin:0}img{max-width:100%}[hidden]{display:none!important}")
 
 
-def standalone(frag, url):
+def standalone(frag, url, tourney=None):
     cut = frag.index("</style>\n") + len("</style>\n")
     head, body = frag[:cut], frag[cut:]
     head = head.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
@@ -127,6 +130,8 @@ def standalone(frag, url):
     if base:
         meta.append('<meta property="og:url" content="' + base + '">')
         meta.append('<link rel="canonical" href="' + base + '">')
+        meta.append(seo.jsonld(tourney))
+        head = head.replace("<title>Abri Korte Booking</title>", "<title>" + TITLE + "</title>", 1)
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
             '<style>' + RESET + '</style>\n' + head.replace("<title>", "\n".join(meta) + "\n<title>", 1)
@@ -148,8 +153,9 @@ if __name__ == "__main__":
     assert "—" not in frag, "em dash in page"
     if a.site:
         os.makedirs(a.site, exist_ok=True)
-        html = standalone(frag, a.url)
+        html = standalone(frag, a.url, data.get("tourney"))
         open(os.path.join(a.site, "index.html"), "w", encoding="utf-8").write(html)
+        seo.write_sitemap(a.site)
         print(f"{n} taken blocks, updated {data['updatedLabel']}, {len(html):,} bytes -> {a.site}/index.html")
     else:
         open(a.out, "w", encoding="utf-8").write(frag)

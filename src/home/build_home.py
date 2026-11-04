@@ -13,6 +13,10 @@ import html
 import json
 import os
 import urllib.parse
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import seo  # noqa: E402  (src/seo.py, shared with the booking page)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "src") if os.path.isdir(os.path.join(HERE, "src")) else HERE
@@ -71,6 +75,14 @@ def depth_png():
     return open(os.path.join(SRC, "player-depth.png"), "rb").read()
 
 
+def tourney():
+    """The tournament snapshot (src/tourney.json), or None."""
+    for p in (os.path.join(HERE, "..", "tourney.json"), os.path.join(SRC, "tourney.json")):
+        if os.path.exists(p):
+            return json.load(open(p, encoding="utf-8"))
+    return None
+
+
 def reg_by():
     """'Nov 18' from the tournament snapshot (src/tourney.json), so the home page follows the tournament app."""
     for p in (os.path.join(HERE, "..", "tourney.json"), os.path.join(SRC, "tourney.json")):
@@ -118,6 +130,7 @@ def page(site, photo, depth):
         '<meta property="og:url" content="%s">' % url,
         '<link rel="canonical" href="%s">' % url,
         '<meta name="twitter:card" content="summary_large_image">',
+        seo.jsonld(tourney()),
         '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>',
         fonts + style + '</head>', '<body>'])
     return head + "\n" + body + "\n" + tail + "</body>\n</html>\n"
@@ -146,6 +159,9 @@ if __name__ == "__main__":
         open(os.path.join(a.site_out, "player.jpg"), "wb").write(jpg)
         open(os.path.join(a.site_out, "player-depth.png"), "wb").write(depth_png())
         write(os.path.join(a.site_out, "index.html"), page(True, "player.jpg", "player-depth.png"))
+        root = os.path.dirname(os.path.abspath(a.site_out))
+        if os.path.exists(os.path.join(root, "index.html")):  # the real site, not a test build
+            seo.write_sitemap(root)
     if a.artifact_out:
         os.makedirs(os.path.dirname(os.path.abspath(a.artifact_out)), exist_ok=True)
         write(a.artifact_out, page(False, "data:image/jpeg;base64," + base64.b64encode(jpg).decode(),

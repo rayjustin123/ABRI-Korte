@@ -25,9 +25,10 @@ def main():
         # the tournament's days on the schedule follow the new config; booked slots (two numbers each) stay as they are
         data["booked"] = sorted([b for b in data["booked"] if len(b) < 3] + build.event_blocks(data["tourney"]),
                                 key=lambda b: b[0])
-    out = build.standalone(build.fragment(data), "https://abrikorte.com/")
+    out = build.standalone(build.fragment(data), "https://abrikorte.com/", data.get("tourney"))
     assert "—" not in out, "em dash in page"
     open(p, "w", encoding="utf-8").write(out)
+    build.seo.write_sitemap(ROOT)
     t = data.get("tourney") or {}
     print("index.html", len(out), "bytes; schedule updated", data.get("updatedLabel"),
           "; tournament updated", t.get("updatedLabel"), "; register by", (t.get("config") or {}).get("regDeadline"))
