@@ -12,13 +12,13 @@ Players pick a day, see which hours are open or taken, get the price right away 
 
 ## Tournament
 
-The **Tournament** tab shows the Abri Korte Pickleball Invitational: the run of show for each category, the roster, and results once games are scored. Its data comes from `src/tourney.json`, built from the tournament app with `src/make_tourney.py`. Only confirmed teams' names are published. No contacts, playing history, notes or payment details.
+The **Tournament** tab shows the Abri Korte Friendly Rally: Saturday, November 21, 2026, beginners only, one division of up to 16 teams, solo or pair sign-ups, ₱400 per player. Prizes are ₱2,000 + 5 court hours, ₱1,000 + 4 court hours, and 3 court hours for third. The tab shows the prizes, entry and who can join, a Register on Messenger button, the run of show, the roster, and results once games are scored. Its data comes from `src/tourney.json`. For the rally that file is edited by hand: the tournament app (`src/make_tourney.py` builds the file from its saved data) still holds the old Invitational setup. Only confirmed teams' names are published. No contacts, playing history, notes or payment details.
 
-Link straight to it with `#tournament` at the end of the site address. `#book`, `#rates` and `#info` open the other tabs the same way.
+Link straight to it with `#tournament` at the end of the site address (https://abrikorte.com/#tournament is the sign-up link on the rally post). `#book`, `#rates` and `#info` open the other tabs the same way. The tournament's days show as closed from 6 AM to 5 PM on the booking schedule, taken from the days in `src/tourney.json`.
 
 ## Home page
 
-The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the covered court with two paddles rallying under the roof, rentals, rates and open hours, private group events, the Invitational, how booking works (a player rebuilt from points of light) and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr, and Poppins and Barlow from Google Fonts (plus Noto Sans for the peso sign only, since the other two have none).
+The booking page stays the landing page at the site root. The home page lives at `/home/` (`home/index.html`): pickleballs falling onto the Abri Korte name, the covered court with two paddles rallying under the roof, rentals, rates and open hours, private group events, the Friendly Rally, how booking works (a player rebuilt from points of light) and how to find us. Light mode by default with a dark mode toggle. It loads three.js, Matter.js and GSAP from jsDelivr, and Poppins and Barlow from Google Fonts (plus Noto Sans for the peso sign only, since the other two have none).
 
 Both pages share one navigation: Home, Book, Tournament, Rates and Court Info. On phones it sits in a bar at the bottom. Headings everywhere are set in Poppins like the logo, a heavier word followed by a lighter, spaced-out one.
 

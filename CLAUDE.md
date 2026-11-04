@@ -10,7 +10,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 - `tools/`: page tests, the point-cloud player, and the Reel and post renderers. See `tools/README.md`. Not part of the site.
 - Outside the repo, in RJ's accounts (he signs in himself):
   - Bookings: the Google Sheet "ABRI KORTE Reservation Schedule", Reservations tab, bookings from row 7.
-  - Tournament: the Abri Korte Pickleball Invitational app, a Claude artifact in RJ's account. Its database has `event` (doc `config`), `teams`, `draws`, `matches` and `scores`.
+  - Tournament: the tournament app, a Claude artifact in RJ's account (built as the Abri Korte Pickleball Invitational app). Its database has `event` (doc `config`), `teams`, `draws`, `matches` and `scores`. It still holds the old Invitational setup (two days, Beginners and Novice, four categories); it has not been switched to the Friendly Rally yet.
   - Messenger (every Book button opens it with the booking typed in): m.me/61593743265058. Facebook: ABRIKorteCebu. Instagram: @abrikorte.
   - Domain: abrikorte.com, registered at Hostinger on November 3, 2026 for one year. Its DNS at Hostinger points to Vercel: an A record for `@` and a CNAME for `www`, with the values shown in the Vercel project's Domains settings.
 
@@ -45,6 +45,8 @@ Only when RJ asks, with the details he gives. In Google Sheets through the brows
 
 ### Refresh the tournament data
 
+**Do not run this until the tournament app is switched to the Friendly Rally.** The app still holds the old Invitational config, and `src/tourney.json` is now edited by hand for the rally (one day, Nov 21, one Beginners division `bd` of up to 16 teams, prizes [2000, 1000, 0] cash + [5, 4, 3] court hours, plus the hand-added `blurb` and `solo` fields that the app does not have). Running `make_tourney.py` now would put the Invitational back on the site. Until then, edit `src/tourney.json` directly (confirmed teams go in `teams` with `cat: "bd"`), then rebuild both pages as in step 3.
+
 1. Export the tournament app's database (`event/config`, `teams`, `draws`, `matches`, `scores`) to a folder with the artifact data tool.
 2. `python3 src/make_tourney.py <folder> src/tourney.json`
 3. Rebuild both pages: `python3 tools/site/rebuild_booking.py --tourney` (keeps the schedule) and `python3 src/home/build_home.py --site-out home`.
@@ -71,6 +73,6 @@ Edit `src/home/`, rebuild with `python3 src/home/build_home.py --site-out home`,
 
 - Home page redesigned in three rounds: logo-style headings, one shared navigation, the covered court with posts and a roof, both meanings of Abri, food and drinks at the court, and a ready-stance player in the point cloud.
 - Booking page: past hours hidden, a Today chip, and weekly regulars through December 2026 (Wednesday 6 to 10 PM, Thursday 7 to 11 PM, Friday 8 PM to 12 AM, Saturday and Sunday 7 to 11 PM).
-- Invitational: November 21 and 22, 2026. Registration closes November 18.
+- Tournament: the Invitational (Nov 21 and 22, Beginners and Novice) was replaced on November 5 by the first Abri Korte Friendly Rally: Saturday, November 21, 2026 only, 7 AM first serve, beginners only, one division of up to 16 teams, solo or pair sign-ups, ₱400 per player. Prizes: 1st ₱2,000 + 5 court hours, 2nd ₱1,000 + 4 court hours, 3rd 3 court hours. Prize hours never expire and can be sold to regulars with our help. Every player gets snacks and water; every team gets 1 free court hour on weekdays before 5 PM. Registration closes November 18 through https://abrikorte.com/#tournament (Register on Messenger). Sunday Nov 22 is open for bookings again.
 - Social, October 29: a 12.5 second Reel of the new regulation net, and a Team Abri Korte photo post thanking sponsors WEBIK and Seamaster Food Products Co.
 - November 3: abrikorte.com connected. Share links and canonical addresses on both pages use it, and the Reel and post templates show it.

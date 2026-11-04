@@ -22,10 +22,11 @@ MSGR = "https://m.me/61593743265058"
 EVENT_TEXT = "\n".join([
     "Hi Abri Korte! I'd like to book the court for an event.", "",
     "Date: ", "Time: ", "How many people: ", "Kind of event: "])
+# same message as the Register button on the booking page's Tournament tab (regText in src/template.html)
 REG_TEXT = "\n".join([
-    "Hi Abri Korte! We would like to register for the Abri Korte Pickleball Invitational.", "",
-    "Category: ", "Player 1: ", "Player 2: ",
-    "How long each of us has played pickleball: ",
+    "Hi Abri Korte! I would like to sign up for the Abri Korte Friendly Rally.", "",
+    "Player 1: ", "Player 2 (leave blank if signing up solo): ",
+    "How long each player has played pickleball: ",
     "Podium finishes or titles in past tournaments: ",
     "Racquet sports varsity background: "])
 
@@ -43,7 +44,7 @@ PESO = "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&
 CFG = {"rates": {"weekday": {"day": 200, "night": 350}, "weekend": {"day": 300, "night": 400},
                  "dayStart": 6 * 60, "dayEnd": 17 * 60}}
 DESC = ("Abri Korte is one covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. "
-        "Open 24 hours. See rates, events and the Pickleball Invitational, then book on Messenger.")
+        "Open 24 hours. See rates, events and the Friendly Rally for beginners on November 21, then book on Messenger.")
 
 
 def photo_jpeg():

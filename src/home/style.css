@@ -348,7 +348,7 @@ section[id],footer[id]{scroll-margin-top:calc(60px + env(safe-area-inset-top,0px
   .marq ul{display:flex;align-items:center;gap:34px;width:max-content;padding-block:16px;will-change:transform}
 }
 
-/* tournament: set like the Invitational post, with a draw sheet instead of cards */
+/* tournament: set like a tournament poster, with a draw sheet instead of cards */
 .tour{position:relative;overflow:hidden;color:var(--tour-ink);background:linear-gradient(165deg,var(--tour-a) 0%,var(--tour-b) 42%,var(--tour-c) 100%)}
 .tour-in{position:relative;padding-block:96px 88px;display:flex;flex-direction:column;gap:56px}
 .tour-head{display:flex;flex-direction:column;gap:18px}

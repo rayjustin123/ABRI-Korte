@@ -14,7 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BLOCKING = {"Confirmed", "Pending", "Completed", "Unpaid", ""}
 DAY = 1440
 EPOCH = dt.date(1970, 1, 1)
-EVENT = "Abri Korte Pickleball Invitational"
+EVENT_HOURS = (6 * 60, 17 * 60)  # the court is closed for a tournament from 6 AM to 5 PM on each of its days
 
 
 def mins(t):
@@ -29,7 +29,15 @@ def absmin(iso, m):
     return (dt.date.fromisoformat(iso) - EPOCH).days * DAY + m
 
 
+def event_blocks(tourney):
+    """The tournament's days as labelled blocks on the booking schedule: [start, end, name], from the tourney config."""
+    cfg = (tourney or {}).get("config") or {}
+    name = cfg.get("name") or "Tournament"
+    return [[absmin(d["date"], EVENT_HOURS[0]), absmin(d["date"], EVENT_HOURS[1]), name] for d in cfg.get("days", [])]
+
+
 def make_data(rows_path, tourney_path=None):
+    tourney = json.load(open(tourney_path, encoding="utf-8")) if tourney_path and os.path.exists(tourney_path) else None
     blocks = []
     for line in open(rows_path, encoding="utf-8"):
         line = line.strip()
@@ -49,8 +57,8 @@ def make_data(rows_path, tourney_path=None):
             merged[-1][1] = max(merged[-1][1], e)
         else:
             merged.append([s, e])
-    events = [[absmin(d, 6 * 60), absmin(d, 17 * 60), EVENT] for d in ("2026-11-21", "2026-11-22")]
-    now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
+    events = event_blocks(tourney)
+    now =dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
     return {
         "updatedLabel": now.strftime("%b %-d, %-I:%M %p"),
         "weeks": 8,
@@ -80,7 +88,7 @@ def make_data(rows_path, tourney_path=None):
         "messenger": "https://m.me/61593743265058",
         "home": "home/",
         "booked": sorted(merged + events, key=lambda b: b[0]),
-        "tourney": json.load(open(tourney_path, encoding="utf-8")) if tourney_path and os.path.exists(tourney_path) else None,
+        "tourney": tourney,
     }, len(merged)
 
 

@@ -217,6 +217,8 @@ button.card:active{transform:scale(.985)}
 .tpage{gap:18px}
 .thero{display:flex;flex-direction:column;gap:10px}
 .eyebrow{font:500 12px/1.3 var(--font-brand);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.tblurb{font-size:15px;line-height:1.5;color:var(--ink-2);max-width:60ch}
+.thero .treg{max-width:380px;margin-top:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip.soft{background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
 .subseg{max-width:440px}
@@ -274,7 +276,7 @@ details.games[open]{padding-bottom:14px}
 .stand th:first-child,.stand td:first-child{text-align:left}
 .stand td{padding:5px 4px;text-align:right;border-top:1px solid var(--line)}
 .stand tr.q td:first-child{font-weight:600}
-@media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}.ros.one,.qual.one{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
 
 /* bottom tab bar */
@@ -522,6 +524,11 @@ function stageLabel(x) {
   if (x.id === 'sf2') return 'Semifinal 2';
   return x.stage === 'bronze' ? 'Bronze match' : 'Final';
 }
+const NUMW = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const QUAL = {
+  Beginners: ['No podium or title in any tournament', 'Playing pickleball 6 months or less', 'No racquet sports varsity background'],
+  Novice: ['No title in Novice or higher', 'No podium in Intermediate or higher', 'No racquet sports varsity background']
+};
 function advanceLine(np) {
   if (np <= 1) return 'The top two play the final. Third and fourth play for bronze.';
   if (np === 2) return 'The top two in each pool advance to the semifinals.';
@@ -570,18 +577,20 @@ function runOfShow(b) {
   return out;
 }
 function regText(c) {
-  return ['Hi Abri Korte! We would like to register for the ' + T.config.name + '.', '',
-    'Category: ' + c.level + ' ' + c.name,
-    'Player 1: ', 'Player 2: ',
-    'How long each of us has played pickleball: ',
-    'Podium finishes or titles in past tournaments: ',
-    'Racquet sports varsity background: '].join('\n');
+  const cfg = T.config;
+  return ['Hi Abri Korte! I would like to sign up for the ' + cfg.name + '.', '']
+    .concat(cfg.cats.length > 1 ? ['Category: ' + c.level + ' ' + c.name] : [])
+    .concat(['Player 1: ', cfg.solo ? 'Player 2 (leave blank if signing up solo): ' : 'Player 2: ',
+      'How long each player has played pickleball: ',
+      'Podium finishes or titles in past tournaments: ',
+      'Racquet sports varsity background: ']).join('\n');
 }
 const regUrl = c => D.messenger + '?text=' + encodeURIComponent(regText(c));
 const hasScores = () => !!T && Object.values(T.scores || {}).some(o => Object.values(o || {}).some(scoredT));
 
 function tDates() {
   const ds = T.config.days.map(d => d.date).sort(), a = dateOf(dnOf(ds[0])), b = dateOf(dnOf(ds[ds.length - 1]));
+  if (ds.length === 1) return WD3[a.getUTCDay()] + ', ' + MO3[a.getUTCMonth()] + ' ' + a.getUTCDate() + ', ' + a.getUTCFullYear();
   return a.getUTCMonth() === b.getUTCMonth() ? MO3[a.getUTCMonth()] + ' ' + a.getUTCDate() + (ds.length > 1 ? ' & ' + b.getUTCDate() : '') + ', ' + a.getUTCFullYear() : shortIso(ds[0]) + ' & ' + shortIso(ds[ds.length - 1]);
 }
 
@@ -591,13 +600,19 @@ function vTour() {
   const cash = cfg.cats.reduce((s, c) => s + (c.prizes || []).reduce((a, b) => a + b, 0), 0);
   const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
   const caps = [...new Set(cfg.cats.map(c => c.cap))];
+  const one = cfg.cats.length === 1 ? cfg.cats[0] : null;
   const res = hasScores();
   if (S.tsub === 'results' && !res) S.tsub = 'schedule';
   const subs = [['schedule', 'Schedule'], ['roster', 'Roster']].concat(res ? [['results', 'Results']] : []);
   const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : vTSchedule(m);
+  // one category: the sign-up button sits right under the title, so a link straight to #tournament can register at once
+  const reg = one && regOpen() && m.planned[one.id] && confirmedOf(m, one.id).length < one.cap
+    ? '<a class="cta treg" href="' + esc(regUrl(one)) + '" target="_blank" rel="noopener" data-act="reg" data-cat="' + one.id + '">' + I.chat + 'Register on Messenger</a>' : '';
   return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1 class="lh">' + lockH(cfg.title || cfg.name) + '</h1>'
+    + (cfg.blurb ? '<p class="tblurb">' + esc(cfg.blurb) + '</p>' : '')
     + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
-    + (caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div></section>'
+    + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
+    + reg + '</section>'
     + '<div class="seg subseg' + (subs.length === 3 ? ' three' : '') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
     + body + '<p class="foot">Tournament details as of ' + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
 }
@@ -641,7 +656,7 @@ function vTRoster(m) {
   const cards = cfg.cats.map(c => {
     const ids = confirmedOf(m, c.id), lv = c.level === 'Novice' ? 'n' : 'b', day = cfg.days[tDayOf(c.id)];
     const n = ids.length, pct = Math.min(100, Math.round(n / Math.max(1, c.cap) * 100));
-    const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : '') + '</div>'; }).join('');
+    const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' court hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : !p.cash && p.h ? '<em>Court time</em>' : '') + '</div>'; }).join('');
     let teams;
     if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
     else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
@@ -654,14 +669,16 @@ function vTRoster(m) {
       + '<div class="fill"><span class="num">' + peso(c.fee) + ' per player</span><span class="num">' + n + ' of ' + c.cap + ' teams</span></div><div class="bar" role="img" aria-label="' + n + ' of ' + c.cap + ' teams confirmed"><i style="width:' + pct + '%"></i></div>'
       + teams + cta + '</article>';
   }).join('');
-  const sz = poolSizes(cfg.cats[0].cap);
-  const fmt = ['Two pools of ' + sz[0] + ', round robin. Every team plays at least 3 matches.', advanceLine(sz.length) + ' Semifinal losers play for bronze.', 'Rally scoring, no deuce. Pools to ' + cfg.scoring.pool + ', semifinals and bronze to ' + cfg.scoring.sf + ', final to ' + cfg.scoring.final + '.', 'Check in 30 minutes before your pool starts. Only players competing that day are allowed inside.'];
-  return '<div class="ros">' + cards + '</div>'
+  const sz = poolSizes(cfg.cats[0].cap), np = sz.length, lo = Math.min(...sz), hi = Math.max(...sz);
+  const pools = (NUMW[np - 1] || String(np)) + (np === 1 ? ' pool of ' : ' pools of ') + (lo === hi ? lo : lo + ' or ' + hi);
+  const fmt = [pools + ', round robin. Every team plays at least 3 matches.', advanceLine(np) + (np > 1 ? ' Semifinal losers play for bronze.' : ''), 'Rally scoring, no deuce. Pools to ' + cfg.scoring.pool + ', semifinals and bronze to ' + cfg.scoring.sf + ', final to ' + cfg.scoring.final + '.', 'Check in ' + (cfg.checkInMin || 30) + ' minutes before your pool starts. Only players competing that day are allowed inside.'];
+  const levels = [...new Set(cfg.cats.map(c => c.level))].filter(l => QUAL[l]);
+  const solo = cfg.solo ? ' Solo players are paired with ' + (levels.length === 1 ? 'another ' + levels[0].toLowerCase().replace(/s$/, '') : 'another player at the same level') + '.' : '';
+  return '<div class="ros' + (cfg.cats.length === 1 ? ' one' : '') + '">' + cards + '</div>'
     + (cfg.hoursNote ? '<p class="fine" style="text-align:left">' + esc(cfg.hoursNote) + '</p>' : '')
     + '<div class="box"><h2>Format</h2><ul class="rules" style="list-style:disc">' + fmt.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>'
-    + '<div class="qual"><div class="box"><h2>Beginners can join if</h2><ul class="rules" style="list-style:disc"><li>No podium or title in any tournament</li><li>Playing pickleball 6 months or less</li><li>No racquet sports varsity background</li></ul></div>'
-    + '<div class="box"><h2>Novice can join if</h2><ul class="rules" style="list-style:disc"><li>No title in Novice or higher</li><li>No podium in Intermediate or higher</li><li>No racquet sports varsity background</li></ul></div></div>'
-    + '<p class="fine" style="text-align:left">Both partners must meet the qualifications. Playing up a level is always allowed. False information means disqualification and forfeited prizes.</p>';
+    + '<div class="qual' + (levels.length === 1 ? ' one' : '') + '">' + levels.map(l => '<div class="box"><h2>' + esc(l) + ' can join if</h2><ul class="rules" style="list-style:disc">' + QUAL[l].map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>').join('') + '</div>'
+    + '<p class="fine" style="text-align:left">Both partners must meet the qualifications.' + (levels.length > 1 ? ' Playing up a level is always allowed.' : '') + solo + ' False information means disqualification and forfeited prizes.</p>';
 }
 
 function vTResults(m) {
@@ -681,6 +698,8 @@ const S = { tab: 'book', tsub: 'schedule', tday: 0, week: 0, day: TODAY, pick: n
 try { const n = localStorage.getItem('ak-name'); if (n) S.name = n; } catch (e) { /* storage unavailable */ }
 const TABS = ['book', 'tournament', 'rates', 'info'];
 if (T) { const i = T.config.days.findIndex(d => d.date >= isoOf(TODAY)); S.tday = i < 0 ? 0 : i; }
+// while sign-ups are open and nothing is drawn yet, the tournament tab opens on the prizes, entry and who can join
+if (T && regOpen() && T.config.cats.every(c => !(T.draws && T.draws[c.id] && T.draws[c.id].locked))) S.tsub = 'roster';
 if (TABS.includes(location.hash.slice(1))) S.tab = location.hash.slice(1);
 if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);

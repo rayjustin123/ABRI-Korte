@@ -39,7 +39,7 @@ function live() {
   $$('[data-rate]').forEach(td => td.classList.toggle('now', td.dataset.rate === wk + '-' + part));
   const cnt = $('#count');
   if (cnt) {
-    const start = Date.UTC(2026, 10, 20, 23, 0), end = Date.UTC(2026, 10, 22, 9, 0), now = Date.now();
+    const start = Date.UTC(2026, 10, 20, 23, 0), end = Date.UTC(2026, 10, 21, 9, 0), now = Date.now();  /* Sat Nov 21, 7 AM to 5 PM Manila */
     if (now < start) { const d = Math.ceil((start - now) / 864e5); cnt.innerHTML = '<b class="num">' + d + (d === 1 ? ' day' : ' days') + '</b>until the first serve'; }
     else if (now < end) cnt.innerHTML = '<b>Happening now</b>Come watch at the court';
     else cnt.innerHTML = '<b>Thanks for playing</b>Results are on the schedule page';

@@ -1,95 +1,36 @@
 {
- "updatedLabel": "Oct 30, 5:50 AM",
+ "updatedLabel": "Nov 5, 2:09 AM",
  "config": {
-  "name": "Abri Korte Pickleball Invitational",
-  "title": "Pickleball Invitational",
+  "name": "Abri Korte Friendly Rally",
+  "title": "Friendly Rally",
+  "blurb": "Our first ever Friendly Rally: beginner friendly fun play, with free snacks and water for every player. Sign up solo or as a pair. Solo players get paired with another beginner.",
+  "solo": true,
   "days": [
    {
     "cats": [
-     "bwd",
-     "bxd"
+     "bd"
     ],
     "date": "2026-11-21",
     "level": "Beginners",
-    "start": "07:00"
-   },
-   {
-    "cats": [
-     "nmd",
-     "nxd"
-    ],
-    "date": "2026-11-22",
-    "level": "Novice",
     "start": "07:00"
    }
   ],
   "cats": [
    {
-    "cap": 8,
+    "cap": 16,
     "fee": 400,
     "hours": [
      5,
      4,
      3
     ],
-    "id": "bwd",
+    "id": "bd",
     "level": "Beginners",
-    "name": "Women's Doubles",
+    "name": "Doubles",
     "prizes": [
      2000,
      1000,
-     500
-    ]
-   },
-   {
-    "cap": 8,
-    "fee": 400,
-    "hours": [
-     5,
-     4,
-     3
-    ],
-    "id": "bxd",
-    "level": "Beginners",
-    "name": "Mixed Doubles",
-    "prizes": [
-     2000,
-     1000,
-     500
-    ]
-   },
-   {
-    "cap": 8,
-    "fee": 500,
-    "hours": [
-     5,
-     4,
-     3
-    ],
-    "id": "nmd",
-    "level": "Novice",
-    "name": "Men's Doubles",
-    "prizes": [
-     2500,
-     1000,
-     500
-    ]
-   },
-   {
-    "cap": 8,
-    "fee": 500,
-    "hours": [
-     5,
-     4,
-     3
-    ],
-    "id": "nxd",
-    "level": "Novice",
-    "name": "Mixed Doubles",
-    "prizes": [
-     2500,
-     1000,
-     500
+     0
     ]
    }
   ],
@@ -109,7 +50,7 @@
   "checkInMin": 30,
   "regDeadline": "2026-11-18",
   "minTeams": 6,
-  "hoursNote": "Free court hours can be used on weekdays before 5 PM, until January 31, 2027."
+  "hoursNote": "Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water, and every team gets 1 free court hour, good on weekdays before 5 PM."
  },
  "teams": {},
  "draws": {},
