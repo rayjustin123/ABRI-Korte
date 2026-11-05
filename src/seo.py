@@ -41,7 +41,7 @@ def business():
                                        "opens": "00:00", "closes": "23:59"}],
         "priceRange": "₱200 to ₱400 per hour",
         "currenciesAccepted": "PHP",
-        "sameAs": ["https://www.facebook.com/ABRIKorteCebu", "https://www.instagram.com/abrikorte/"],
+        "sameAs": ["https://www.facebook.com/ABRIKorteCebu", "https://www.instagram.com/abri.korte/"],
     }
 
 

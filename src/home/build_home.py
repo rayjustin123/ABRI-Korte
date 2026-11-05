@@ -66,7 +66,7 @@ def links(site):
         "MSG_EVENT": MSGR + "?text=" + urllib.parse.quote(EVENT_TEXT),
         "MSG_REG": MSGR + "?text=" + urllib.parse.quote(REG_TEXT),
         "FB": "https://www.facebook.com/ABRIKorteCebu",
-        "IG": "https://www.instagram.com/abrikorte/",
+        "IG": "https://www.instagram.com/abri.korte/",
         "MAPS": "https://www.google.com/maps/search/?api=1&query=724+Upper+Tugbongan+Consolacion+Cebu",
     }
 

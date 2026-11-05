@@ -12,7 +12,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 - Outside the repo, in RJ's accounts (he signs in himself):
   - Bookings: the Google Sheet "ABRI KORTE Reservation Schedule", Reservations tab, bookings from row 7.
   - Tournament: the tournament app, a Claude artifact in RJ's account (built as the Abri Korte Pickleball Invitational app). Its database has `event` (doc `config`), `teams`, `draws`, `matches` and `scores`. It still holds the old Invitational setup (two days, Beginners and Novice, four categories); it has not been switched to the Friendly Rally yet.
-  - Messenger (every Book button opens it with the booking typed in): m.me/61593743265058. Facebook: ABRIKorteCebu. Instagram: @abrikorte.
+  - Messenger (every Book button opens it with the booking typed in): m.me/61593743265058. Facebook: ABRIKorteCebu. Instagram: @abri.korte (the account with the posts, crossposted from the Facebook page; @abrikorte is a separate empty account, so don't link to it).
   - Domain: abrikorte.com, registered at Hostinger on November 3, 2026 for one year. Its DNS at Hostinger points to Vercel: an A record for `@` and a CNAME for `www`, with the values shown in the Vercel project's Domains settings.
   - Google Search Console: abrikorte.com is a Domain property in RJ's Google account, verified on November 5, 2026 by a `google-site-verification` TXT record on `@` at Hostinger (keep that record or verification is lost). `https://abrikorte.com/sitemap.xml` is submitted there, and indexing was requested for `/` and `/home/`. URL Inspection there shows whether a page is on Google.
 
