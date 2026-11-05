@@ -4,7 +4,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 
 ## Where things live
 
-- Live site: https://abrikorte.com. www.abrikorte.com redirects to it, and https://abri-korte.vercel.app still works. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success".
+- Live site: https://abrikorte.com. www.abrikorte.com and https://abri-korte.vercel.app both redirect to it (308, set in the Vercel project's Domains settings), so old links still work and Google only sees one address. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success".
 - Booking page, the landing page at the site root: `index.html`, built by `src/build.py` from `src/template.html`, `src/rows.txt` (taken slots) and `src/tourney.json`. Tabs open with `#book`, `#tournament`, `#rates` and `#info`.
 - Home page: `home/index.html` with `home/player.jpg` and `home/player-depth.png`, built by `src/home/build_home.py` from `src/home/`. Its registration deadline comes from `src/tourney.json`.
 - Search: `src/seo.py` adds structured data to both pages (the court as a SportsActivityLocation, plus the tournament as a SportsEvent while it is still coming up) and rewrites `sitemap.xml` at the site root whenever either page is rebuilt. `robots.txt` points crawlers to the sitemap. The booking page title is set in `TITLE` in `src/build.py`.
