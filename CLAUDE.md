@@ -4,7 +4,7 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 
 ## Where things live
 
-- Live site: https://abrikorte.com. www.abrikorte.com and https://abri-korte.vercel.app both redirect to it (308, set in the Vercel project's Domains settings), so old links still work and Google only sees one address. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success".
+- Live site: https://abrikorte.com. www.abrikorte.com and https://abri-korte.vercel.app both redirect to it (308, set in the Vercel project's Domains settings), so old links still work and Google only sees one address. Vercel deploys `main` on every push. Check a deploy with `curl -s https://api.github.com/repos/rayjustin123/ABRI-Korte/commits/<sha>/status` and wait for "success". Run that check in its own command, not in the same one as the commit.
 - Booking page, the landing page at the site root: `index.html`, built by `src/build.py` from `src/template.html`, `src/rows.txt` (taken slots) and `src/tourney.json`. Tabs open with `#book`, `#tournament`, `#rates` and `#info`.
 - Home page: `home/index.html` with `home/player.jpg` and `home/player-depth.png`, built by `src/home/build_home.py` from `src/home/`. Its registration deadline comes from `src/tourney.json`.
 - Search: `src/seo.py` adds structured data to both pages (the court as a SportsActivityLocation, plus the tournament as a SportsEvent while it is still coming up) and rewrites `sitemap.xml` at the site root whenever either page is rebuilt. `robots.txt` points crawlers to the sitemap. The booking page title is set in `TITLE` in `src/build.py`.
@@ -37,8 +37,8 @@ This repo is RJ's website for Abri Korte, one covered pickleball and badminton c
 
 ### Sync the booking page with the sheet
 
-1. In the browser, signed in as RJ, open the sheet. Read the Reservations tab as CSV by fetching `gviz/tq?tqx=out:csv&sheet=Reservations` on the same spreadsheet URL from inside the sheet page.
-2. Write `src/rows.txt`, one taken slot per line: `2026-10-31|7:00 PM|11:00 PM|Confirmed`. Never copy names. Confirmed, Pending, Completed, Unpaid and blank statuses block a slot; Cancelled and No-show don't. A slot that runs past midnight ends the next day.
+1. In the browser, signed in as RJ, open the sheet (Google Drive search for "Reservation Schedule" finds it; the Sheets home search does not). Read the Reservations tab as CSV by fetching `gviz/tq?tqx=out:csv&sheet=Reservations` on the same spreadsheet URL from inside the sheet page. In that CSV the sheet title is merged into the first header cell, so the columns are: 0 date (YYYY-MM-DD), 3 Start, 4 End, 6 Guest name, 19 Status. Pick out only date, start, end and status in the page's script, so names never leave the sheet.
+2. Write `src/rows.txt`, one taken slot per line: `2026-10-31|7:00 PM|11:00 PM|Confirmed`, from the start of the current week onward. Never copy names. Confirmed, Pending, Completed, Unpaid and blank statuses block a slot; Cancelled and No-show don't. A slot that runs past midnight ends the next day.
 3. `python3 src/build.py src/rows.txt --site . --url https://abrikorte.com/`, check the page, commit, push, confirm the deploy.
 
 ### Add bookings to the sheet
@@ -75,6 +75,7 @@ Edit `src/home/`, rebuild with `python3 src/home/build_home.py --site-out home`,
 
 - Home page redesigned in three rounds: logo-style headings, one shared navigation, the covered court with posts and a roof, both meanings of Abri, food and drinks at the court, and a ready-stance player in the point cloud.
 - Booking page: past hours hidden, a Today chip, and weekly regulars through December 2026 (Wednesday 6 to 10 PM, Thursday 7 to 11 PM, Friday 8 PM to 12 AM, Saturday and Sunday 7 to 11 PM).
+- November 10: the booking schedule became tappable hours, because the old merged blocks ("6:00 AM, 11 hrs") confused people. The heading reads "Book the court" with a 1-2-3 line (pick a day, tap a start time, send it on Messenger). Each day is a grid of hour buttons in Day and Night rate bands, late night (12 to 6 AM) folded into one row, taken hours greyed, and the tournament's closed hours as one banner. Tapping an hour opens the booking at that time; How long is a set of buttons with end times, and the 4 and 8 hour buttons show the 3+1 free hours. The schedule was synced from the sheet the same day.
 - Tournament: the Invitational (Nov 21 and 22, Beginners and Novice) was replaced on November 5 by the first Abri Korte Friendly Rally: Saturday, November 21, 2026 only, 7 AM first serve, beginners only, one division of up to 16 teams, solo or pair sign-ups, ₱400 per player. Prizes: 1st ₱2,000 + 5 court hours, 2nd ₱1,000 + 4 court hours, 3rd 3 court hours. Prize hours never expire and can be sold to regulars with our help. Every player gets snacks and water; every team gets 1 free court hour on weekdays before 5 PM. Registration closes November 18 through https://abrikorte.com/#tournament (Register on Messenger). Sunday Nov 22 is open for bookings again.
 - Social, October 29: a 12.5 second Reel of the new regulation net, and a Team Abri Korte photo post thanking sponsors WEBIK and Seamaster Food Products Co.
 - November 3: abrikorte.com connected. Share links and canonical addresses on both pages use it, and the Reel and post templates show it.
