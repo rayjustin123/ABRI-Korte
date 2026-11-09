@@ -1,4 +1,4 @@
-"""Booking flow on a phone and a desktop: pick an open slot, change hours and rentals, the Messenger link,
+"""Booking flow on a phone and a desktop: tap an open hour, pick how long, add rentals, the Messenger link,
 the Today chip, the tournament block and the Home link.
 
   python3 tools/site/booking_flow.py
@@ -52,18 +52,21 @@ def main():
             pg.wait_for_timeout(300)
             r = {}
             r["day"] = pg.locator(".dayhead h2").inner_text()
-            r["first_cards"] = pg.evaluate("[...document.querySelectorAll('#list .slot')].map(s => s.innerText.replace(/\\n/g,' | ')).slice(0,3)")
-            r["past_cards"] = pg.locator(".card.past").count()
+            r["bands"] = pg.evaluate("[...document.querySelectorAll('#list .band')].map(s => s.innerText.replace(/\\n/g,' | ').slice(0, 90))")
+            r["hours"] = [pg.locator("#list button.hr").count(), pg.locator("#list .hr.taken").count()]
             r["today_chip_before"] = pg.locator(".todaychip").count()
-            pg.locator("#list button.card").first.click()
+            pg.locator("#list button.hr").first.click()
             pg.wait_for_timeout(350)
             r["panel_open"] = pg.evaluate("document.getElementById('panel').classList.contains('open')")
+            r["picked"] = [pg.locator(".panel .pt").inner_text(), pg.locator("#list .hr.on").inner_text().replace("\n", " ")]
             r["bill"] = pg.evaluate(bill)
-            plus = pg.locator(".panel button[data-k='hours'][data-v='1']")
-            if plus.is_enabled():
-                plus.click()
+            lens = pg.locator(".panel button.ln")
+            r["lengths"] = lens.count()
+            if lens.count() >= 3:
+                lens.nth(2).click()
                 pg.wait_for_timeout(120)
             r["bill_more"] = pg.evaluate(bill)
+            r["range"] = pg.evaluate("[...document.querySelectorAll('#list .hr.on, #list .hr.inr')].map(b => b.innerText.replace(/\\n/g,' '))")
             pg.locator(".panel button[data-k='paddles'][data-v='1']").click()
             pg.wait_for_timeout(120)
             r["bill_paddle"] = pg.evaluate(bill)
@@ -93,7 +96,7 @@ def main():
             if pg.locator("button.d[aria-label^='Saturday, November 21']").count():
                 pg.locator("button.d[aria-label^='Saturday, November 21']").click()
                 pg.wait_for_timeout(120)
-                pg.locator("button.card.event").click()
+                pg.locator("button.evt").click()
                 pg.wait_for_timeout(200)
                 r["event_to_tab"] = [pg.evaluate("location.hash"), pg.locator("h1").inner_text()]
             r["home_href"] = pg.evaluate("[...document.querySelectorAll('a')].filter(a => a.textContent.trim() === 'Home').map(a => a.getAttribute('href'))")

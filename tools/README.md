@@ -18,7 +18,7 @@ Run everything from the repo root. The `.sh` scripts need bash (Git Bash or WSL 
 | --- | --- |
 | `harness.py [desk phone ...] [--only court,how]` | Builds the home page into `site/build/`, serves it, screenshots every section into `site/shots/`, prints errors and measurements. Scenarios: desk, desk-dark, phone, phone-dark, tablet, small, laptop. |
 | `booking_screens.py` | The booking page tabs, light and dark, phone and desktop. |
-| `booking_flow.py` | Picks a slot, changes hours and rentals, checks the Messenger message, the Today chip, the Nov 21 tournament block and the Home link. |
+| `booking_flow.py` | Taps an open hour, picks how long, adds rentals, checks the Messenger message, the Today chip, the Nov 21 tournament block and the Home link. |
 | `edge_tests.py` | Reduced motion, no WebGL, and the inlined preview build. |
 | `hero_probe.py` | Where the hero pickleballs settle on each screen size. |
 | `rebuild_booking.py [--tourney]` | Rebuilds `index.html` from the template but keeps its schedule data. `--tourney` also takes the current `src/tourney.json`. |

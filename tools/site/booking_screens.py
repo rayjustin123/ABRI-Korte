@@ -42,7 +42,7 @@ def main():
             pg.wait_for_timeout(700)
             info = {"top": pg.evaluate("Math.round(document.querySelector('.top').getBoundingClientRect().top)"),
                     "nav": pg.evaluate("[...document.querySelectorAll(innerWidth >= 960 ? '.toptabs a' : '.tabbar a')].map(a => a.textContent.trim() + (a.classList.contains('on') ? '*' : '') + ' ' + a.getAttribute('href'))"),
-                    "cards": pg.evaluate("[...document.querySelectorAll('#list .slot')].map(s => s.innerText.replace(/\\n/g, ' | ')).slice(0, 4)"),
+                    "hours": pg.evaluate("[...document.querySelectorAll('#list .hr')].map(s => s.innerText.replace(/\\n/g, ' ')).slice(0, 8)"),
                     "h1": pg.evaluate("document.querySelector('h1').innerText"),
                     "scroll": pg.evaluate("[document.documentElement.scrollWidth, innerWidth]")}
             pg.screenshot(path=f"{OUT}/{name}_book.png")
