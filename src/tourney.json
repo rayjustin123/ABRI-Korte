@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 5, 2:09 AM",
+ "updatedLabel": "Nov 11, 6:41 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -28,9 +28,9 @@
     "level": "Beginners",
     "name": "Doubles",
     "prizes": [
-     2000,
-     1000,
-     0
+     5000,
+     3000,
+     1000
     ]
    }
   ],
@@ -50,7 +50,7 @@
   "checkInMin": 30,
   "regDeadline": "2026-11-18",
   "minTeams": 6,
-  "hoursNote": "Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water, and every team gets 1 free court hour, good on weekdays before 5 PM."
+  "hoursNote": "Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water."
  },
  "teams": {},
  "draws": {},
