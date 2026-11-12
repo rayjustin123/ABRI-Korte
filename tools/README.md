@@ -56,3 +56,5 @@ python3 tools/social/post/render_post.py tools/social/post/team_post.html team-p
 ```
 
 `social/assets/` holds the logo and the A mark used by both.
+
+`social/jersey/` holds the crew-neck jersey mockups (front, and back with MENDOZA). They are kept here so StyTrix can fetch them by link (raw.githubusercontent.com); the folder is not on the website.
