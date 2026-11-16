@@ -87,14 +87,14 @@ def main():
             pg.locator(".todaychip").click()
             pg.wait_for_timeout(150)
             r["back_today"] = pg.locator(".dayhead h2").inner_text()
-            # the tournament block on Nov 21 opens the Tournament tab
+            # the tournament block on Nov 22 opens the Tournament tab
             for _ in range(8):
-                if pg.locator("button.d[aria-label^='Saturday, November 21']").count():
+                if pg.locator("button.d[aria-label^='Sunday, November 22']").count():
                     break
                 pg.locator("button.arrow[aria-label='Next week']").click()
                 pg.wait_for_timeout(60)
-            if pg.locator("button.d[aria-label^='Saturday, November 21']").count():
-                pg.locator("button.d[aria-label^='Saturday, November 21']").click()
+            if pg.locator("button.d[aria-label^='Sunday, November 22']").count():
+                pg.locator("button.d[aria-label^='Sunday, November 22']").click()
                 pg.wait_for_timeout(120)
                 pg.locator("button.evt").click()
                 pg.wait_for_timeout(200)

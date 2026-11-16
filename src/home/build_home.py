@@ -47,7 +47,7 @@ PESO = "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&
 CFG = {"rates": {"weekday": {"day": 200, "night": 350}, "weekend": {"day": 300, "night": 400},
                  "dayStart": 6 * 60, "dayEnd": 17 * 60}}
 DESC = ("Abri Korte is one covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. "
-        "Open 24 hours. See rates, events and the Friendly Rally for beginners on November 21, then book on Messenger.")
+        "Open 24 hours. See rates, events and the Friendly Rally for beginners on November 22, then book on Messenger.")
 
 
 def photo_jpeg():
