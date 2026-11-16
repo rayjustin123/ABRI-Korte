@@ -29,7 +29,8 @@ EVENT_TEXT = "\n".join([
 # same message as the Register button on the booking page's Tournament tab (regText in src/template.html)
 REG_TEXT = "\n".join([
     "Hi Abri Korte! I would like to sign up for the Abri Korte Friendly Rally.", "",
-    "Player 1: ", "Player 2 (leave blank if signing up solo): ",
+    "Team name (example: Team Mendoza): ",
+    "Player 1 name: ", "Player 2 name (leave blank if signing up solo): ",
     "How long each player has played pickleball: ",
     "Podium finishes or titles in past tournaments: ",
     "Racquet sports varsity background: "])
