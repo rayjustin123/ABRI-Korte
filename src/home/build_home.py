@@ -31,9 +31,7 @@ REG_TEXT = "\n".join([
     "Hi Abri Korte! I would like to sign up for the Abri Korte Friendly Rally.", "",
     "Team name (example: Team Mendoza): ",
     "Player 1 name: ", "Player 2 name (leave blank if signing up solo): ",
-    "How long each player has played pickleball: ",
-    "Podium finishes or titles in past tournaments: ",
-    "Racquet sports varsity background: "])
+    "How long each player has played pickleball: "])
 
 LIBS = [
     "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js",

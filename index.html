@@ -634,9 +634,7 @@ function regText(c) {
     .concat(cfg.cats.length > 1 ? ['Category: ' + c.level + ' ' + c.name] : [])
     .concat(['Team name (example: Team Mendoza): ',
       'Player 1 name: ', cfg.solo ? 'Player 2 name (leave blank if signing up solo): ' : 'Player 2 name: ',
-      'How long each player has played pickleball: ',
-      'Podium finishes or titles in past tournaments: ',
-      'Racquet sports varsity background: ']).join('\n');
+      'How long each player has played pickleball: ']).join('\n');
 }
 const regUrl = c => D.messenger + '?text=' + encodeURIComponent(regText(c));
 const hasScores = () => !!T && Object.values(T.scores || {}).some(o => Object.values(o || {}).some(scoredT));
