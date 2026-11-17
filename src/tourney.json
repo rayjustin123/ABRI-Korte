@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 17, 5:56 PM",
+ "updatedLabel": "Nov 17, 6:37 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -84,26 +84,31 @@
   "t8": {
    "cat": "bd",
    "name": "Dawn and Niña"
+  },
+  "t9": {
+   "cat": "bd",
+   "name": "Mark and Kabatanya"
   }
  },
  "draws": {
   "bd": {
    "pools": [
     [
-     "t2",
-     "t5"
+     "t5",
+     "t9"
     ],
     [
      "t4",
-     "t3"
+     "t3",
+     "t8"
     ],
     [
      "t6",
-     "t1"
+     "t2"
     ],
     [
      "t7",
-     "t8"
+     "t1"
     ]
    ],
    "locked": false
