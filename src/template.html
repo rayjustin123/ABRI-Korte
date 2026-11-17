@@ -282,6 +282,7 @@ button.card:active{transform:scale(.985)}
 .rcard.n .bar i{background:var(--clay)}
 .tlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px;font-size:14px}
 .tlist li{overflow-wrap:anywhere}
+.tlist li.open{color:var(--ink-3);font-style:italic}
 .emptyt{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-3)}
 .pools2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .pool{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}
@@ -573,14 +574,24 @@ const shortIso = iso => shortDate(dnOf(iso));
 
 /* draws that are not set yet are planned as a full category, so the day has real times from the start */
 function tModel() {
-  const cfg = T.config, m = { config: cfg, teams: Object.assign({}, T.teams || {}), draws: {}, matches: {}, scores: T.scores || {}, planned: {} };
+  const cfg = T.config, m = { config: cfg, teams: Object.assign({}, T.teams || {}), draws: {}, matches: {}, scores: T.scores || {}, planned: {}, prov: {} };
   cfg.cats.forEach(c => {
     const d = T.draws && T.draws[c.id], mm = T.matches && T.matches[c.id];
     if (d && d.locked && mm) { m.draws[c.id] = d; m.matches[c.id] = mm; return; }
     let k = 0; const pools = poolSizes(c.cap).map(n => Array.from({ length: n }, () => '~' + c.id + (k++)));
     m.draws[c.id] = { pools, locked: true }; m.matches[c.id] = { list: buildMatches(pools) }; m.planned[c.id] = true;
+    // a draw that is not locked yet shows as the pools for now, with open spots, while sign-ups stay open
+    if (d && Array.isArray(d.pools)) m.prov[c.id] = d.pools;
   });
   return m;
+}
+// pools for now: the teams placed so far, then open spots up to the planned pool sizes
+function provPools(m, c) {
+  return '<div class="pools2">' + poolSizes(c.cap).map((n, p) => {
+    const ids = (m.prov[c.id][p] || []).filter(id => tName(m, id));
+    return '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('')
+      + Array.from({ length: Math.max(0, n - ids.length) }, () => '<li class="open">Open spot</li>').join('') + '</ol></div>';
+  }).join('') + '</div>';
 }
 function tDay(m, di) {
   const cfg = m.config, day = cfg.days[di]; let t = hm(day.start), g = 0; const blocks = [];
@@ -651,7 +662,7 @@ function vTSchedule(m) {
   const blocks = tDay(m, di).map(b => {
     const c = tCat(b.cat), lv = c.level === 'Novice' ? 'n' : 'b';
     let html = '<section class="tblock"><div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span class="num">' + tfmt(b.start) + ' to about ' + tfmt(b.end) + '</span></div>';
-    if (b.planned) html += '<p class="hint">Pools are drawn after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '. Times are for a full category of ' + c.cap + ' teams.</p>';
+    if (b.planned) html += '<p class="hint">' + (m.prov[b.cat] ? 'These are the pools for now. The final draw is after registration closes on ' : 'Pools are drawn after registration closes on ') + esc(longDate(dnOf(cfg.regDeadline))) + '. Times are for a full category of ' + c.cap + ' teams.</p>';
     html += '<div class="list">' + runOfShow(b).map(p => {
       const when = '<div class="when"><b class="num">' + tfmt(p.s) + '</b><span>' + durTxt(p.e - p.s) + '</span></div>';
       if (p.kind === 'pool') return '<div class="slot">' + when + '<div class="card day"><span class="card-top"><span class="tag">' + p.games + ' games · to ' + cfg.scoring.pool + '</span></span><span class="card-title">' + esc(p.label) + '</span><span class="card-sub">Check in by ' + tfmt(p.s - (cfg.checkInMin || 30)) + (p.size === 3 ? ' · each pair plays twice' : '') + '</span></div></div>';
@@ -662,7 +673,7 @@ function vTSchedule(m) {
     if (!b.planned) {
       html += '<div class="pools2">' + m.draws[b.cat].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
       html += '<details class="games"><summary>All ' + b.rows.length + ' games</summary><div class="list">' + b.rows.map(r => gameCard(m, r)).join('') + '</div></details>';
-    }
+    } else if (m.prov[b.cat]) html += provPools(m, c);
     return html + '</section>';
   }).join('');
   return chips + blocks;
@@ -686,6 +697,7 @@ function vTRoster(m) {
     const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' court hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : !p.cash && p.h ? '<em>Court time</em>' : '') + '</div>'; }).join('');
     let teams;
     if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
+    else if (m.prov[c.id]) teams = provPools(m, c) + '<p class="fine" style="text-align:left;margin:0">These are the pools for now. The final draw is after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '.</p>';
     else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
     else teams = '<div class="emptyt">No confirmed teams yet. Teams show here once they qualify and pay.</div>';
     const full = n >= c.cap;

@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 16, 5:37 PM",
+ "updatedLabel": "Nov 17, 5:56 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -52,8 +52,63 @@
   "minTeams": 6,
   "hoursNote": "Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water."
  },
- "teams": {},
- "draws": {},
+ "teams": {
+  "t1": {
+   "cat": "bd",
+   "name": "Dax and Jay"
+  },
+  "t2": {
+   "cat": "bd",
+   "name": "Engr and Yok2"
+  },
+  "t3": {
+   "cat": "bd",
+   "name": "RJ and Bree"
+  },
+  "t4": {
+   "cat": "bd",
+   "name": "Pryce and Levine"
+  },
+  "t5": {
+   "cat": "bd",
+   "name": "Alfred and Val"
+  },
+  "t6": {
+   "cat": "bd",
+   "name": "Jed and Sean"
+  },
+  "t7": {
+   "cat": "bd",
+   "name": "Kate and Al"
+  },
+  "t8": {
+   "cat": "bd",
+   "name": "Dawn and Niña"
+  }
+ },
+ "draws": {
+  "bd": {
+   "pools": [
+    [
+     "t2",
+     "t5"
+    ],
+    [
+     "t4",
+     "t3"
+    ],
+    [
+     "t6",
+     "t1"
+    ],
+    [
+     "t7",
+     "t8"
+    ]
+   ],
+   "locked": false
+  }
+ },
  "matches": {},
  "scores": {}
 }
