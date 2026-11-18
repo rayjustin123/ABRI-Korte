@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 18, 6:40 AM",
+ "updatedLabel": "Nov 18, 4:19 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -89,10 +89,6 @@
    "cat": "bd",
    "name": "Mark and Kabatanya"
   },
-  "t10": {
-   "cat": "bd",
-   "name": "Shawn and Andre"
-  },
   "t11": {
    "cat": "bd",
    "name": "Hoven and Jelay"
@@ -103,8 +99,7 @@
    "pools": [
     [
      "t5",
-     "t9",
-     "t10"
+     "t9"
     ],
     [
      "t4",
