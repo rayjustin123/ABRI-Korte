@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 19, 3:07 PM",
+ "updatedLabel": "Nov 19, 3:21 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -96,6 +96,10 @@
   "t12": {
    "cat": "bd",
    "name": "Morty and Pia"
+  },
+  "t13": {
+   "cat": "bd",
+   "name": "Ralph and Noli"
   }
  },
  "draws": {
@@ -118,7 +122,8 @@
     ],
     [
      "t7",
-     "t1"
+     "t1",
+     "t13"
     ]
    ],
    "locked": false
