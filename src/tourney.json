@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 19, 3:21 PM",
+ "updatedLabel": "Nov 20, 7:57 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -100,6 +100,14 @@
   "t13": {
    "cat": "bd",
    "name": "Ralph and Noli"
+  },
+  "t14": {
+   "cat": "bd",
+   "name": "Mark M. and Klever"
+  },
+  "t15": {
+   "cat": "bd",
+   "name": "Jhon and Guy"
   }
  },
  "draws": {
@@ -108,12 +116,14 @@
     [
      "t5",
      "t9",
-     "t12"
+     "t12",
+     "t15"
     ],
     [
      "t4",
      "t3",
-     "t8"
+     "t8",
+     "t14"
     ],
     [
      "t6",
