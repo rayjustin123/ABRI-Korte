@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Poppins:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&text=%E2%82%B1&display=swap">
 <style>
 /* Layout: phone-first schedule column with a bottom tab bar; tapping an open hour slides a booking sheet up.
@@ -310,6 +310,179 @@ details.games[open]{padding-bottom:14px}
 .stand tr.q td:first-child{font-weight:600}
 @media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}.ros.one,.qual.one{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
+
+/* standings: each pool's table with its games, then the knockout. In scorer mode the scores are typed into the games */
+.scorer{background:var(--azure-soft);color:var(--azure-ink);border-radius:18px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.scorer p{font-size:13px}
+.scorer p b{display:block;font-size:15px;color:var(--ink)}
+.stools{display:flex;flex-wrap:wrap;gap:8px}
+.stools .cta{width:auto;padding:11px 18px;font-size:15px}
+.stools .ghost{width:auto;padding:9px 14px;font-size:14px;border-radius:999px}
+.ghost.warn{border-color:var(--clay);color:var(--clay-ink)}
+.spools{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.spool{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sph{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.sph h4{font:600 13px/1.3 var(--font-brand);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin:0}
+.sph span{font-size:12px;color:var(--ink-3)}
+.stand.st th:nth-child(2),.stand.st td:nth-child(2){text-align:left}
+.stand.st td:first-child{width:22px;color:var(--ink-3)}
+.stand.st tr.lead td:nth-child(2){font-weight:600}
+.stand.st tr.q td{background:var(--gold-soft);color:var(--ink)}
+.stand.st tr.q td:nth-child(2){font-weight:700}
+.qt{display:inline-block;margin-left:6px;background:var(--gold);color:#1B242D;border-radius:5px;padding:0 6px;font:700 10px/1.6 var(--font);font-size-adjust:none;font-style:normal;letter-spacing:.06em;text-transform:uppercase;vertical-align:1px}
+.sgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.sg{background:var(--sunk);border:1px solid transparent;border-radius:12px;padding:7px 10px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.sg.played{background:var(--surface);border-color:var(--line)}
+.sg.ko{background:var(--gold-soft)}
+.sgn{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.sg.ko .sgn{color:var(--gold-ink)}
+.sgr{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;min-height:28px}
+.sgr span{min-width:0;overflow-wrap:anywhere;line-height:1.25}
+.sgr b{font-weight:600;min-width:2ch;text-align:right}
+.sgr.win{font-weight:600}
+.sgr.tbd span{color:var(--ink-3);font-style:italic}
+.si{width:46px;height:32px;flex:none;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);text-align:center;font-weight:600;font-size:16px;padding:0}
+.si:focus{outline:2px solid var(--azure);outline-offset:0;border-color:var(--azure)}
+.sg.tie .si{border-color:var(--clay)}
+.sgw{font-size:12px;color:var(--clay-ink)}
+.ssub{font:500 15px/1.3 var(--font-brand);margin-top:4px}
+.sko{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+@media (min-width:640px){.spools{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* the board for a projector: pools down both sides, the road to the trophy in the middle.
+   One font size follows the screen (1.08vw, or 1.95vh on wide screens) and everything is sized from it,
+   so 16:9 and 4:3 screens both fit without scrolling. Always dark, whatever the page theme */
+html.presenting,html.presenting body{overflow:hidden}
+.board{--bd-font:"Barlow Condensed","Noto Sans","Roboto Condensed","Arial Narrow",system-ui,sans-serif;--bd-sky:#8CCEFF;--bd-dim:rgba(214,238,255,.62);--bd-edge:rgba(140,206,255,.24);
+  position:fixed;inset:0;z-index:200;overflow:hidden;isolation:isolate;color:#FFFFFF;font-family:var(--bd-font);font-weight:600;font-size:min(1.08vw,1.95vh);line-height:1.2;font-size-adjust:none;
+  background:radial-gradient(110% 90% at 50% 40%,#13408C 0%,#0B2257 36%,#08163A 62%,#050B1E 100%);
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:1.6vh;padding:2.2vh 2.2vw 1.8vh}
+.board::before,.board::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:24vw;height:24vw}
+.board::before{left:0;top:0;background:linear-gradient(135deg,#1A86E0 0 7%,transparent 7% 9.5%,rgba(58,166,242,.5) 9.5% 12.5%,transparent 12.5% 14.5%,rgba(26,134,224,.22) 14.5% 16.5%,transparent 16.5%)}
+.board::after{right:0;bottom:0;background:linear-gradient(315deg,#1A86E0 0 7%,transparent 7% 9.5%,rgba(58,166,242,.5) 9.5% 12.5%,transparent 12.5% 14.5%,rgba(26,134,224,.22) 14.5% 16.5%,transparent 16.5%)}
+.bd-head{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:2em}
+.bd-brand{display:flex;align-items:center;gap:.8em;min-width:0}
+.bd-brand svg{width:3.1em;height:3.1em;flex:none}
+.bd-brand>div{min-width:0}
+.bd-brand span{display:block;font:500 .82em/1.2 var(--font-brand);letter-spacing:.34em;color:var(--bd-sky);white-space:nowrap}
+.bd-brand b{display:block;font-style:italic;font-weight:800;font-size:2.15em;line-height:1;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-title{display:flex;flex-direction:column;align-items:center;gap:.45em}
+.bd-title b{font-style:italic;font-weight:800;font-size:2.3em;line-height:1;letter-spacing:.08em;text-transform:uppercase;padding:.26em 1.5em .3em;background:linear-gradient(90deg,#1A86E0,#3AA6F2 50%,#1A86E0);clip-path:polygon(4% 0,100% 0,96% 100%,0 100%);white-space:nowrap}
+.bd-title span{font-size:.92em;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--bd-sky);white-space:nowrap}
+.bd-meta{justify-self:end;display:flex;align-items:center;gap:1.1em}
+.bd-live{display:inline-flex;align-items:center;gap:.45em;font-size:.95em;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#FF8A77}
+.bd-live i{width:.62em;height:.62em;border-radius:50%;background:#FF5A45;animation:bdpulse 1.8s ease-out infinite}
+@keyframes bdpulse{0%{box-shadow:0 0 0 0 rgba(255,90,69,.6)}100%{box-shadow:0 0 0 .7em rgba(255,90,69,0)}}
+.bd-clock{font-size:2em;font-weight:700}
+.bd-ctl{display:flex;gap:.5em;transition:opacity .3s ease}
+.bd-btn{border:1px solid rgba(140,206,255,.45);background:rgba(5,12,31,.55);color:#FFFFFF;border-radius:999px;padding:.5em 1.1em;font:700 .85em/1 var(--bd-font);letter-spacing:.14em;text-transform:uppercase}
+.bd-btn:hover,.bd-btn.on,.bd-btn[aria-pressed="true"]{background:#1A86E0;border-color:#1A86E0}
+.board.idle{cursor:none}
+.board.idle .bd-ctl{opacity:0;pointer-events:none}
+.bd-main{display:grid;grid-template-columns:minmax(0,32fr) minmax(0,36fr) minmax(0,32fr);gap:1.6vw;min-height:0}
+.bd-main.bd-empty{grid-template-columns:minmax(0,1fr);place-items:center;font-size:1.6em;color:var(--bd-sky)}
+.bd-side{display:flex;flex-direction:column;justify-content:center;gap:1.5vh;min-width:0;min-height:0}
+.bd-p{background:linear-gradient(180deg,rgba(19,64,140,.55),rgba(8,22,58,.62));border:1px solid var(--bd-edge);border-radius:.9em;padding:.75em .95em .95em;display:flex;flex-direction:column;gap:.38em;min-width:0}
+.bd-ph{display:flex;align-items:baseline;justify-content:space-between;gap:1em;margin-bottom:.1em}
+.bd-ph b{font-style:italic;font-weight:800;font-size:1.75em;line-height:1;letter-spacing:.1em;text-transform:uppercase}
+.bd-ph b em{font-style:inherit;color:#F2B233}
+.bd-ph span{font-size:.9em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bd-sky)}
+.bd-r{position:relative;isolation:isolate;display:grid;grid-template-columns:1.2em minmax(0,1fr) 1.7em 1.7em 2.3em 2.6em;align-items:center;column-gap:.45em;height:2.05em;padding:0 .8em 0 .95em;font-size:1.12em;font-variant-numeric:tabular-nums}
+.bd-r>span{text-align:right}
+.bd-r>span:nth-child(-n+2){text-align:left}
+.bd-r::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(-12deg);background:rgba(26,134,224,.16);border:1px solid rgba(140,206,255,.14);border-radius:.22em}
+.bd-rh{height:1.25em}
+.bd-rh::before{display:none}
+.bd-rh>span{font-size:.62em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bd-sky)}
+.bd-r .rk{color:var(--bd-sky)}
+.bd-r .nm{display:flex;align-items:center;gap:.45em;min-width:0;font-weight:700}
+.bd-r .nm>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-r .w{font-weight:800}
+.bd-r.lead::before{background:linear-gradient(90deg,rgba(26,134,224,.62),rgba(26,134,224,.2));border-color:rgba(140,206,255,.4)}
+.bd-r.q::before{background:linear-gradient(90deg,#1A86E0,#3AA6F2);border-color:#BFE3FF}
+.bd-r.q .rk{color:#FFFFFF}
+.bd-q{flex:none;display:inline-block;background:#F2B233;color:#0B1533;font-style:normal;font-weight:800;font-size:.68em;line-height:1;padding:.24em .45em .22em;border-radius:.25em;letter-spacing:.1em;text-transform:uppercase}
+.bd-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1vh;min-width:0;min-height:0}
+.bd-cup{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
+.bd-cup::before{content:"";position:absolute;left:50%;top:-1.5em;width:15em;height:12em;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(242,178,51,.34),rgba(242,178,51,0));z-index:-1}
+.bd-cup svg{height:min(5.4em,11.5vh);width:auto}
+.bd-champl{margin-top:.15em;font-style:italic;font-weight:800;font-size:2.2em;line-height:1.05;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(180deg,#FFF4C2 10%,#F7CD4E 48%,#C8921C 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bd-champ{position:relative;isolation:isolate;margin-top:.35em;min-width:58%;max-width:100%;padding:.4em 1.6em;text-align:center;font-size:1.35em;font-weight:800;color:#0B1533}
+.bd-champ::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(-12deg);background:linear-gradient(90deg,#F7CD4E,#FFE38A 50%,#F2B233);border-radius:.22em}
+.bd-champ.tbd{color:#F7CD4E;font-style:italic;font-weight:700}
+.bd-champ.tbd::before{background:rgba(242,178,51,.1);border:1px dashed rgba(242,178,51,.6)}
+.bd-champ span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-prize{margin-top:.5em;font-size:.95em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#F7CD4E}
+.bd-tree{width:100%;display:flex;flex-direction:column;align-items:center}
+.bd-m{display:flex;flex-direction:column;gap:.32em;min-width:0}
+.bd-ml{display:block;text-align:center;font-style:italic;font-weight:800;font-size:1.05em;line-height:1;letter-spacing:.18em;text-transform:uppercase;color:var(--bd-sky);margin-bottom:.25em;white-space:nowrap}
+.bd-ml small{font-size:.72em;font-style:normal;letter-spacing:.12em;color:var(--bd-dim);margin-left:.6em}
+.bd-fin{width:60%}
+.bd-fin .bd-ml{font-size:1.85em;color:#FFFFFF;letter-spacing:.16em}
+.bd-fin .bd-ml small{font-size:.45em}
+.bd-pl{position:relative;isolation:isolate;display:flex;align-items:center;gap:.45em;height:1.95em;padding:0 .3em 0 .9em;font-size:1.12em;font-weight:700;min-width:0}
+.bd-pl::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(-12deg);background:linear-gradient(90deg,#0E4FA8,#1A86E0);border:1px solid rgba(140,206,255,.45);border-radius:.22em}
+.bd-pl .nm{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-pl .sc{flex:none;min-width:1.9em;text-align:center;font-size:1.12em;font-weight:800}
+.bd-fr{flex:none;font-style:normal;font-size:.68em;font-weight:800;line-height:1;color:#0B1533;background:var(--bd-sky);border-radius:.22em;padding:.24em .38em}
+.bd-pl.tbd{color:var(--bd-dim);font-style:italic;font-weight:600}
+.bd-pl.tbd::before{background:rgba(26,134,224,.1);border:1px dashed rgba(140,206,255,.38)}
+.bd-pl.win::before{background:linear-gradient(90deg,#1A86E0,#3AA6F2);border-color:#BFE3FF}
+.bd-pl.lose{color:rgba(255,255,255,.58)}
+.bd-pl.lose::before{background:rgba(8,22,58,.8);border-color:rgba(140,206,255,.2)}
+.bd-fin .bd-pl:not(.tbd)::before{border-color:#F2B233}
+.bd-fin .bd-pl.win{color:#0B1533}
+.bd-fin .bd-pl.win::before{background:linear-gradient(90deg,#F7CD4E,#F2B233)}
+.bd-join{position:relative;width:100%;height:1.5em}
+.bd-join::before{content:"";position:absolute;left:25%;right:25%;top:50%;bottom:0;border:2px solid rgba(140,206,255,.55);border-bottom:0;border-radius:.4em .4em 0 0}
+.bd-join::after{content:"";position:absolute;left:50%;top:0;height:50%;border-left:2px solid rgba(140,206,255,.55)}
+.bd-semis,.bd-bzr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5em;width:100%}
+.bd-bz{width:100%;display:flex;flex-direction:column;align-items:center}
+.bd-bz .bd-ml{color:#E9A877}
+.bd-bz .bd-pl:not(.tbd)::before{border-color:#C98652}
+.bd-bz .bd-pl.win::before{background:linear-gradient(90deg,#9A5530,#E2A06F);border-color:#F6C79C}
+.bd-next{width:100%;background:rgba(5,12,31,.5);border:1px solid var(--bd-edge);border-radius:.8em;padding:.6em .95em .7em;display:flex;flex-direction:column;gap:.25em}
+.bd-next>b{font-style:italic;font-weight:800;font-size:1em;letter-spacing:.2em;text-transform:uppercase;color:#F2B233}
+.bd-next p{font-size:1.2em;font-weight:700}
+.bd-nx{display:grid;grid-template-columns:6.2em minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:.6em;font-size:1.02em;min-height:1.85em}
+.bd-nx .g{font-size:.78em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bd-sky);white-space:nowrap}
+.bd-nx .a{text-align:right}
+.bd-nx .a,.bd-nx .b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.bd-nx .vs{font-size:.8em;color:var(--bd-dim)}
+.bd-nx:not(.first){opacity:.8}
+.bd-nx.first .a,.bd-nx.first .b{color:#FFFFFF}
+.bd-sx{display:flex;align-items:center;gap:.3em}
+.bd-sx i{font-style:normal;color:var(--bd-sky)}
+.bd-foot{display:flex;align-items:center;justify-content:space-between;gap:2em;padding-right:3vw;font-size:.88em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bd-sky);white-space:nowrap}
+.bd-foot b{color:#FFFFFF;letter-spacing:.16em}
+.bd-foot span:last-child{display:flex;align-items:center;gap:.5em}
+.board .si{width:2.3em;height:1.6em;border:1px solid rgba(140,206,255,.6);border-radius:.25em;background:rgba(5,12,31,.78);color:#FFFFFF;font:800 1em/1 var(--bd-font);text-align:center;padding:0}
+.board .si:focus{outline:2px solid #F2B233;outline-offset:1px;border-color:#F2B233}
+.bd-pl .si{width:2.1em;height:1.55em;margin-right:.1em}
+.bd-drawer{position:absolute;left:2.2vw;right:2.2vw;bottom:1.8vh;max-height:64vh;overflow:auto;z-index:5;background:#071026;border:1px solid rgba(140,206,255,.4);border-radius:1em;padding:.9em 1.2em 1.2em;box-shadow:0 -1em 3em rgba(0,0,0,.55)}
+.bd-dh{display:flex;align-items:center;gap:1.2em;margin-bottom:.7em}
+.bd-dh b{font-style:italic;font-weight:800;font-size:1.4em;letter-spacing:.1em;text-transform:uppercase}
+.bd-dh span{flex:1 1 auto;color:var(--bd-sky)}
+.bd-dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(25em,1fr));gap:.9em 1.6em}
+.bd-dc h5{margin:0 0 .35em;font-style:italic;font-weight:800;font-size:1.15em;letter-spacing:.12em;text-transform:uppercase;color:#F2B233}
+.bd-dr{display:grid;grid-template-columns:2.4em minmax(0,1fr) 2.3em .5em 2.3em minmax(0,1fr);align-items:center;column-gap:.4em;padding:.3em 0;border-top:1px solid rgba(140,206,255,.12)}
+.bd-dr .n{font-size:.85em;color:var(--bd-sky)}
+.bd-dr .a{text-align:right}
+.bd-dr .a,.bd-dr .b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-dr i{font-style:normal;text-align:center;color:var(--bd-sky)}
+.bd-dr .vs{grid-column:span 3;text-align:center;font-size:.85em;color:var(--bd-dim)}
+@media (max-aspect-ratio:1/1){
+  .board{display:flex;flex-direction:column;font-size:3.2vw;overflow-y:auto;padding:4vw 4vw 8vw;gap:4vw}
+  .board>*,.bd-main>*,.bd-mid>*,.bd-side>*{flex:none}
+  .bd-head{grid-template-columns:minmax(0,1fr);gap:3vw}
+  .bd-meta{justify-self:start}
+  .bd-title{display:none}
+  .bd-main{display:flex;flex-direction:column;gap:4vw}
+  .bd-mid{order:-1}
+  .bd-foot{flex-wrap:wrap;white-space:normal;gap:.5em 1.4em}
+  .bd-drawer{position:fixed;left:3vw;right:3vw;bottom:3vw;max-height:70vh}
+  .bd-dg{grid-template-columns:minmax(0,1fr)}
+}
 
 /* bottom tab bar */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
@@ -624,7 +797,112 @@ function regText(c) {
       'How long each player has played pickleball: ']).join('\n');
 }
 const regUrl = c => D.messenger + '?text=' + encodeURIComponent(regText(c));
-const hasScores = () => !!T && Object.values(T.scores || {}).some(o => Object.values(o || {}).some(scoredT));
+
+/* ---------- standings: scores typed in on the scorer's own device ----------
+   Opening the page once with ?edit turns on scorer mode. Scores are saved in this browser only (localStorage),
+   keyed by the two teams in a game, so a score stays with its game if the pools are reshuffled.
+   Posted scores (tourney.json "scores", by match id) count too; a score typed here replaces a posted one. */
+const SKEY = 'ak-scorer';
+const LKEY = T ? 'ak-live:' + T.config.days.map(d => d.date).join(',') : 'ak-live';
+let LIVE = {};
+function loadLive() { try { const o = JSON.parse(localStorage.getItem(LKEY) || '{}'); LIVE = o && typeof o === 'object' && !Array.isArray(o) ? o : {}; } catch (e) { LIVE = {}; } }
+function saveLive() { try { localStorage.setItem(LKEY, JSON.stringify(LIVE)); } catch (e) { /* storage unavailable */ } }
+loadLive();
+const numOr = v => (typeof v === 'number' && isFinite(v) ? v : null);
+const signed = n => n > 0 ? '+' + n : n < 0 ? '−' + (-n) : '0';
+
+/* the draw the standings use: the set draw, or while it is still open, the pools for now (placed teams only) */
+function liveModel() {
+  const m = tModel();
+  Object.assign(m, { scores: {}, keys: {}, num: {}, state: {}, none: {} });
+  T.config.cats.forEach(c => {
+    const cid = c.id;
+    if (m.planned[cid]) {
+      const pools = (m.prov[cid] || []).map(p => (p || []).filter(id => tName(m, id))).filter(p => p.length);
+      if (!pools.length) { m.none[cid] = true; return; }
+      m.draws[cid] = { pools, locked: true }; m.matches[cid] = { list: buildMatches(pools) };
+    }
+    const list = m.matches[cid].list, sc = Object.assign({}, m.planned[cid] ? {} : (T.scores && T.scores[cid]) || {});
+    m.scores[cid] = sc; m.keys[cid] = {}; m.num[cid] = {};
+    const seen = {};
+    list.forEach((x, i) => {
+      m.num[cid][x.id] = i + 1;
+      if (x.stage !== 'pool') { m.keys[cid][x.id] = cid + '|' + x.id; return; }
+      const pk = [x.a, x.b].sort().join('~'); seen[pk] = (seen[pk] || 0) + 1;
+      const key = m.keys[cid][x.id] = cid + '|' + pk + '|' + seen[pk], r = LIVE[key];
+      if (!r) return;
+      delete sc[x.id];
+      const a = numOr(r[x.a]), b = numOr(r[x.b]);
+      if (a != null && b != null && a !== b) sc[x.id] = { a, b };
+    });
+    // a knockout score counts only while the same two teams are in that game
+    list.forEach(x => {
+      if (x.stage === 'pool') return;
+      const r = LIVE[m.keys[cid][x.id]]; if (!r) return;
+      delete sc[x.id];
+      const t = catState(m, cid).res[x.id] || {};
+      if (!t.a || !t.b) return;
+      const a = numOr(r[t.a]), b = numOr(r[t.b]);
+      if (a != null && b != null && a !== b) sc[x.id] = { a, b };
+    });
+    m.state[cid] = catState(m, cid);
+  });
+  return m;
+}
+// what a game's two score boxes hold: a half-typed score from this browser, or the counted score
+function sideVals(m, cid, x, t) {
+  const r = LIVE[m.keys[cid][x.id]], s = m.state[cid].sc[x.id];
+  if (r && t.a && t.b && (r[t.a] !== undefined || r[t.b] !== undefined)) return { a: numOr(r[t.a]), b: numOr(r[t.b]) };
+  return scoredT(s) ? { a: s.a, b: s.b } : { a: null, b: null };
+}
+// teams through to the knockout: exact once every pool is done, before that the top of each finished pool
+function qualSet(st, p) {
+  if (st.poolsDone) return st.qual;
+  const t = st.tables[p];
+  return new Set(t && t.complete ? t.rows.slice(0, st.tables.length <= 2 ? 2 : 1).map(r => r.id) : []);
+}
+const qWord = st => st.tables.length <= 1 ? 'Into the final' : 'Into the semifinals';
+const qTag = st => st.tables.length <= 1 ? 'Final' : 'Semis';
+function stStatus(st) {
+  const pool = st.list.filter(x => x.stage === 'pool'), done = pool.filter(x => scoredT(st.sc[x.id])).length;
+  if (st.podium[1]) return 'Final result';
+  if (!st.poolsDone) return 'Pool play · ' + done + ' of ' + pool.length + ' games';
+  return st.tables.length > 1 ? 'Semifinals and final' : 'Final and bronze';
+}
+// the next games still to play whose two teams are known, in schedule order
+function upNext(st, k) {
+  const out = [];
+  for (const x of st.list) {
+    if (out.length >= k) break;
+    const t = st.res[x.id] || {};
+    if (!scoredT(st.sc[x.id]) && t.a && t.b) out.push(x);
+  }
+  return out;
+}
+function scoringLine(st) {
+  const sc = T.config.scoring, has = k => st.list.some(x => x.stage === k), out = ['Pools to ' + sc.pool];
+  if (has('sf')) out.push('Semifinals to ' + sc.sf);
+  if (has('bronze')) out.push('Bronze to ' + sc.bronze);
+  if (has('final')) out.push('Final to ' + sc.final);
+  return out.join(' · ');
+}
+const standRules = np => advanceLine(np) + (np >= 3 ? ' Pool winners are ranked by record, then point difference per game, to set the semifinals: 1st plays 4th, 2nd plays 3rd.' : '')
+  + ' Same wins in a pool: head to head first, then point difference, then points scored.';
+function scoreBox(pre, m, cid, x, t, side, v) {
+  const id = t[side], o = t[side === 'a' ? 'b' : 'a'];
+  return '<input class="si num" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" enterkeyhint="next" id="' + pre + '-' + cid + '-' + x.id + '-' + side
+    + '" data-k="' + esc(m.keys[cid][x.id]) + '" data-t="' + esc(id) + '" data-o="' + esc(o) + '" value="' + (v == null ? '' : v) + '" aria-label="' + esc(tName(m, id)) + ', points">';
+}
+// typing a score saves it at once; the standings redraw when you leave the box
+function setScore(el) {
+  const v = el.value.replace(/\D/g, '').slice(0, 2);
+  if (v !== el.value) el.value = v;
+  const k = el.dataset.k, t = el.dataset.t, o = el.dataset.o, old = LIVE[k] || {};
+  const rec = {}; rec[t] = v === '' ? null : Number(v); rec[o] = numOr(old[o]);
+  if (rec[t] == null && rec[o] == null) delete LIVE[k]; else LIVE[k] = rec;
+  saveLive();
+  document.querySelectorAll('input.si').forEach(x => { if (x !== el && x.dataset.k === k && x.dataset.t === t) x.value = v; });
+}
 
 function tDates() {
   const ds = T.config.days.map(d => d.date).sort(), a = dateOf(dnOf(ds[0])), b = dateOf(dnOf(ds[ds.length - 1]));
@@ -639,10 +917,9 @@ function vTour() {
   const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
   const caps = [...new Set(cfg.cats.map(c => c.cap))];
   const one = cfg.cats.length === 1 ? cfg.cats[0] : null;
-  const res = hasScores();
-  if (S.tsub === 'results' && !res) S.tsub = 'schedule';
-  const subs = [['schedule', 'Schedule'], ['roster', 'Roster']].concat(res ? [['results', 'Results']] : []);
-  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : vTSchedule(m);
+  if (S.tsub === 'results') S.tsub = 'standings';
+  const subs = [['schedule', 'Schedule'], ['roster', 'Roster'], ['standings', 'Standings']];
+  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'standings' ? vTStandings() : vTSchedule(m);
   // one category: the sign-up button sits right under the title, so a link straight to #tournament can register at once
   const reg = one && regOpen() && m.planned[one.id] && confirmedOf(m, one.id).length < one.cap
     ? '<a class="cta treg" href="' + esc(regUrl(one)) + '" target="_blank" rel="noopener" data-act="reg" data-cat="' + one.id + '">' + I.chat + 'Register on Messenger</a>' : '';
@@ -651,7 +928,7 @@ function vTour() {
     + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
     + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
     + reg + '</section>'
-    + '<div class="seg subseg' + (subs.length === 3 ? ' three' : '') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
+    + '<div class="seg subseg three" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
     + body + '<p class="foot">Tournament details as of ' + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
 }
 
@@ -720,26 +997,177 @@ function vTRoster(m) {
     + '<p class="fine" style="text-align:left">Both partners must meet the qualifications.' + (levels.length > 1 ? ' Playing up a level is always allowed.' : '') + solo + ' False information means disqualification and forfeited prizes.</p>';
 }
 
-function vTResults(m) {
-  return T.config.cats.map(c => {
-    const st = catState(m, c.id); if (m.planned[c.id] || !st) return '';
-    const any = Object.values(st.sc).some(scoredT); if (!any) return '';
-    let html = '<section class="tblock"><div class="thead"><div><span class="lvl ' + (c.level === 'Novice' ? 'n' : 'b') + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span>' + (st.podium[1] ? 'Final result' : st.poolsDone ? 'Knockout stage' : 'Pool play') + '</span></div>';
-    if (st.podium[1]) html += '<div class="podium">' + [1, 2, 3].map(k => { const p = prizeAt(c, k - 1); return '<div class="place p' + k + '"><span>' + ['1st', '2nd', '3rd'][k - 1] + '</span><b>' + esc(tName(m, st.podium[k]) || 'To be decided') + '</b><em class="num">' + (p.cash ? peso(p.cash) : '') + (p.cash && p.h ? ' + ' : '') + (p.h ? p.h + ' court hrs' : '') + '</em></div>'; }).join('') + '</div>';
-    html += '<div class="pools2">' + st.tables.map((t, p) => '<div class="pool"><h4>Pool ' + L(p) + ' · ' + t.played + ' of ' + t.total + ' played</h4><table class="stand num"><thead><tr><th>Team</th><th>W</th><th>L</th><th>+/-</th></tr></thead><tbody>'
-      + t.rows.map(r => { const d = r.pf - r.pa; return '<tr' + (st.qual.has(r.id) ? ' class="q"' : '') + '><td>' + esc(tName(m, r.id)) + '</td><td>' + r.w + '</td><td>' + r.l + '</td><td>' + (d > 0 ? '+' + d : d) + '</td></tr>'; }).join('') + '</tbody></table></div>').join('') + '</div>';
-    return html + '</section>';
-  }).join('') || '<div class="emptyt">Results show here once games are played.</div>';
+const prizeTxt = p => (p.cash ? peso(p.cash) : '') + (p.cash && p.h ? ' + ' : '') + (p.h ? p.h + ' court hrs' : '');
+
+/* Standings tab: the podium once the final is in, each pool's table and games, then the knockout */
+function vTStandings() {
+  const m = liveModel(), arm = S.clearArm && Date.now() - S.clearArm < 5000;
+  const tools = S.scorer
+    ? '<div class="scorer"><p><b>Scorer mode is on</b>Scores you type here are saved in this browser only, so keep using this laptop. Type a score and press Enter to jump to the next box.</p>'
+      + '<div class="stools"><button type="button" class="cta" data-act="present">' + I.screen + 'Present</button>'
+      + '<button type="button" class="ghost" data-act="scopy">' + esc(S.copiedScores || 'Copy scores') + '</button>'
+      + '<button type="button" class="ghost' + (arm ? ' warn' : '') + '" data-act="sclear">' + (arm ? 'Tap again to clear every score' : 'Clear all scores') + '</button>'
+      + '<button type="button" class="ghost" data-act="soff">Turn off scorer mode</button></div></div>'
+    : '<p class="hint">During the rally, live scores are shown on the screen at the court.</p>';
+  return tools + T.config.cats.map(c => {
+    const cid = c.id, lv = c.level === 'Novice' ? 'n' : 'b';
+    const head = '<div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div>';
+    if (m.none[cid]) return '<section class="tblock">' + head + '</div><div class="emptyt">Standings show here once the pools are set.</div></section>';
+    const st = m.state[cid], np = st.tables.length, ko = st.list.filter(x => x.stage !== 'pool');
+    let html = '<section class="tblock">' + head + '<span>' + esc(stStatus(st)) + '</span></div>';
+    if (m.planned[cid] && regOpen()) html += '<p class="hint">These are the pools for now. The final draw is after registration closes on ' + esc(longDate(dnOf(T.config.regDeadline))) + '.</p>';
+    if (st.podium[1]) html += '<div class="podium">' + [1, 2, 3].map(k => '<div class="place p' + k + '"><span>' + ['1st', '2nd', '3rd'][k - 1] + '</span><b>' + esc(tName(m, st.podium[k]) || 'To be decided') + '</b><em class="num">' + prizeTxt(prizeAt(c, k - 1)) + '</em></div>').join('') + '</div>';
+    html += '<div class="spools">' + st.tables.map((_, p) => sPool(m, cid, p)).join('') + '</div>';
+    if (ko.length) html += '<h3 class="ssub">' + (np > 1 ? 'Semifinals and final' : 'Final') + '</h3><div class="sko">' + ko.map(x => sgCard(m, cid, x)).join('') + '</div>';
+    return html + '<p class="hint">' + esc(standRules(np)) + '</p></section>';
+  }).join('');
+}
+function sPool(m, cid, p) {
+  const st = m.state[cid], tb = st.tables[p], q = qualSet(st, p);
+  const rows = tb.rows.map((r, i) => {
+    const cls = q.has(r.id) ? 'q' : i === 0 && tb.played && !tb.complete ? 'lead' : '';
+    return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + (i + 1) + '</td><td>' + esc(tName(m, r.id) || 'Team removed') + (q.has(r.id) ? '<i class="qt" title="' + esc(qWord(st)) + '">' + qTag(st) + '</i>' : '') + '</td><td>' + r.w + '</td><td>' + r.l + '</td><td>' + r.pf + '</td><td>' + signed(r.pf - r.pa) + '</td></tr>';
+  }).join('');
+  return '<div class="spool"><div class="sph"><h4>Pool ' + L(p) + '</h4><span class="num">' + tb.played + ' of ' + tb.total + ' played</span></div>'
+    + '<table class="stand st num"><thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Pts</th><th>+/-</th></tr></thead><tbody>' + rows + '</tbody></table>'
+    + '<div class="sgs">' + st.list.filter(x => x.stage === 'pool' && x.pool === p).map(x => sgCard(m, cid, x)).join('') + '</div></div>';
+}
+function sgCard(m, cid, x) {
+  const st = m.state[cid], t = st.res[x.id] || {}, s = st.sc[x.id], done = scoredT(s), v = sideVals(m, cid, x, t);
+  const edit = S.scorer && t.a && t.b, tie = edit && v.a != null && v.a === v.b;
+  const row = (side, i) => {
+    const id = t[side], win = done && (side === 'a' ? s.a > s.b : s.b > s.a);
+    return '<div class="sgr' + (win ? ' win' : '') + (id ? '' : ' tbd') + '"><span>' + esc(tName(m, id) || srcLabel(x.src && x.src[i])) + '</span>'
+      + (edit ? scoreBox('si', m, cid, x, t, side, v[side]) : '<b class="num">' + (done ? s[side] : '') + '</b>') + '</div>';
+  };
+  const lab = x.stage === 'pool' ? 'Game ' + m.num[cid][x.id] : stageLabel(x) + ' · to ' + (T.config.scoring[x.stage] || 11);
+  return '<div class="sg' + (x.stage === 'pool' ? '' : ' ko') + (done ? ' played' : '') + (tie ? ' tie' : '') + '"><span class="sgn">' + esc(lab) + '</span>' + row('a', 0) + row('b', 1)
+    + (tie ? '<span class="sgw">A game cannot end in a tie. Check the score.</span>' : '') + '</div>';
+}
+
+/* the projector board: one category, pools on both sides, champion, final, semifinals and bronze in the middle */
+const BMARK = '<svg viewBox="30 40 660 650" aria-hidden="true"><polygon points="178,505 542,505 620,660 100,660" fill="#028FD6"/><polygon points="150.3,560 569.7,560 586.8,594 133.2,594" fill="#AA442D"/><g fill="none" stroke="#F5F0EA" stroke-linecap="round" stroke-linejoin="round"><polyline points="60,662 360,70 660,662" stroke-width="46"/><line x1="360" y1="70" x2="360" y2="465" stroke-width="30"/><line x1="160" y1="465" x2="560" y2="465" stroke-width="38"/><polyline points="205,380 360,270 515,380" stroke-width="30"/></g></svg>';
+const CUP = '<svg viewBox="0 0 120 128" aria-hidden="true"><defs>'
+  + '<linearGradient id="bdg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A87410"/><stop offset=".3" stop-color="#F7CD4E"/><stop offset=".52" stop-color="#FFEFAE"/><stop offset=".74" stop-color="#E0A92A"/><stop offset="1" stop-color="#8C5E0A"/></linearGradient>'
+  + '<linearGradient id="bdh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE38A"/><stop offset="1" stop-color="#B8861A"/></linearGradient></defs>'
+  + '<path d="M30 20H15c-6 0-9 4-8 10 2 13 11 22 26 25M90 20h15c6 0 9 4 8 10-2 13-11 22-26 25" fill="none" stroke="url(#bdh)" stroke-width="6" stroke-linecap="round"/>'
+  + '<path d="M26 10h68v28c0 22-14 38-34 40C40 76 26 60 26 38z" fill="url(#bdg)"/>'
+  + '<ellipse cx="60" cy="10" rx="34" ry="4.5" fill="#FFF1B8"/><ellipse cx="60" cy="10.6" rx="30" ry="2.4" fill="#C8921C"/>'
+  + '<circle cx="60" cy="41" r="13" fill="#DDEB3F" stroke="#A3AF2A" stroke-width="1.5"/><g fill="#A3AF2A"><circle cx="60" cy="34" r="1.8"/><circle cx="66.5" cy="38.5" r="1.8"/><circle cx="64.5" cy="46" r="1.8"/><circle cx="55.5" cy="46" r="1.8"/><circle cx="53.5" cy="38.5" r="1.8"/><circle cx="60" cy="41" r="1.5"/></g>'
+  + '<path d="M54 78h12l-2 16h-8z" fill="url(#bdg)"/><path d="M44 94h32l3 8H41z" fill="url(#bdh)"/>'
+  + '<rect x="34" y="102" width="52" height="22" rx="3" fill="#0B1533" stroke="url(#bdh)" stroke-width="2"/><rect x="46" y="109" width="28" height="8" rx="1.5" fill="url(#bdg)"/></svg>';
+let boardIdle = false, idleT = 0;
+function vBoard() {
+  const m = liveModel(), cats = T.config.cats, ci = Math.min(S.bcat || 0, cats.length - 1), c = cats[ci], cid = c.id;
+  const day = T.config.days[Math.max(0, tDayOf(cid))], st = m.none[cid] ? null : m.state[cid];
+  const ctl = '<div class="bd-ctl">' + (cats.length > 1 ? cats.map((k, i) => '<button type="button" class="bd-btn' + (i === ci ? ' on' : '') + '" data-act="bcat" data-v="' + i + '">' + esc(k.level) + '</button>').join('') : '')
+    + (S.scorer && st ? '<button type="button" class="bd-btn" data-act="pedit" aria-pressed="' + !!S.pedit + '">Scores</button>' : '')
+    + '<button type="button" class="bd-btn" data-act="unpresent">Exit</button></div>';
+  const head = '<header class="bd-head"><div class="bd-brand">' + BMARK + '<div><span>ABRI KORTE</span><b>' + esc(T.config.title || T.config.name) + '</b></div></div>'
+    + '<div class="bd-title"><b>Live standings</b><span>' + esc((day ? shortIso(day.date) + ' · ' : '') + c.level + ' ' + c.name) + '</span></div>'
+    + '<div class="bd-meta"><span class="bd-live"><i></i>Live</span><span class="bd-clock num">' + tfmt(nowAbs()) + '</span>' + ctl + '</div></header>';
+  let main = '<main class="bd-main bd-empty"><p>The pools show here once they are set.</p></main>', foot = '';
+  if (st) {
+    const np = st.tables.length, half = Math.ceil(np / 2), idx = [...Array(np).keys()];
+    const side = ps => '<section class="bd-side">' + ps.map(p => bPool(m, cid, p)).join('') + '</section>';
+    main = '<main class="bd-main">' + side(idx.slice(0, half)) + bMid(m, c, st) + side(idx.slice(half)) + '</main>';
+    foot = '<footer class="bd-foot"><b>abrikorte.com</b><span>' + esc(scoringLine(st)) + '</span><span>Same wins: head to head, then +/−</span></footer>';
+  }
+  return '<div class="board' + (boardIdle ? ' idle' : '') + '" id="board" role="dialog" aria-modal="true" aria-label="Live standings">' + head + main + foot
+    + (S.pedit && S.scorer && st ? bDrawer(m, cid, st) : '') + '</div>';
+}
+function bPool(m, cid, p) {
+  const st = m.state[cid], tb = st.tables[p], q = qualSet(st, p);
+  return '<div class="bd-p"><div class="bd-ph"><b>Pool <em>' + L(p) + '</em></b><span class="num">' + tb.played + ' of ' + tb.total + ' games</span></div>'
+    + '<div class="bd-r bd-rh"><span>#</span><span>Team</span><span>W</span><span>L</span><span>Pts</span><span>+/−</span></div>'
+    + tb.rows.map((r, i) => {
+      const cls = q.has(r.id) ? ' q' : i === 0 && tb.played && !tb.complete ? ' lead' : '';
+      return '<div class="bd-r' + cls + '"><span class="rk">' + (i + 1) + '</span><span class="nm"><span>' + esc(tName(m, r.id) || 'Team removed') + '</span>' + (q.has(r.id) ? '<i class="bd-q">' + qTag(st) + '</i>' : '') + '</span>'
+        + '<span class="w">' + r.w + '</span><span>' + r.l + '</span><span>' + r.pf + '</span><span>' + signed(r.pf - r.pa) + '</span></div>';
+    }).join('') + '</div>';
+}
+function bMid(m, c, st) {
+  const cid = c.id, find = id => st.list.find(x => x.id === id), poolOf = {};
+  st.tables.forEach((t, p) => t.rows.forEach(r => { poolOf[r.id] = p; }));
+  const plate = (x, side) => {
+    const t = st.res[x.id] || {}, id = t[side], s = st.sc[x.id], done = scoredT(s), i = side === 'a' ? 0 : 1;
+    const win = done && (side === 'a' ? s.a > s.b : s.b > s.a), edit = S.scorer && t.a && t.b;
+    return '<div class="bd-pl' + (id ? '' : ' tbd') + (done ? (win ? ' win' : ' lose') : '') + '">' + (id && poolOf[id] != null && st.tables.length > 1 ? '<i class="bd-fr">' + L(poolOf[id]) + '</i>' : '')
+      + '<span class="nm">' + esc(tName(m, id) || srcLabel(x.src && x.src[i])) + '</span>'
+      + (edit ? scoreBox('ko', m, cid, x, t, side, sideVals(m, cid, x, t)[side]) : '<b class="sc num">' + (done ? s[side] : '') + '</b>') + '</div>';
+  };
+  const match = (x, cls, label) => '<div class="bd-m' + cls + '"><span class="bd-ml">' + label + '<small>to ' + (T.config.scoring[x.stage] || 11) + '</small></span>' + plate(x, 'a') + plate(x, 'b') + '</div>';
+  const f = find('f'), s1 = find('sf1'), s2 = find('sf2'), br = find('br'), champ = st.podium[1];
+  const cup = '<div class="bd-cup">' + CUP + '<b class="bd-champl">Champion</b><div class="bd-champ' + (champ ? '' : ' tbd') + '"><span>' + esc(champ ? tName(m, champ) : 'To be decided') + '</span></div>'
+    + '<span class="bd-prize num">' + esc(prizeTxt(prizeAt(c, 0)).replace('hrs', 'hours')) + '</span></div>';
+  const tree = (f ? match(f, ' bd-fin', 'Final') : '') + (s1 && s2 ? '<div class="bd-join" aria-hidden="true"></div><div class="bd-semis">' + match(s1, '', 'Semifinal 1') + match(s2, '', 'Semifinal 2') + '</div>' : '');
+  const bz = br ? '<div class="bd-bz"><span class="bd-ml">Bronze match<small>to ' + T.config.scoring.bronze + '</small></span><div class="bd-bzr">' + plate(br, 'a') + plate(br, 'b') + '</div></div>' : '';
+  return '<section class="bd-mid">' + cup + '<div class="bd-tree">' + tree + '</div>' + bz + bNext(m, cid, st) + '</section>';
+}
+function bNext(m, cid, st) {
+  const nx = upNext(st, 3);
+  if (!nx.length) return st.podium[1] ? '<div class="bd-next"><b>Final result</b><p>Congratulations to ' + esc(tName(m, st.podium[1])) + '!</p></div>' : '';
+  return '<div class="bd-next"><b>Up next</b>' + nx.map((x, i) => {
+    const t = st.res[x.id], v = sideVals(m, cid, x, t);
+    const mid = S.scorer ? '<span class="bd-sx">' + scoreBox('nx', m, cid, x, t, 'a', v.a) + '<i>:</i>' + scoreBox('nx', m, cid, x, t, 'b', v.b) + '</span>' : '<span class="vs">vs</span>';
+    return '<div class="bd-nx' + (i ? '' : ' first') + '"><span class="g">' + esc(x.stage === 'pool' ? 'G' + m.num[cid][x.id] + ' · Pool ' + L(x.pool) : stageLabel(x)) + '</span><span class="a">' + esc(tName(m, t.a)) + '</span>' + mid + '<span class="b">' + esc(tName(m, t.b)) + '</span></div>';
+  }).join('') + '</div>';
+}
+// every game with score boxes, for fixing a score without leaving the board
+function bDrawer(m, cid, st) {
+  const row = x => {
+    const t = st.res[x.id] || {}, ok = t.a && t.b, v = ok ? sideVals(m, cid, x, t) : null;
+    const nm = (side, i) => esc(tName(m, t[side]) || srcLabel(x.src && x.src[i]));
+    return '<div class="bd-dr"><span class="n">' + (x.stage === 'pool' ? 'G' + m.num[cid][x.id] : x.id.toUpperCase()) + '</span><span class="a">' + nm('a', 0) + '</span>'
+      + (ok ? scoreBox('dr', m, cid, x, t, 'a', v.a) + '<i>:</i>' + scoreBox('dr', m, cid, x, t, 'b', v.b) : '<span class="vs">vs</span>') + '<span class="b">' + nm('b', 1) + '</span></div>';
+  };
+  const cols = st.tables.map((_, p) => '<div class="bd-dc"><h5>Pool ' + L(p) + '</h5>' + st.list.filter(x => x.stage === 'pool' && x.pool === p).map(row).join('') + '</div>');
+  const ko = st.list.filter(x => x.stage !== 'pool');
+  if (ko.length) cols.push('<div class="bd-dc"><h5>Knockout</h5>' + ko.map(row).join('') + '</div>');
+  return '<div class="bd-drawer" role="dialog" aria-label="Enter scores"><div class="bd-dh"><b>Enter scores</b><span>Type a score, then press Enter to jump to the next box.</span><button type="button" class="bd-btn" data-act="pedit">Done</button></div><div class="bd-dg">' + cols.join('') + '</div></div>';
+}
+function enterPresent() {
+  S.present = true; S.pedit = false; S.presentY = window.scrollY; S.tab = 'tournament'; S.tsub = 'standings'; S.pick = null; S.fs = false;
+  const el = document.documentElement;
+  if (el.requestFullscreen && !document.fullscreenElement) { try { el.requestFullscreen().then(() => { S.fs = true; }, () => {}); } catch (e) { /* not allowed here */ } }
+  try { history.replaceState(null, '', '#present'); } catch (e) { /* ignore */ }
+  boardIdle = false; render(); wake();
+}
+function exitPresent() {
+  const fs = S.fs; S.present = false; S.pedit = false; S.fs = false;
+  if (fs && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+  try { history.replaceState(null, '', '#standings'); } catch (e) { /* ignore */ }
+  render(); window.scrollTo(0, S.presentY || 0);
+}
+// the board's buttons and the pointer hide after a few still seconds, and come back when the mouse moves
+function wake() {
+  if (!S.present) return;
+  if (boardIdle) { boardIdle = false; const b = document.getElementById('board'); if (b) b.classList.remove('idle'); }
+  clearTimeout(idleT);
+  idleT = setTimeout(() => { boardIdle = true; const b = document.getElementById('board'); if (b) b.classList.add('idle'); }, 3000);
+}
+function copyScores() {
+  const text = JSON.stringify({ rally: T.config.days.map(d => d.date).join(','), scores: LIVE });
+  const done = ok => { S.copiedScores = ok ? 'Copied' : 'Copy did not work'; schedule(); setTimeout(() => { S.copiedScores = ''; schedule(); }, 2500); };
+  try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch (e) { done(false); }
 }
 
 /* ---------- state ---------- */
-const S = { tab: 'book', tsub: 'schedule', tday: 0, week: 0, day: TODAY, pick: null, late: false, hours: 2, sport: 'Pickleball', paddles: 0, balls: 0, racquets: false, name: '', sent: false, copied: null };
+const S = { tab: 'book', tsub: 'schedule', tday: 0, week: 0, day: TODAY, pick: null, late: false, hours: 2, sport: 'Pickleball', paddles: 0, balls: 0, racquets: false, name: '', sent: false, copied: null,
+  scorer: false, present: false, pedit: false, bcat: 0, clearArm: 0, copiedScores: '' };
 try { const n = localStorage.getItem('ak-name'); if (n) S.name = n; } catch (e) { /* storage unavailable */ }
+// scorer mode: on with ?edit in the address, then remembered in this browser until it is turned off
+const EDIT = /[?&]edit(=|&|$)/.test(location.search);
+try { if (EDIT) localStorage.setItem(SKEY, '1'); S.scorer = localStorage.getItem(SKEY) === '1'; } catch (e) { S.scorer = EDIT; }
 const TABS = ['book', 'tournament', 'rates', 'info'];
 if (T) { const i = T.config.days.findIndex(d => d.date >= isoOf(TODAY)); S.tday = i < 0 ? 0 : i; }
 // while sign-ups are open and nothing is drawn yet, the tournament tab opens on the prizes, entry and who can join
 if (T && regOpen() && T.config.cats.every(c => !(T.draws && T.draws[c.id] && T.draws[c.id].locked))) S.tsub = 'roster';
-if (TABS.includes(location.hash.slice(1))) S.tab = location.hash.slice(1);
+const H0 = location.hash.slice(1);
+if (TABS.includes(H0)) S.tab = H0;
+// #standings opens the standings, #present the projector board (press F11 for full screen)
+if (T && (H0 === 'standings' || H0 === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.present = H0 === 'present'; }
+else if (T && S.scorer) S.tsub = 'standings';
 if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);
 
@@ -759,7 +1187,8 @@ const I = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M6 9.6V20h12V9.6"/><path d="M10 20v-5.2h4V20"/></svg>',
   pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   chat: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c-4.9 0-8.5 3.4-8.5 7.8 0 2.4 1.1 4.5 2.9 5.9v3.3l3.1-1.7c.8.2 1.6.3 2.5.3 4.9 0 8.5-3.4 8.5-7.8S16.9 3.5 12 3.5z"/><path d="M7.8 13l2.8-3 2.2 2 3.4-3.2"/></svg>',
-  check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+  check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  screen: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16.5V20"/></svg>'
 };
 
 /* ---------- views ---------- */
@@ -942,19 +1371,38 @@ themeColor();
 let raf = 0;
 const schedule = () => { if (!raf) raf = requestAnimationFrame(render); };
 const isDesk = () => window.matchMedia('(min-width:960px)').matches;
+let restoring = false;
 function render() {
+  if (raf) cancelAnimationFrame(raf);
   raf = 0;
   const app = document.getElementById('app');
   const a = document.activeElement, fid = a && a.id;
+  // a box being typed in keeps its cursor and selection across the redraw
+  const sel = a && a.tagName === 'INPUT' && a.type === 'text' ? [a.selectionStart, a.selectionEnd] : null;
   const ps = document.querySelector('.pscroll'); const pst = ps ? ps.scrollTop : 0;
-  const body = S.tab === 'book' ? vBook() : S.tab === 'tournament' ? vTour() : S.tab === 'rates' ? vRates() : vInfo();
-  const panelOpen = !!S.pick;
-  app.innerHTML = topbar() + '<div class="layout' + (S.tab === 'book' ? '' : ' one') + '"><main class="main">' + body + '</main>'
-    + (S.tab === 'book' ? '<aside class="panel' + (panelOpen ? ' open' : '') + (panelOpen && !S.sent ? ' has-foot' : '') + '" id="panel" aria-label="Your booking"' + (!panelOpen && !isDesk() ? ' aria-hidden="true"' : '') + '>' + vPanel() + '</aside>' : '') + '</div>' + tabbar();
-  document.getElementById('shade').classList.toggle('on', panelOpen && S.tab === 'book' && !isDesk());
-  document.documentElement.classList.toggle('lock', panelOpen && S.tab === 'book' && !isDesk());
-  const nps = document.querySelector('.pscroll'); if (nps && S.keepScroll) nps.scrollTop = pst; S.keepScroll = true;
-  if (fid) { const el = document.getElementById(fid); if (el && el !== document.activeElement) try { el.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+  const board = S.present && !!T;
+  document.documentElement.classList.toggle('presenting', board);
+  if (board) {
+    app.innerHTML = vBoard();
+    document.getElementById('shade').classList.remove('on');
+    document.documentElement.classList.remove('lock');
+  } else {
+    const body = S.tab === 'book' ? vBook() : S.tab === 'tournament' ? vTour() : S.tab === 'rates' ? vRates() : vInfo();
+    const panelOpen = !!S.pick;
+    app.innerHTML = topbar() + '<div class="layout' + (S.tab === 'book' ? '' : ' one') + '"><main class="main">' + body + '</main>'
+      + (S.tab === 'book' ? '<aside class="panel' + (panelOpen ? ' open' : '') + (panelOpen && !S.sent ? ' has-foot' : '') + '" id="panel" aria-label="Your booking"' + (!panelOpen && !isDesk() ? ' aria-hidden="true"' : '') + '>' + vPanel() + '</aside>' : '') + '</div>' + tabbar();
+    document.getElementById('shade').classList.toggle('on', panelOpen && S.tab === 'book' && !isDesk());
+    document.documentElement.classList.toggle('lock', panelOpen && S.tab === 'book' && !isDesk());
+    const nps = document.querySelector('.pscroll'); if (nps && S.keepScroll) nps.scrollTop = pst; S.keepScroll = true;
+  }
+  if (fid) {
+    const el = document.getElementById(fid);
+    if (el && el !== document.activeElement) {
+      restoring = true;
+      try { el.focus({ preventScroll: true }); if (sel && el.setSelectionRange) el.setSelectionRange(sel[0], sel[1]); } catch (e) { /* ignore */ }
+      restoring = false;
+    }
+  }
   fitPanel();
 }
 /* on desktop the docked panel always ends inside the window, so its total and button stay visible */
@@ -1007,20 +1455,66 @@ document.addEventListener('click', e => {
   if (act === 'copy') { copyMsg(); return; }
   if (act === 'open-msgr') { el.href = messengerUrl(); return; }
   if (act === 'reset') { S.sent = false; S.copied = null; S.pick = null; schedule(); return; }
-  if (act === 'tsub') { S.tsub = el.dataset.v; schedule(); return; }
+  if (act === 'tsub') { S.tsub = el.dataset.v; try { history.replaceState(null, '', S.tsub === 'standings' ? '#standings' : '#tournament'); } catch (err) { /* ignore */ } schedule(); return; }
+  if (act === 'present') { enterPresent(); return; }
+  if (act === 'unpresent') { exitPresent(); return; }
+  if (act === 'pedit') { S.pedit = !S.pedit; schedule(); return; }
+  if (act === 'bcat') { S.bcat = Number(el.dataset.v); schedule(); return; }
+  if (act === 'scopy') { copyScores(); return; }
+  if (act === 'sclear') {
+    if (S.clearArm && Date.now() - S.clearArm < 5000) { LIVE = {}; saveLive(); S.clearArm = 0; }
+    else { S.clearArm = Date.now(); setTimeout(schedule, 5100); }
+    schedule(); return;
+  }
+  if (act === 'soff') { S.scorer = false; try { localStorage.removeItem(SKEY); } catch (err) { /* ignore */ } if (S.present) exitPresent(); else schedule(); return; }
   if (act === 'tday') { S.tday = Number(el.dataset.v); schedule(); return; }
   if (act === 'reg') { const c = tCat(el.dataset.cat); if (c) { try { navigator.clipboard.writeText(regText(c)).catch(() => {}); } catch (err) { /* ignore */ } } return; }
   if (act === 'close') { close(); return; }
   if (act === 'theme') { const n = isDark() ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('abri-theme', n); } catch (err) { /* ignore */ } themeColor(); schedule(); return; }
 });
+const isScore = el => !!el && !!el.classList && el.classList.contains('si');
 document.addEventListener('input', e => {
-  const el = e.target; if (el.dataset.bind !== 'name') return;
+  const el = e.target;
+  if (isScore(el)) { setScore(el); return; }
+  if (el.dataset.bind !== 'name') return;
   S.name = el.value.slice(0, 60);
   try { localStorage.setItem('ak-name', S.name); } catch (err) { /* storage unavailable */ }
   const cta = document.getElementById('cta'); if (cta) cta.href = messengerUrl();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.pick) close(); });
-window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (TABS.includes(t) && t !== S.tab) { S.tab = t; S.pick = null; schedule(); } });
+// the standings redraw once a score box is left (Enter, Tab or a click elsewhere)
+document.addEventListener('change', e => { if (isScore(e.target)) schedule(); });
+// clicking into a score box selects its number, so typing replaces it
+let selBox = null;
+document.addEventListener('focusin', e => { const el = e.target; if (restoring || !isScore(el)) return; selBox = el; try { el.select(); } catch (err) { /* ignore */ } });
+document.addEventListener('mouseup', e => { if (selBox && e.target === selBox) e.preventDefault(); selBox = null; });
+document.addEventListener('keydown', e => {
+  const el = e.target;
+  if (e.key === 'Enter' && isScore(el)) {
+    e.preventDefault();
+    const all = [...document.querySelectorAll('input.si')], nx = all[all.indexOf(el) + 1];
+    if (nx) nx.focus(); else el.blur();
+    render();
+    // on the board, the last box of a stage hands over to the first empty box of what is up next
+    if (!nx && S.present) { const f = [...document.querySelectorAll('.bd-next input.si')].find(i => !i.value); if (f) f.focus(); }
+    return;
+  }
+  if (e.key !== 'Escape') return;
+  if (S.pedit) { S.pedit = false; schedule(); return; }
+  if (S.present) { exitPresent(); return; }
+  if (S.pick) close();
+});
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && S.present && S.fs) exitPresent(); });
+['mousemove', 'keydown', 'touchstart'].forEach(k => document.addEventListener(k, wake, { passive: true }));
+// another window of this browser changed the scores (a second window on the projector, say): redraw with them
+window.addEventListener('storage', e => {
+  if (e.key === LKEY) { loadLive(); if (!isScore(document.activeElement)) schedule(); }
+  else if (e.key === SKEY) { S.scorer = e.newValue === '1'; schedule(); }
+});
+window.addEventListener('hashchange', () => {
+  const t = location.hash.slice(1);
+  if (T && (t === 'standings' || t === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.pick = null; if (t === 'present') S.present = true; schedule(); return; }
+  if (TABS.includes(t) && t !== S.tab) { S.tab = t; S.pick = null; schedule(); }
+});
 window.addEventListener('resize', () => schedule());
 
 /* swipe the week strip to change weeks */
@@ -1035,7 +1529,8 @@ document.addEventListener('touchend', e => {
 }, { passive: true });
 
 /* the schedule rolls forward on its own: re-check the clock every minute */
-setInterval(() => { if (!S.pick) schedule(); }, 60000);
+setInterval(() => { if (!S.pick && !isScore(document.activeElement)) schedule(); }, 60000);
 render();
+if (S.present) wake();
 })();
 </script>

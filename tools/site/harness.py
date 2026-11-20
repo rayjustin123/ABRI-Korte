@@ -32,7 +32,7 @@ LOCAL = {
     "gsap@3.12.5/dist/gsap.min.js": V + "/gsap/dist/gsap.min.js",
     "gsap@3.12.5/dist/ScrollTrigger.min.js": V + "/gsap/dist/ScrollTrigger.min.js",
 }
-FONTS = (("barlow", ["300", "400", "500", "600"]), ("barlow-condensed", ["600", "700"]),
+FONTS = (("barlow", ["300", "400", "500", "600", "700"]), ("barlow-condensed", ["600", "700", "700-italic", "800-italic"]),
          ("poppins", ["300", "400", "500", "600", "700", "300-italic"]))
 _built = False
 
