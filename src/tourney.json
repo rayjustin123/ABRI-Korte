@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 21, 7:56 PM",
+ "updatedLabel": "Nov 21, 8:05 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -119,14 +119,14 @@
    "pools": [
     [
      "t6",
-     "t12",
+     "t15",
      "t8"
     ],
     [
      "t4",
      "t3",
      "t14",
-     "t15"
+     "t12"
     ],
     [
      "t5",
