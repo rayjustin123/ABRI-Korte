@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 22, 12:28 AM",
+ "updatedLabel": "Nov 22, 12:30 AM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -108,6 +108,10 @@
   "t16": {
    "cat": "bd",
    "name": "Marjo and Vracks"
+  },
+  "t17": {
+   "cat": "bd",
+   "name": "Pryce and Mac2"
   }
  },
  "draws": {
@@ -128,7 +132,8 @@
     [
      "t9",
      "t2",
-     "t16"
+     "t16",
+     "t17"
     ],
     [
      "t12",
