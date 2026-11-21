@@ -939,7 +939,7 @@ function vTSchedule(m) {
   const blocks = tDay(m, di).map(b => {
     const c = tCat(b.cat), lv = c.level === 'Novice' ? 'n' : 'b';
     let html = '<section class="tblock"><div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span class="num">' + tfmt(b.start) + ' to about ' + tfmt(b.end) + '</span></div>';
-    if (b.planned) html += '<p class="hint">' + (m.prov[b.cat] ? 'These are the pools for now. The final draw is after registration closes on ' : 'Pools are drawn after registration closes on ') + esc(longDate(dnOf(cfg.regDeadline))) + '. Times are for a full category of ' + c.cap + ' teams.</p>';
+    if (b.planned) html += '<p class="hint">' + (regOpen() ? (m.prov[b.cat] ? 'These are the pools for now. The final draw is after registration closes on ' : 'Pools are drawn after registration closes on ') + esc(longDate(dnOf(cfg.regDeadline))) + '.' : (m.prov[b.cat] ? 'These are the pools for now. The final draw is set before the first serve.' : 'Pools are drawn before the first serve.')) + ' Times are for a full category of ' + c.cap + ' teams.</p>';
     html += '<div class="list">' + runOfShow(b).map(p => {
       const when = '<div class="when"><b class="num">' + tfmt(p.s) + '</b><span>' + durTxt(p.e - p.s) + '</span></div>';
       if (p.kind === 'pool') return '<div class="slot">' + when + '<div class="card day"><span class="card-top"><span class="tag">' + p.games + ' games · to ' + cfg.scoring.pool + '</span></span><span class="card-title">' + esc(p.label) + '</span><span class="card-sub">Check in by ' + tfmt(p.s - (cfg.checkInMin || 30)) + (p.size === 3 ? ' · each pair plays twice' : '') + '</span></div></div>';
@@ -974,7 +974,7 @@ function vTRoster(m) {
     const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' court hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : !p.cash && p.h ? '<em>Court time</em>' : '') + '</div>'; }).join('');
     let teams;
     if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
-    else if (m.prov[c.id]) teams = provPools(m, c) + '<p class="fine" style="text-align:left;margin:0">These are the pools for now. The final draw is after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '.</p>';
+    else if (m.prov[c.id]) teams = provPools(m, c) + '<p class="fine" style="text-align:left;margin:0">These are the pools for now. ' + (regOpen() ? 'The final draw is after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '.' : 'The final draw is set before the first serve.') + '</p>';
     else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
     else teams = '<div class="emptyt">No confirmed teams yet. Teams show here once they qualify and pay.</div>';
     const full = n >= c.cap;
