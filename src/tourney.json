@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 21, 7:22 AM",
+ "updatedLabel": "Nov 21, 7:35 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -108,6 +108,10 @@
   "t15": {
    "cat": "bd",
    "name": "Jhon and Guy"
+  },
+  "t16": {
+   "cat": "bd",
+   "name": "Meraki Restaurant"
   }
  },
  "draws": {
@@ -115,7 +119,8 @@
    "pools": [
     [
      "t6",
-     "t2"
+     "t2",
+     "t16"
     ],
     [
      "t4",
