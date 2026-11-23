@@ -42,7 +42,7 @@ function live() {
     const start = Date.UTC(2026, 10, 22, 0, 0), end = Date.UTC(2026, 10, 22, 9, 0), now = Date.now();  /* Sun Nov 22, 8 AM to 5 PM Manila */
     if (now < start) { const d = Math.ceil((start - now) / 864e5); cnt.innerHTML = '<b class="num">' + d + (d === 1 ? ' day' : ' days') + '</b>until the first serve'; }
     else if (now < end) cnt.innerHTML = '<b>Happening now</b>Come watch at the court';
-    else cnt.innerHTML = '<b>Thanks for playing</b>Results are on the schedule page';
+    else cnt.innerHTML = '<b>Thanks for playing</b>See you at the next rally';
   }
 }
 live(); setInterval(live, 30000);

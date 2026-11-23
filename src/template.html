@@ -283,6 +283,8 @@ button.card:active{transform:scale(.985)}
 .tlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px;font-size:14px}
 .tlist li{overflow-wrap:anywhere}
 .tlist li.open{color:var(--ink-3);font-style:italic}
+.tlist.cols{display:block;columns:2;column-gap:28px}
+.tlist.cols li{break-inside:avoid;margin-bottom:3px}
 .emptyt{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-3)}
 .pools2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .pool{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}
@@ -310,6 +312,43 @@ details.games[open]{padding-bottom:14px}
 .stand tr.q td:first-child{font-weight:600}
 @media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}.ros.one,.qual.one{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
+
+/* results, once the rally is over: the podium with photos (champions first on phones, 2nd 1st 3rd like a podium from
+   720px), the other semifinalist, a thank-you and the day's photos. The photos live in rally/ at the site root. */
+.subseg.two{max-width:300px}
+.res{display:flex;flex-direction:column;gap:16px}
+.podg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pc{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.pc.p1{grid-column:1/-1;border:2px solid var(--gold);box-shadow:var(--shadow)}
+.pc .pph{position:relative;aspect-ratio:4/5;background:var(--sunk)}
+.pc .pph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pc .pbadge{position:absolute;left:10px;top:10px;display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px 4px;font:700 13px/1.1 var(--font-cond);font-size-adjust:none;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:#1B242D;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.pc.p1 .pbadge{background:#DDEB3F;font-size:15px;padding:6px 13px 5px}
+.pc .pbadge svg{width:15px;height:15px}
+.pc .ptxt{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px}
+.pc .ptxt b{font:500 16px/1.25 var(--font-brand);overflow-wrap:anywhere}
+.pc.p1 .ptxt b{font-size:20px}
+.pc .ptxt span{font-size:13px;color:var(--ink-3)}
+.semi{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--sunk);border-radius:14px;padding:11px 14px;font-size:14px}
+.semi span{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.semi b{font-weight:600}
+.thx{font-size:15px;line-height:1.55;color:var(--ink-2);max-width:62ch}
+.galw{container-type:inline-size}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;grid-auto-flow:dense;grid-auto-rows:220px;grid-auto-rows:calc((100cqw - 8px) / 2 * 1.25)}
+.gal a{display:block;border-radius:14px;overflow:hidden;background:var(--sunk);min-width:0}
+.gal a.w{grid-column:span 2}
+.gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.gal a:hover img{transform:scale(1.03)}
+.res .ghost{max-width:340px}
+@container (min-width:640px){.gal{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:calc((100cqw - 24px) / 4 * 1.25)}}
+@media (min-width:720px){
+  .podg{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}
+  .pc.p1{grid-column:auto;order:2}
+  .pc.p2{order:1}
+  .pc.p3{order:3}
+  .pc.p1 .ptxt{padding-bottom:24px}
+}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 
 /* standings: each pool's table with its games, then the knockout. In scorer mode the scores are typed into the games */
 .scorer{background:var(--azure-soft);color:var(--azure-ink);border-radius:18px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
@@ -605,6 +644,9 @@ const loadOf = dn => { const a = dn * DAY + 6 * 60, b = dn * DAY + DAY; let m = 
 
 /* ---------- tournament: same pool and knockout rules as the organizer app ---------- */
 const T = D.tourney || null;
+// results, once they are posted (tourney.json "results"): the Tournament tab opens on the podium and the day's photos
+const RES = T && T.results && T.results.podium ? T.results : null;
+const ASSET = D.assets || '';  // photos are in rally/ next to the page; the preview build points them at the live site
 const L = p => String.fromCharCode(65 + p);
 const hm = s => { const [h, m] = String(s || '07:00').split(':').map(Number); return (h || 0) * 60 + (m || 0); };
 const durTxt = mins => mins < 60 ? mins + ' min' : hrsTxt(mins);
@@ -917,19 +959,24 @@ function vTour() {
   const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
   const caps = [...new Set(cfg.cats.map(c => c.cap))];
   const one = cfg.cats.length === 1 ? cfg.cats[0] : null;
-  if (S.tsub === 'results') S.tsub = 'standings';
-  const subs = [['schedule', 'Schedule'], ['roster', 'Roster'], ['standings', 'Standings']];
-  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'standings' ? vTStandings() : vTSchedule(m);
+  // after the rally: Results and Roster only (the planned schedule and the live standings are done with)
+  if (RES) { if (S.tsub !== 'results' && S.tsub !== 'roster') S.tsub = 'results'; }
+  else if (S.tsub === 'results') S.tsub = 'standings';
+  const subs = RES ? [['results', 'Results'], ['roster', 'Roster']] : [['schedule', 'Schedule'], ['roster', 'Roster'], ['standings', 'Standings']];
+  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : S.tsub === 'standings' ? vTStandings() : vTSchedule(m);
+  const played = cfg.cats.reduce((s, c) => s + confirmedOf(m, c.id).length, 0);
+  const status = RES ? '<span class="chip gold">Final results</span><span class="chip soft">' + played + ' teams</span>'
+    : (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
+      + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '');
   // one category: the sign-up button sits right under the title, so a link straight to #tournament can register at once
   const reg = one && regOpen() && m.planned[one.id] && confirmedOf(m, one.id).length < one.cap
     ? '<a class="cta treg" href="' + esc(regUrl(one)) + '" target="_blank" rel="noopener" data-act="reg" data-cat="' + one.id + '">' + I.chat + 'Register on Messenger</a>' : '';
   return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1 class="lh">' + lockH(cfg.title || cfg.name) + '</h1>'
-    + (cfg.blurb ? '<p class="tblurb">' + esc(cfg.blurb) + '</p>' : '')
-    + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
-    + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
+    + ((RES && RES.blurb) || cfg.blurb ? '<p class="tblurb">' + esc((RES && RES.blurb) || cfg.blurb) + '</p>' : '')
+    + '<div class="chips">' + status + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
     + reg + '</section>'
-    + '<div class="seg subseg three" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
-    + body + '<p class="foot">Tournament details as of ' + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
+    + '<div class="seg subseg ' + (subs.length === 3 ? 'three' : 'two') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
+    + body + '<p class="foot">' + (RES ? 'Results as of ' : 'Tournament details as of ') + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
 }
 
 function vTSchedule(m) {
@@ -973,7 +1020,9 @@ function vTRoster(m) {
     const n = ids.length, pct = Math.min(100, Math.round(n / Math.max(1, c.cap) * 100));
     const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' court hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : !p.cash && p.h ? '<em>Court time</em>' : '') + '</div>'; }).join('');
     let teams;
-    if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
+    // after the rally the pools for now are out of date (pairs and pools changed on the day), so just the teams
+    if (RES && n) teams = '<ol class="tlist cols">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol><p class="fine" style="text-align:left;margin:0">The teams that signed up. Some pairs changed on the day.</p>';
+    else if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
     else if (m.prov[c.id]) teams = provPools(m, c) + '<p class="fine" style="text-align:left;margin:0">These are the pools for now. ' + (regOpen() ? 'The final draw is after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '.' : 'The final draw is set before the first serve.') + '</p>';
     else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
     else teams = '<div class="emptyt">No confirmed teams yet. Teams show here once they qualify and pay.</div>';
@@ -998,6 +1047,38 @@ function vTRoster(m) {
 }
 
 const prizeTxt = p => (p.cash ? peso(p.cash) : '') + (p.cash && p.h ? ' + ' : '') + (p.h ? p.h + ' court hrs' : '');
+
+/* Results tab: the podium with photos, the other semifinalist, a thank-you and the day's photos.
+   Each photo is two files in rally/: name-s.jpg (half size) and name.jpg, made by tools/site/rally_photos.py */
+function rImg(src, alt, sizes, w, h, eager) {
+  const b = esc(ASSET + src);
+  return '<img src="' + b + '-s.jpg" srcset="' + b + '-s.jpg ' + (w / 2) + 'w, ' + b + '.jpg ' + w + 'w" sizes="' + sizes + '" width="' + w + '" height="' + h + '" alt="' + esc(alt || '') + '"'
+    + (eager ? '' : ' loading="lazy"') + ' decoding="async">';
+}
+function vTResults(m) {
+  const cfg = T.config, labels = ['Champions', '2nd place', '3rd place'];
+  const cats = cfg.cats.map(c => {
+    const pod = (RES.podium[c.id] || []).slice(0, 3);
+    if (!pod.length) return '';
+    const lv = c.level === 'Novice' ? 'n' : 'b';
+    const cards = pod.map((id, i) => {
+      const ph = (RES.photos || {})[id] || {};
+      const img = ph.src ? rImg(ph.src, ph.alt, i ? '(min-width: 720px) 300px, 50vw' : '(min-width: 720px) 300px, 100vw', 960, 1200, i === 0) : '';
+      return '<article class="pc p' + (i + 1) + '"><div class="pph">' + img + '<span class="pbadge">' + (i === 0 ? I.trophy : '') + labels[i] + '</span></div>'
+        + '<div class="ptxt"><b>' + esc(tName(m, id) || 'To be confirmed') + '</b><span class="num">' + prizeTxt(prizeAt(c, i)) + '</span></div></article>';
+    }).join('');
+    const semis = ((RES.semis && RES.semis[c.id]) || []).map(id => tName(m, id)).filter(Boolean);
+    return '<section class="tblock"><div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span>Final result</span></div>'
+      + '<div class="podg">' + cards + '</div>'
+      + (semis.length ? '<div class="semi"><span>Also in the semifinals</span><b>' + esc(semis.join(', ')) + '</b></div>' : '') + '</section>';
+  }).join('');
+  const gal = (RES.gallery || []).map(g => '<a href="' + esc(ASSET + g.src) + '.jpg" target="_blank" rel="noopener"' + (g.wide ? ' class="w"' : '') + ' aria-label="' + esc(g.alt || 'Photo') + ', full size">'
+    + rImg(g.src, g.alt, g.wide ? '(min-width: 720px) 460px, 100vw' : '(min-width: 720px) 230px, 50vw', g.wide ? 1600 : 800, 1000) + '</a>').join('');
+  return '<div class="res">' + cats
+    + (RES.thanks ? '<p class="thx">' + esc(RES.thanks) + '</p>' : '')
+    + (gal ? '<h3 class="ssub">Photos from the day</h3><div class="galw"><div class="gal">' + gal + '</div></div>' : '')
+    + (D.fb ? '<a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">More photos on our Facebook page</a>' : '') + '</div>';
+}
 
 /* Standings tab: the podium once the final is in, each pool's table and games, then the knockout */
 function vTStandings() {
@@ -1166,8 +1247,9 @@ if (T && regOpen() && T.config.cats.every(c => !(T.draws && T.draws[c.id] && T.d
 const H0 = location.hash.slice(1);
 if (TABS.includes(H0)) S.tab = H0;
 // #standings opens the standings, #present the projector board (press F11 for full screen)
-if (T && (H0 === 'standings' || H0 === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.present = H0 === 'present'; }
-else if (T && S.scorer) S.tsub = 'standings';
+// once results are posted, both open the results instead
+if (T && (H0 === 'standings' || H0 === 'present')) { S.tab = 'tournament'; S.tsub = RES ? 'results' : 'standings'; S.present = !RES && H0 === 'present'; }
+else if (T && S.scorer && !RES) S.tsub = 'standings';
 if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);
 
@@ -1380,7 +1462,7 @@ function render() {
   // a box being typed in keeps its cursor and selection across the redraw
   const sel = a && a.tagName === 'INPUT' && a.type === 'text' ? [a.selectionStart, a.selectionEnd] : null;
   const ps = document.querySelector('.pscroll'); const pst = ps ? ps.scrollTop : 0;
-  const board = S.present && !!T;
+  const board = S.present && !!T && !RES;
   document.documentElement.classList.toggle('presenting', board);
   if (board) {
     app.innerHTML = vBoard();
@@ -1512,7 +1594,7 @@ window.addEventListener('storage', e => {
 });
 window.addEventListener('hashchange', () => {
   const t = location.hash.slice(1);
-  if (T && (t === 'standings' || t === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.pick = null; if (t === 'present') S.present = true; schedule(); return; }
+  if (T && (t === 'standings' || t === 'present')) { S.tab = 'tournament'; S.tsub = RES ? 'results' : 'standings'; S.pick = null; if (t === 'present' && !RES) S.present = true; schedule(); return; }
   if (TABS.includes(t) && t !== S.tab) { S.tab = t; S.pick = null; schedule(); }
 });
 window.addEventListener('resize', () => schedule());

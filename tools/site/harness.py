@@ -12,6 +12,7 @@ import http.server
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -44,6 +45,9 @@ def build():
         return
     subprocess.run([sys.executable, os.path.join(ROOT, "src", "home", "build_home.py"),
                     "--site-out", SITE, "--artifact-out", ARTIFACT], check=True, stdout=subprocess.DEVNULL)
+    # the page asks for ../rally/ (the rally photos at the site root); served from here, that is SITE/rally
+    if os.path.isdir(os.path.join(ROOT, "rally")):
+        shutil.copytree(os.path.join(ROOT, "rally"), os.path.join(SITE, "rally"), dirs_exist_ok=True)
     _built = True
 
 

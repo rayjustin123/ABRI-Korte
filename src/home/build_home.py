@@ -48,6 +48,8 @@ CFG = {"rates": {"weekday": {"day": 200, "night": 350}, "weekend": {"day": 300, 
                  "dayStart": 6 * 60, "dayEnd": 17 * 60}}
 DESC = ("Abri Korte is one covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. "
         "Open 24 hours. See rates, events and the Friendly Rally for beginners on November 22, then book on Messenger.")
+DESC_AFTER = ("Abri Korte is one covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. "
+              "Open 24 hours. See rates, events and the Friendly Rally results, then book on Messenger.")
 
 
 def photo_jpeg():
@@ -92,11 +94,53 @@ def reg_by():
     raise SystemExit("tourney.json not found for the registration deadline")
 
 
+def results(site):
+    """The tournament section's podium, from "results" in tourney.json, or None before results are posted."""
+    t = tourney() or {}
+    r = t.get("results") or {}
+    cfg = t.get("config") or {}
+    cats = cfg.get("cats") or []
+    if not r.get("podium") or not cats:
+        return None
+    c = cats[0]
+    pod = r["podium"].get(c["id"]) or []
+    if len(pod) < 3:
+        return None
+    root = "../" if site else SITE
+
+    def peso(n):
+        return "₱{:,}".format(n)
+
+    out = {}
+    for i, tid in enumerate(pod[:3], 1):
+        ph = (r.get("photos") or {}).get(tid) or {}
+        cash, hrs = (c.get("prizes") or [0, 0, 0])[i - 1], (c.get("hours") or [0, 0, 0])[i - 1]
+        out["R%d_TEAM" % i] = t["teams"][tid]["name"]
+        out["R%d_IMG" % i] = root + ph.get("src", "")
+        out["R%d_ALT" % i] = ph.get("alt", "")
+        out["R%d_PRIZE" % i] = peso(cash) + (" + %d court hours" % hrs if hrs else "")
+    total = sum(sum(x.get("prizes") or []) for x in cats)
+    out["R_TEAMS"] = str(sum(1 for v in (t.get("teams") or {}).values() if v.get("cat") in {x["id"] for x in cats}))
+    out["R_POOLS"] = str(len(((t.get("draws") or {}).get(c["id"]) or {}).get("pools") or []) or "")
+    out["R_CASH"] = "₱%dK" % (total // 1000) if total % 1000 == 0 else peso(total)
+    return out
+
+
+def block(body, name, keep):
+    """Keep or drop the <!--NAME--> ... <!--/NAME--> part of body.html."""
+    a, b = "<!--%s-->" % name, "<!--/%s-->" % name
+    i, j = body.index(a), body.index(b)
+    return body[:i] + (body[i + len(a):j] if keep else "") + body[j + len(b):]
+
+
 def page(site, photo, depth):
     css = open(os.path.join(SRC, "style.css"), encoding="utf-8").read()
     body = open(os.path.join(SRC, "body.html"), encoding="utf-8").read()
     js = open(os.path.join(SRC, "app.js"), encoding="utf-8").read()
-    subs = dict(links(site), PHOTO=photo, DEPTH=depth, REGBY=reg_by())
+    res = results(site)
+    # after the rally the tournament section shows the podium; before it, the prizes and the sign-up
+    body = block(block(body, "RESULTS", bool(res)), "SIGNUP", not res)
+    subs = dict(links(site), PHOTO=photo, DEPTH=depth, **(res or {"REGBY": reg_by()}))
     for k, v in subs.items():
         body = body.replace("{{" + k + "}}", html.escape(v, quote=True))
     assert "{{" not in body, "unfilled placeholder"
@@ -116,7 +160,7 @@ def page(site, photo, depth):
         '<!doctype html>', '<html lang="en">', '<head>', '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">',
         '<title>Abri Korte | Pickleball and badminton court in Consolacion, Cebu</title>',
-        '<meta name="description" content="%s">' % html.escape(DESC, quote=True),
+        '<meta name="description" content="%s">' % html.escape(DESC_AFTER if res else DESC, quote=True),
         '<meta name="theme-color" content="#016FA8">',
         '<link rel="icon" href="../favicon.svg" type="image/svg+xml">',
         '<link rel="apple-touch-icon" href="../apple-touch-icon.png">',

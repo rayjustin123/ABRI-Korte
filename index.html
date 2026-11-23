@@ -20,7 +20,6 @@
 <meta property="og:url" content="https://abrikorte.com/">
 <link rel="canonical" href="https://abrikorte.com/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsActivityLocation","@id":"https://abrikorte.com/#court","name":"Abri Korte","description":"One covered pickleball and badminton court in Upper Tugbongan, Consolacion, Cebu. Open 24 hours. See open times and rates, then book on Messenger.","url":"https://abrikorte.com/","image":"https://abrikorte.com/og.png","logo":"https://abrikorte.com/icon-512.png","address":{"@type":"PostalAddress","streetAddress":"724 Upper Tugbongan","addressLocality":"Consolacion","addressRegion":"Cebu","addressCountry":"PH"},"hasMap":"https://www.google.com/maps/search/?api=1&query=724+Upper+Tugbongan+Consolacion+Cebu","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"}],"priceRange":"₱200 to ₱400 per hour","currenciesAccepted":"PHP","sameAs":["https://www.facebook.com/ABRIKorteCebu","https://www.instagram.com/abri.korte/"]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsEvent","name":"Abri Korte Friendly Rally","sport":"Pickleball","startDate":"2026-11-22T08:00:00+08:00","endDate":"2026-11-22T17:00:00+08:00","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"SportsActivityLocation","@id":"https://abrikorte.com/#court","name":"Abri Korte","address":{"@type":"PostalAddress","streetAddress":"724 Upper Tugbongan","addressLocality":"Consolacion","addressRegion":"Cebu","addressCountry":"PH"}},"image":["https://abrikorte.com/og.png"],"url":"https://abrikorte.com/#tournament","organizer":{"@type":"Organization","name":"Abri Korte","url":"https://abrikorte.com/"},"description":"Our first ever Friendly Rally: beginner friendly fun play, with free snacks and water for every player. Sign up solo or as a pair. Solo players get paired with another beginner.","offers":{"@type":"Offer","price":"400","priceCurrency":"PHP","availability":"https://schema.org/InStock","url":"https://abrikorte.com/#tournament","validThrough":"2026-11-21T23:59:00+08:00"}}</script>
 <title>Abri Korte | Book a Pickleball Court in Consolacion, Cebu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -305,6 +304,8 @@ button.card:active{transform:scale(.985)}
 .tlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px;font-size:14px}
 .tlist li{overflow-wrap:anywhere}
 .tlist li.open{color:var(--ink-3);font-style:italic}
+.tlist.cols{display:block;columns:2;column-gap:28px}
+.tlist.cols li{break-inside:avoid;margin-bottom:3px}
 .emptyt{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-3)}
 .pools2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .pool{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}
@@ -332,6 +333,43 @@ details.games[open]{padding-bottom:14px}
 .stand tr.q td:first-child{font-weight:600}
 @media (min-width:720px){.ros,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}.ros.one,.qual.one{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.podium{grid-template-columns:minmax(0,1fr)}}
+
+/* results, once the rally is over: the podium with photos (champions first on phones, 2nd 1st 3rd like a podium from
+   720px), the other semifinalist, a thank-you and the day's photos. The photos live in rally/ at the site root. */
+.subseg.two{max-width:300px}
+.res{display:flex;flex-direction:column;gap:16px}
+.podg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pc{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.pc.p1{grid-column:1/-1;border:2px solid var(--gold);box-shadow:var(--shadow)}
+.pc .pph{position:relative;aspect-ratio:4/5;background:var(--sunk)}
+.pc .pph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pc .pbadge{position:absolute;left:10px;top:10px;display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px 4px;font:700 13px/1.1 var(--font-cond);font-size-adjust:none;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:#1B242D;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.pc.p1 .pbadge{background:#DDEB3F;font-size:15px;padding:6px 13px 5px}
+.pc .pbadge svg{width:15px;height:15px}
+.pc .ptxt{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px}
+.pc .ptxt b{font:500 16px/1.25 var(--font-brand);overflow-wrap:anywhere}
+.pc.p1 .ptxt b{font-size:20px}
+.pc .ptxt span{font-size:13px;color:var(--ink-3)}
+.semi{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--sunk);border-radius:14px;padding:11px 14px;font-size:14px}
+.semi span{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.semi b{font-weight:600}
+.thx{font-size:15px;line-height:1.55;color:var(--ink-2);max-width:62ch}
+.galw{container-type:inline-size}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;grid-auto-flow:dense;grid-auto-rows:220px;grid-auto-rows:calc((100cqw - 8px) / 2 * 1.25)}
+.gal a{display:block;border-radius:14px;overflow:hidden;background:var(--sunk);min-width:0}
+.gal a.w{grid-column:span 2}
+.gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.gal a:hover img{transform:scale(1.03)}
+.res .ghost{max-width:340px}
+@container (min-width:640px){.gal{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:calc((100cqw - 24px) / 4 * 1.25)}}
+@media (min-width:720px){
+  .podg{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}
+  .pc.p1{grid-column:auto;order:2}
+  .pc.p2{order:1}
+  .pc.p3{order:3}
+  .pc.p1 .ptxt{padding-bottom:24px}
+}
+@media (prefers-reduced-motion:reduce){.gal img{transition:none}}
 
 /* standings: each pool's table with its games, then the knockout. In scorer mode the scores are typed into the games */
 .scorer{background:var(--azure-soft);color:var(--azure-ink);border-radius:18px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
@@ -542,7 +580,7 @@ html.presenting,html.presenting body{overflow:hidden}
 <script>try{var t=localStorage.getItem("abri-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <div class="app" id="app"></div>
 <div class="shade" id="shade" data-act="close"></div>
-<script type="application/json" id="data">{"updatedLabel":"Nov 10, 4:08 AM","weeks":8,"maxHours":8,"rates":{"weekday":{"day":200,"night":350},"weekend":{"day":300,"night":400},"dayStart":360,"dayEnd":1020},"rentals":{"paddle":100,"ball":100},"promo":{"start":"2026-09-11","end":null,"every":4},"quiet":{"from":1320,"to":300},"drinks":[{"name":"Water","price":30},{"name":"Coke","price":50},{"name":"Coke Zero","price":50},{"name":"Pocari Sweat","price":60}],"rules":["Non-marking court shoes only. No street shoes or bare feet.","Free Bluetooth speaker. Keep the volume low after 10 PM.","For comfort room access, please contact our personnel.","Paddles and racquets are available for rent.","Water and drinks for sale. No food on the court surface.","Clean up after your session. Trash goes in the bins.","No smoking or vaping inside the covered court.","Sessions end on the hour. Respect the next group.","Children must be supervised by an adult.","Play at your own risk. Mind your belongings."],"address":"724 Upper Tugbongan, Consolacion, Cebu","maps":"https://www.google.com/maps/search/?api=1&query=724+Upper+Tugbongan+Consolacion+Cebu","fb":"https://www.facebook.com/profile.php?id=61593743265058","messenger":"https://m.me/61593743265058","home":"home/","booked":[[29892660,29892900],[29896920,29897160],[29898420,29898660],[29899920,29900160],[29901300,29901540],[29902140,29902260],[29902560,29902980],[29903010,29903130],[29907000,29907240],[29908500,29908740],[29910000,29910240],[29911380,29911620],[29912820,29913060],[29917080,29917320],[29918580,29918820],[29920080,29920320],[29921460,29921700],[29922120,29922780,"Abri Korte Friendly Rally"],[29922900,29923140],[29927160,29927400],[29928660,29928900],[29930160,29930400],[29931540,29931780],[29932980,29933220],[29937240,29937480],[29938740,29938980],[29940240,29940480],[29941620,29941860],[29943060,29943300],[29947320,29947560],[29948820,29949060],[29950320,29950560],[29951700,29951940],[29953140,29953380],[29957400,29957640],[29958900,29959140],[29960400,29960640],[29961780,29962020],[29963220,29963460],[29967480,29967720],[29968980,29969220],[29970480,29970720],[29971860,29972100],[29973300,29973540],[29977560,29977800],[29979060,29979300]],"tourney":{"updatedLabel":"Nov 22, 8:45 AM","config":{"name":"Abri Korte Friendly Rally","title":"Friendly Rally","blurb":"Our first ever Friendly Rally: beginner friendly fun play, with free snacks and water for every player. Sign up solo or as a pair. Solo players get paired with another beginner.","solo":true,"days":[{"cats":["bd"],"date":"2026-11-22","level":"Beginners","start":"08:00"}],"cats":[{"cap":16,"fee":400,"hours":[5,4,3],"id":"bd","level":"Beginners","name":"Doubles","prizes":[5000,3000,1000]}],"scoring":{"bronze":15,"final":21,"pool":11,"sf":15},"slots":{"bronze":20,"final":25,"pool":15,"sf":20},"breakMin":15,"checkInMin":30,"regDeadline":"2026-11-21","minTeams":6,"hoursNote":"Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water."},"teams":{"t1":{"cat":"bd","name":"Dax and Jay"},"t2":{"cat":"bd","name":"Engr and Yok2"},"t3":{"cat":"bd","name":"RJ and Bree"},"t4":{"cat":"bd","name":"Pryce and Levine"},"t5":{"cat":"bd","name":"Ralph R. and Val"},"t6":{"cat":"bd","name":"Jed and Sean"},"t7":{"cat":"bd","name":"Kate and Al"},"t8":{"cat":"bd","name":"Dawn and Niña"},"t9":{"cat":"bd","name":"Mark and Kabatanya"},"t11":{"cat":"bd","name":"Hoven and Jelay"},"t12":{"cat":"bd","name":"Morty and Pia"},"t14":{"cat":"bd","name":"Mark M. and Klever"},"t15":{"cat":"bd","name":"Jhon and Guy"},"t16":{"cat":"bd","name":"Marjo and Vracks"},"t17":{"cat":"bd","name":"Noli and Mac2"}},"draws":{"bd":{"pools":[["t5","t15","t8","t3"],["t4","t14","t7","t6"],["t9","t2","t16","t17"],["t12","t1","t11"]],"locked":false}},"matches":{},"scores":{}}}</script>
+<script type="application/json" id="data">{"updatedLabel":"Nov 10, 4:08 AM","weeks":8,"maxHours":8,"rates":{"weekday":{"day":200,"night":350},"weekend":{"day":300,"night":400},"dayStart":360,"dayEnd":1020},"rentals":{"paddle":100,"ball":100},"promo":{"start":"2026-09-11","end":null,"every":4},"quiet":{"from":1320,"to":300},"drinks":[{"name":"Water","price":30},{"name":"Coke","price":50},{"name":"Coke Zero","price":50},{"name":"Pocari Sweat","price":60}],"rules":["Non-marking court shoes only. No street shoes or bare feet.","Free Bluetooth speaker. Keep the volume low after 10 PM.","For comfort room access, please contact our personnel.","Paddles and racquets are available for rent.","Water and drinks for sale. No food on the court surface.","Clean up after your session. Trash goes in the bins.","No smoking or vaping inside the covered court.","Sessions end on the hour. Respect the next group.","Children must be supervised by an adult.","Play at your own risk. Mind your belongings."],"address":"724 Upper Tugbongan, Consolacion, Cebu","maps":"https://www.google.com/maps/search/?api=1&query=724+Upper+Tugbongan+Consolacion+Cebu","fb":"https://www.facebook.com/profile.php?id=61593743265058","messenger":"https://m.me/61593743265058","home":"home/","booked":[[29892660,29892900],[29896920,29897160],[29898420,29898660],[29899920,29900160],[29901300,29901540],[29902140,29902260],[29902560,29902980],[29903010,29903130],[29907000,29907240],[29908500,29908740],[29910000,29910240],[29911380,29911620],[29912820,29913060],[29917080,29917320],[29918580,29918820],[29920080,29920320],[29921460,29921700],[29922120,29922780,"Abri Korte Friendly Rally"],[29922900,29923140],[29927160,29927400],[29928660,29928900],[29930160,29930400],[29931540,29931780],[29932980,29933220],[29937240,29937480],[29938740,29938980],[29940240,29940480],[29941620,29941860],[29943060,29943300],[29947320,29947560],[29948820,29949060],[29950320,29950560],[29951700,29951940],[29953140,29953380],[29957400,29957640],[29958900,29959140],[29960400,29960640],[29961780,29962020],[29963220,29963460],[29967480,29967720],[29968980,29969220],[29970480,29970720],[29971860,29972100],[29973300,29973540],[29977560,29977800],[29979060,29979300]],"tourney":{"updatedLabel":"Nov 23, 3:06 PM","config":{"name":"Abri Korte Friendly Rally","title":"Friendly Rally","blurb":"Our first ever Friendly Rally: beginner friendly fun play, with free snacks and water for every player. Sign up solo or as a pair. Solo players get paired with another beginner.","solo":true,"days":[{"cats":["bd"],"date":"2026-11-22","level":"Beginners","start":"08:00"}],"cats":[{"cap":16,"fee":400,"hours":[5,4,3],"id":"bd","level":"Beginners","name":"Doubles","prizes":[5000,3000,1000]}],"scoring":{"bronze":15,"final":21,"pool":11,"sf":15},"slots":{"bronze":20,"final":25,"pool":15,"sf":20},"breakMin":15,"checkInMin":30,"regDeadline":"2026-11-21","minTeams":6,"hoursNote":"Prize court hours never expire and can be used any time. Want cash instead? We'll help you sell them to our regular players. Every player also gets free snacks and water."},"teams":{"t1":{"cat":"bd","name":"Dax and Jay"},"t2":{"cat":"bd","name":"Engr and Yok2"},"t3":{"cat":"bd","name":"RJ and Bree"},"t4":{"cat":"bd","name":"Pryce and Levine"},"t5":{"cat":"bd","name":"Ralph R. and Val"},"t6":{"cat":"bd","name":"Jed and Sean"},"t7":{"cat":"bd","name":"Kate and Al"},"t8":{"cat":"bd","name":"Dawn and Niña"},"t9":{"cat":"bd","name":"Alfie and Kabatanya"},"t11":{"cat":"bd","name":"Hoven and Jelay"},"t12":{"cat":"bd","name":"Morty and Pia"},"t14":{"cat":"bd","name":"Mark M. and Klever"},"t15":{"cat":"bd","name":"Jhon and Guy"},"t16":{"cat":"bd","name":"Marjo and Vracks"},"t17":{"cat":"bd","name":"Noli and Mac2"}},"draws":{"bd":{"pools":[["t5","t15","t8","t3"],["t4","t14","t7","t6"],["t9","t2","t16","t17"],["t12","t1","t11"]],"locked":false}},"matches":{},"scores":{},"results":{"blurb":"Our first Friendly Rally is a wrap: 15 beginner teams, four pools and a full Sunday of friendly games. Congratulations to our champions, Mark M. and Klever!","podium":{"bd":["t14","t16","t9"]},"semis":{"bd":["t15"]},"photos":{"t14":{"src":"rally/champions","alt":"The champions, Mark M. and Klever, with their medals"},"t16":{"src":"rally/second","alt":"Marjo and Vracks with their 2nd place medals"},"t9":{"src":"rally/third","alt":"A 3rd place medal for Alfie and Kabatanya"}},"thanks":"Salamat to every player, the crew who kept the snacks coming, and everyone who came to cheer. See you at the next rally!","gallery":[{"src":"rally/squad","alt":"Players and crew of the Friendly Rally behind the Abri Korte banner","wide":true},{"src":"rally/medals","alt":"Putting on a 3rd place medal"},{"src":"rally/serve","alt":"A player in an Abri Korte jersey about to serve"},{"src":"rally/rally-1","alt":"Marjo and Vracks, who finished 2nd, during a game"},{"src":"rally/rally-2","alt":"A forehand during pool play"},{"src":"rally/barkada","alt":"The crew and friends after the rally","wide":true},{"src":"rally/podium","alt":"The podium finishers with their medals","wide":true},{"src":"rally/rally-3","alt":"A doubles pair waiting on the return"},{"src":"rally/rally-4","alt":"A player ready for the return while the bench watches"}]}}}</script>
 <script>
 (() => {
 'use strict';
@@ -629,6 +667,9 @@ const loadOf = dn => { const a = dn * DAY + 6 * 60, b = dn * DAY + DAY; let m = 
 
 /* ---------- tournament: same pool and knockout rules as the organizer app ---------- */
 const T = D.tourney || null;
+// results, once they are posted (tourney.json "results"): the Tournament tab opens on the podium and the day's photos
+const RES = T && T.results && T.results.podium ? T.results : null;
+const ASSET = D.assets || '';  // photos are in rally/ next to the page; the preview build points them at the live site
 const L = p => String.fromCharCode(65 + p);
 const hm = s => { const [h, m] = String(s || '07:00').split(':').map(Number); return (h || 0) * 60 + (m || 0); };
 const durTxt = mins => mins < 60 ? mins + ' min' : hrsTxt(mins);
@@ -941,19 +982,24 @@ function vTour() {
   const hrs = cfg.cats.reduce((s, c) => s + (c.hours || []).reduce((a, b) => a + b, 0), 0);
   const caps = [...new Set(cfg.cats.map(c => c.cap))];
   const one = cfg.cats.length === 1 ? cfg.cats[0] : null;
-  if (S.tsub === 'results') S.tsub = 'standings';
-  const subs = [['schedule', 'Schedule'], ['roster', 'Roster'], ['standings', 'Standings']];
-  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'standings' ? vTStandings() : vTSchedule(m);
+  // after the rally: Results and Roster only (the planned schedule and the live standings are done with)
+  if (RES) { if (S.tsub !== 'results' && S.tsub !== 'roster') S.tsub = 'results'; }
+  else if (S.tsub === 'results') S.tsub = 'standings';
+  const subs = RES ? [['results', 'Results'], ['roster', 'Roster']] : [['schedule', 'Schedule'], ['roster', 'Roster'], ['standings', 'Standings']];
+  const body = S.tsub === 'roster' ? vTRoster(m) : S.tsub === 'results' ? vTResults(m) : S.tsub === 'standings' ? vTStandings() : vTSchedule(m);
+  const played = cfg.cats.reduce((s, c) => s + confirmedOf(m, c.id).length, 0);
+  const status = RES ? '<span class="chip gold">Final results</span><span class="chip soft">' + played + ' teams</span>'
+    : (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
+      + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '');
   // one category: the sign-up button sits right under the title, so a link straight to #tournament can register at once
   const reg = one && regOpen() && m.planned[one.id] && confirmedOf(m, one.id).length < one.cap
     ? '<a class="cta treg" href="' + esc(regUrl(one)) + '" target="_blank" rel="noopener" data-act="reg" data-cat="' + one.id + '">' + I.chat + 'Register on Messenger</a>' : '';
   return '<div class="page tpage"><section class="thero"><span class="eyebrow">Abri Korte · ' + esc(tDates()) + '</span><h1 class="lh">' + lockH(cfg.title || cfg.name) + '</h1>'
-    + (cfg.blurb ? '<p class="tblurb">' + esc(cfg.blurb) + '</p>' : '')
-    + '<div class="chips">' + (regOpen() ? '<span class="chip gold">Registration closes ' + esc(MO3[dateOf(dnOf(cfg.regDeadline)).getUTCMonth()] + ' ' + dateOf(dnOf(cfg.regDeadline)).getUTCDate()) + '</span>' : '<span class="chip soft">Registration closed</span>')
-    + (one ? '<span class="chip soft">Up to ' + one.cap + ' teams</span>' : caps.length === 1 ? '<span class="chip soft">' + caps[0] + ' teams per category</span>' : '') + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
+    + ((RES && RES.blurb) || cfg.blurb ? '<p class="tblurb">' + esc((RES && RES.blurb) || cfg.blurb) + '</p>' : '')
+    + '<div class="chips">' + status + '<span class="chip soft num">' + peso(cash) + ' cash' + (hrs ? ' + ' + hrs + ' court hours' : '') + '</span></div>'
     + reg + '</section>'
-    + '<div class="seg subseg three" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
-    + body + '<p class="foot">Tournament details as of ' + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
+    + '<div class="seg subseg ' + (subs.length === 3 ? 'three' : 'two') + '" role="group" aria-label="Tournament">' + subs.map(([k, l]) => '<button type="button" data-act="tsub" data-v="' + k + '" class="' + (S.tsub === k ? 'on' : '') + '" aria-pressed="' + (S.tsub === k) + '">' + l + '</button>').join('') + '</div>'
+    + body + '<p class="foot">' + (RES ? 'Results as of ' : 'Tournament details as of ') + esc(T.updatedLabel) + '. Only confirmed teams are listed.</p></div>';
 }
 
 function vTSchedule(m) {
@@ -997,7 +1043,9 @@ function vTRoster(m) {
     const n = ids.length, pct = Math.min(100, Math.round(n / Math.max(1, c.cap) * 100));
     const prz = ['1ST', '2ND', '3RD'].map((lab, i) => { const p = prizeAt(c, i); return '<div><span>' + lab + '</span><b class="num">' + (p.cash ? peso(p.cash) : p.h + ' court hrs') + '</b>' + (p.cash && p.h ? '<em>+ ' + p.h + ' court hrs</em>' : !p.cash && p.h ? '<em>Court time</em>' : '') + '</div>'; }).join('');
     let teams;
-    if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
+    // after the rally the pools for now are out of date (pairs and pools changed on the day), so just the teams
+    if (RES && n) teams = '<ol class="tlist cols">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol><p class="fine" style="text-align:left;margin:0">The teams that signed up. Some pairs changed on the day.</p>';
+    else if (!m.planned[c.id]) teams = '<div class="pools2">' + m.draws[c.id].pools.map((pool, p) => '<div class="pool"><h4>Pool ' + L(p) + '</h4><ol class="tlist">' + pool.map(id => '<li>' + esc(tName(m, id) || 'Team removed') + '</li>').join('') + '</ol></div>').join('') + '</div>';
     else if (m.prov[c.id]) teams = provPools(m, c) + '<p class="fine" style="text-align:left;margin:0">These are the pools for now. ' + (regOpen() ? 'The final draw is after registration closes on ' + esc(longDate(dnOf(cfg.regDeadline))) + '.' : 'The final draw is set before the first serve.') + '</p>';
     else if (n) teams = '<ol class="tlist">' + ids.map(id => '<li>' + esc(tName(m, id)) + '</li>').join('') + '</ol>';
     else teams = '<div class="emptyt">No confirmed teams yet. Teams show here once they qualify and pay.</div>';
@@ -1022,6 +1070,38 @@ function vTRoster(m) {
 }
 
 const prizeTxt = p => (p.cash ? peso(p.cash) : '') + (p.cash && p.h ? ' + ' : '') + (p.h ? p.h + ' court hrs' : '');
+
+/* Results tab: the podium with photos, the other semifinalist, a thank-you and the day's photos.
+   Each photo is two files in rally/: name-s.jpg (half size) and name.jpg, made by tools/site/rally_photos.py */
+function rImg(src, alt, sizes, w, h, eager) {
+  const b = esc(ASSET + src);
+  return '<img src="' + b + '-s.jpg" srcset="' + b + '-s.jpg ' + (w / 2) + 'w, ' + b + '.jpg ' + w + 'w" sizes="' + sizes + '" width="' + w + '" height="' + h + '" alt="' + esc(alt || '') + '"'
+    + (eager ? '' : ' loading="lazy"') + ' decoding="async">';
+}
+function vTResults(m) {
+  const cfg = T.config, labels = ['Champions', '2nd place', '3rd place'];
+  const cats = cfg.cats.map(c => {
+    const pod = (RES.podium[c.id] || []).slice(0, 3);
+    if (!pod.length) return '';
+    const lv = c.level === 'Novice' ? 'n' : 'b';
+    const cards = pod.map((id, i) => {
+      const ph = (RES.photos || {})[id] || {};
+      const img = ph.src ? rImg(ph.src, ph.alt, i ? '(min-width: 720px) 300px, 50vw' : '(min-width: 720px) 300px, 100vw', 960, 1200, i === 0) : '';
+      return '<article class="pc p' + (i + 1) + '"><div class="pph">' + img + '<span class="pbadge">' + (i === 0 ? I.trophy : '') + labels[i] + '</span></div>'
+        + '<div class="ptxt"><b>' + esc(tName(m, id) || 'To be confirmed') + '</b><span class="num">' + prizeTxt(prizeAt(c, i)) + '</span></div></article>';
+    }).join('');
+    const semis = ((RES.semis && RES.semis[c.id]) || []).map(id => tName(m, id)).filter(Boolean);
+    return '<section class="tblock"><div class="thead"><div><span class="lvl ' + lv + '">' + esc(c.level) + '</span><h2>' + esc(c.name) + '</h2></div><span>Final result</span></div>'
+      + '<div class="podg">' + cards + '</div>'
+      + (semis.length ? '<div class="semi"><span>Also in the semifinals</span><b>' + esc(semis.join(', ')) + '</b></div>' : '') + '</section>';
+  }).join('');
+  const gal = (RES.gallery || []).map(g => '<a href="' + esc(ASSET + g.src) + '.jpg" target="_blank" rel="noopener"' + (g.wide ? ' class="w"' : '') + ' aria-label="' + esc(g.alt || 'Photo') + ', full size">'
+    + rImg(g.src, g.alt, g.wide ? '(min-width: 720px) 460px, 100vw' : '(min-width: 720px) 230px, 50vw', g.wide ? 1600 : 800, 1000) + '</a>').join('');
+  return '<div class="res">' + cats
+    + (RES.thanks ? '<p class="thx">' + esc(RES.thanks) + '</p>' : '')
+    + (gal ? '<h3 class="ssub">Photos from the day</h3><div class="galw"><div class="gal">' + gal + '</div></div>' : '')
+    + (D.fb ? '<a class="ghost" href="' + esc(D.fb) + '" target="_blank" rel="noopener">More photos on our Facebook page</a>' : '') + '</div>';
+}
 
 /* Standings tab: the podium once the final is in, each pool's table and games, then the knockout */
 function vTStandings() {
@@ -1190,8 +1270,9 @@ if (T && regOpen() && T.config.cats.every(c => !(T.draws && T.draws[c.id] && T.d
 const H0 = location.hash.slice(1);
 if (TABS.includes(H0)) S.tab = H0;
 // #standings opens the standings, #present the projector board (press F11 for full screen)
-if (T && (H0 === 'standings' || H0 === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.present = H0 === 'present'; }
-else if (T && S.scorer) S.tsub = 'standings';
+// once results are posted, both open the results instead
+if (T && (H0 === 'standings' || H0 === 'present')) { S.tab = 'tournament'; S.tsub = RES ? 'results' : 'standings'; S.present = !RES && H0 === 'present'; }
+else if (T && S.scorer && !RES) S.tsub = 'standings';
 if (startsFor(TODAY).length === 0 && TODAY + 1 < W0 + 7 * WEEKS) S.day = TODAY + 1;
 S.week = Math.floor((mondayOf(S.day) - W0) / 7);
 
@@ -1404,7 +1485,7 @@ function render() {
   // a box being typed in keeps its cursor and selection across the redraw
   const sel = a && a.tagName === 'INPUT' && a.type === 'text' ? [a.selectionStart, a.selectionEnd] : null;
   const ps = document.querySelector('.pscroll'); const pst = ps ? ps.scrollTop : 0;
-  const board = S.present && !!T;
+  const board = S.present && !!T && !RES;
   document.documentElement.classList.toggle('presenting', board);
   if (board) {
     app.innerHTML = vBoard();
@@ -1536,7 +1617,7 @@ window.addEventListener('storage', e => {
 });
 window.addEventListener('hashchange', () => {
   const t = location.hash.slice(1);
-  if (T && (t === 'standings' || t === 'present')) { S.tab = 'tournament'; S.tsub = 'standings'; S.pick = null; if (t === 'present') S.present = true; schedule(); return; }
+  if (T && (t === 'standings' || t === 'present')) { S.tab = 'tournament'; S.tsub = RES ? 'results' : 'standings'; S.pick = null; if (t === 'present' && !RES) S.present = true; schedule(); return; }
   if (TABS.includes(t) && t !== S.tab) { S.tab = t; S.pick = null; schedule(); }
 });
 window.addEventListener('resize', () => schedule());

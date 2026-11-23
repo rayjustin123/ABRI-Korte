@@ -16,6 +16,7 @@ Run everything from the repo root. The `.sh` scripts need bash (Git Bash or WSL 
 
 | Script | What it does |
 | --- | --- |
+| `rally_photos.py <photo folder>` | The Friendly Rally web photos in `rally/` (podium cards and the gallery), cropped from RJ's Drive photos: sRGB, a light grade, two sizes each. |
 | `harness.py [desk phone ...] [--only court,how]` | Builds the home page into `site/build/`, serves it, screenshots every section into `site/shots/`, prints errors and measurements. Scenarios: desk, desk-dark, phone, phone-dark, tablet, small, laptop. |
 | `booking_screens.py` | The booking page tabs, light and dark, phone and desktop. |
 | `booking_flow.py` | Taps an open hour, picks how long, adds rentals, checks the Messenger message, the Today chip, the Nov 21 tournament block and the Home link. |

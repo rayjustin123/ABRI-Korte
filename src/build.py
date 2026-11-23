@@ -149,6 +149,7 @@ if __name__ == "__main__":
     data, n = make_data(a.rows, a.tourney)
     if not a.site:
         data["home"] = "https://abrikorte.com/home/"
+        data["assets"] = "https://abrikorte.com/"  # the rally photos, from the live site
     frag = fragment(data)
     assert "—" not in frag, "em dash in page"
     if a.site:

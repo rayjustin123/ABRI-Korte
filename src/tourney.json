@@ -1,5 +1,5 @@
 {
- "updatedLabel": "Nov 22, 8:45 AM",
+ "updatedLabel": "Nov 23, 3:06 PM",
  "config": {
   "name": "Abri Korte Friendly Rally",
   "title": "Friendly Rally",
@@ -87,7 +87,7 @@
   },
   "t9": {
    "cat": "bd",
-   "name": "Mark and Kabatanya"
+   "name": "Alfie and Kabatanya"
   },
   "t11": {
    "cat": "bd",
@@ -145,5 +145,76 @@
   }
  },
  "matches": {},
- "scores": {}
+ "scores": {},
+ "results": {
+  "blurb": "Our first Friendly Rally is a wrap: 15 beginner teams, four pools and a full Sunday of friendly games. Congratulations to our champions, Mark M. and Klever!",
+  "podium": {
+   "bd": [
+    "t14",
+    "t16",
+    "t9"
+   ]
+  },
+  "semis": {
+   "bd": [
+    "t15"
+   ]
+  },
+  "photos": {
+   "t14": {
+    "src": "rally/champions",
+    "alt": "The champions, Mark M. and Klever, with their medals"
+   },
+   "t16": {
+    "src": "rally/second",
+    "alt": "Marjo and Vracks with their 2nd place medals"
+   },
+   "t9": {
+    "src": "rally/third",
+    "alt": "A 3rd place medal for Alfie and Kabatanya"
+   }
+  },
+  "thanks": "Salamat to every player, the crew who kept the snacks coming, and everyone who came to cheer. See you at the next rally!",
+  "gallery": [
+   {
+    "src": "rally/squad",
+    "alt": "Players and crew of the Friendly Rally behind the Abri Korte banner",
+    "wide": true
+   },
+   {
+    "src": "rally/medals",
+    "alt": "Putting on a 3rd place medal"
+   },
+   {
+    "src": "rally/serve",
+    "alt": "A player in an Abri Korte jersey about to serve"
+   },
+   {
+    "src": "rally/rally-1",
+    "alt": "Marjo and Vracks, who finished 2nd, during a game"
+   },
+   {
+    "src": "rally/rally-2",
+    "alt": "A forehand during pool play"
+   },
+   {
+    "src": "rally/barkada",
+    "alt": "The crew and friends after the rally",
+    "wide": true
+   },
+   {
+    "src": "rally/podium",
+    "alt": "The podium finishers with their medals",
+    "wide": true
+   },
+   {
+    "src": "rally/rally-3",
+    "alt": "A doubles pair waiting on the return"
+   },
+   {
+    "src": "rally/rally-4",
+    "alt": "A player ready for the return while the bench watches"
+   }
+  ]
+ }
 }
